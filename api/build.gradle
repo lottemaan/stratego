@@ -40,11 +40,12 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'mancala.App'
+    mainClassName = 'stratego.App'
 }
 
 test {
     // Use junit platform for unit tests
     useJUnitPlatform()
 }
+
 
