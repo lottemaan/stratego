@@ -1,8 +1,17 @@
-// package stratego.api.repository;
+package stratego.api.repository;
 
-// import stratego.api.models.Bordstate;
-// import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
 
-// public interface BordstateRepository extends JpaRepository<Bordstate, Long> {
-//     // You can define custom query methods here if needed
-// }
+public interface BordstateRepository<T> {
+    
+    Optional<T> get(long id);
+    
+    List<T> getAll();
+    
+    void save(T t);
+    
+    void update(T t, String[] params);
+    
+    void delete(T t);
+}
