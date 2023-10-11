@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'stratego'
-include('domain', 'api')
+include('domain', 'api', 'persistence')

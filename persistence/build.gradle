@@ -1,0 +1,10 @@
+plugins {
+    // Tell Gradle that we are building java as a library (non-executable piece of code intended for use by other applications).
+    id 'java'
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
