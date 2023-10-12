@@ -1,4 +1,5 @@
-# IP stratego [![pipeline status](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/pipeline.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main) [![coverage report](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/coverage.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main) [![Latest Release](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/badges/release.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/releases)
+# IP STRATEGO 
+[![pipeline status](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/pipeline.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main) [![coverage report](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/coverage.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main) [![Latest Release](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/badges/release.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/releases)
 
 ## Doelstelling van het project volgens MoSCoW
 
