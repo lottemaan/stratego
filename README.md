@@ -1,4 +1,3 @@
-
 [![pipeline status](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/pipeline.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main)
 
 [![coverage report](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/coverage.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main)
@@ -51,28 +50,22 @@ rang heeft dan sneuvelt jouw stuk en blijft je tegenstanders stuk staan.
 - Online spelen tegen elkaar op verschillende consoles
 
 ## Details software stack
-Backend: Jetty server (jax-rs)
-Frontend: Nodejs server (expressjs)
-Database persistentie: Docker (sql)
-Domein: Java
+Backend: Jetty (Java)
+Frontend: Vite + React (tsx), NodeJS as runtime environment
+Database: MySQL
 Build tool: Gradle
 
-## Persoonlijk leerdoel
-to do
-
-## Technisch leerdoel
-
-
+## Persoonlijke leerdoelen
+- Snel genoeg om hulp vragen als ik ergens niet uitkom
+- Gestructureerd werken met branches en het issue bord op gitlab
+- Niet overweldigd raken door dit uitdagende project waarbij ik alles mag toepassen dat ik tijdens het traineeship heb geleerd
 
 
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## Technische leerdoelen
+- De software stack die we gebruikt hebben tijdens de MVC module beter leren beheersen
+- Een beter begrip van het concept MVC verkrijgen 
+- Zoveel mogelijk Object Georienteerd
+- Goed leesbare code schrijven (kies voor Engels of Nederlands)
+- Werken met verticale sneden
 
 
