@@ -9,15 +9,18 @@ import stratego.domain.StrategoGame;
 
 @Path("/start")
 public class StartStratego {
-    @GET
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response start(@Context HttpServletRequest request, PlayerInputDTO players) {
         // Create HTTP session.
         HttpSession session = request.getSession(true);
 
+		String playerOne = players.getPlayer1();
+		String playerTwo = players.getPlayer2();
+
         // Initialize game.
-        StrategoGame stratego = new StrategoGame("lotte", "anderespeler");
+        StrategoGame stratego = new StrategoGame(playerOne, playerTwo);
 
         // Attach game to session.
         session.setAttribute("stratego", stratego);

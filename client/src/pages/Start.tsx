@@ -1,104 +1,172 @@
-// import { useState } from "react";
-// import { useMancalaGame } from "../contexts/MancalaGameContext";
-// import { startGame } from "../services/api";
-// import { isGameState } from "../types";
-// import { FloatingInput } from "../components/FloatingInput";
-// import classNames from "classnames";
-// import { Alert } from "../components/Alert";
+import { useEffect, useState } from 'react'
+import React from 'react';
+import { useMancalaGame } from "../contexts/StrategoGameContext";
+import { startGame } from '../services/api';
+import { isGameState } from '../types';
+import { Alert } from "../components/Alert";
 
-// export const Start = () => {
-//     const { setGameState } = useMancalaGame();
 
-//     const [player1, setPlayer1] = useState("");
-//     const [player2, setPlayer2] = useState("");
-//     const [alert, setAlert] = useState<string | null>(null);
-//     const valid = player1 !== "" && player2 !== "" && player1 !== player2;
+export const Start = () => {
+    const { setGameState } = useMancalaGame();
 
-//     const onSubmit = async () => {
-//         const result = await startGame("Lotte", "iemand anders");
+    const [alert, setAlert] = useState<string | null>(null);
+    const [input1, setInput1] = useState('');
+    const [input2, setInput2] = useState('');
 
-//         if (isGameState(result)) {
-//             setGameState(result);
-//         } else {
-//             setAlert(`${result.statusCode} ${result.statusText}`);
+    const handleInput1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInput1(e.target.value);
+    };
+
+    const handleInput2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInput2(e.target.value);
+    };
+
+
+    const [data, setData] = useState<string>('');
+    const [count, setCount] = useState(1);
+
+    const handlePlayClick = async () => {
+        const result = await startGame(input1, input2);
+
+        if (isGameState(result)) {
+            setGameState(result);
+        } else {
+            setAlert(`${result.statusCode} ${result.statusText}`);
+        }
+    }
+
+    //   useEffect(() => {
+    //     const fetchData = async () => {
+    //       try {
+    //         // Make a GET request to the backend API using await fetch
+    //         const response = await fetch('/stratego/api/start');
+
+    //         if (!response.ok) {
+    //           throw new Error('Network response was not ok');
+    //         }
+
+    //         const responseData = await response.json();
+
+    //         // Extract the "name" property from the responseData object
+    //         const name = responseData.name;
+
+    //         // Set the extracted name to the data state variable
+    //         setData(name);
+    //       } catch (error) {
+    //         console.error('Error:', error);
+    //       }
+    //     };
+
+    //     fetchData();
+    //   }, []);
+
+    return (
+
+        <div className="min-h-screen flex flex-col items-center justify-center bg-stratego relative bg-no-repeat bg-cover">
+            <div className="aspect-w-16 aspect-h-9 bg-fixed">
+                <div className="h-full flex items-center justify-center">
+                    <div className="text-white relative">
+                        <div className="bg-black bg-opacity-50 p-4 rounded-lg">
+                            <h2 className="mb-4 text-4xl font-semibold text-white">Welkom bij Stratego</h2>
+                            <h4 className="mb-6 text-xl font-semibold text-white">Voer de namen van de spelers in om te beginnen</h4>
+
+
+
+                            <div className="inputfields">
+
+                                <input
+                                    type="text"
+                                    value={input1}
+                                    onChange={handleInput1Change}
+                                    placeholder="naam speler 1"
+                                    className="text-black" // Apply text-black class to the input field
+                                />
+                                <input
+                                    type="text"
+                                    value={input2}
+                                    onChange={handleInput2Change}
+                                    placeholder="naam speler 2"
+                                    className="text-black" // Apply text-black class to the input field
+                                />
+                                <br />
+                                <br />
+                                <button
+                                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
+                                    onClick={() => handlePlayClick()}
+                                >
+                                    Speel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+  
+      {/* <div style={containerStyle}>
+        <img src={logo} alt="Logo" style={imageStyle} />
+      </div> */}
+      {/* <h1>Stratego</h1>
+      <div className="card">
+        <button onClick={() => setCount(count+1)}>
+          count is {count}
+          <p>{data}</p>
+        </button>
+      </div> */}
+
+
+
+//   const [data, setData] = useState<string>('');
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         // Make a GET request to the backend API using await fetch
+//         const response = await fetch('/stratego/api/start');
+
+//         if (!response.ok) {
+//           throw new Error('Network response was not ok');
 //         }
-//     }
 
-//     return (
-//         <div className="`relative h-full w-screen bg-cover bg-center bg-no-repeat p-12 text-center bg-mancala">
-//             <div className="absolute2 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed bg-black/60">
-//                 <div className="flex h-full items-center justify-center">
-//                     <div className="text-white">
-//                         <h2 className="mb-4 text-4xl font-semibold">Welcome to Mancala</h2>
-//                         <h4 className="mb-6 text-xl font-semibold">Enter the players name to start</h4>
+//         const responseData = await response.json();
+//         setData(responseData); // Set the response data to the state
+//       } catch (error) {
+//         console.error('Error:', error);
+//       }
+//     };
 
-//                         {alert && <Alert text={alert} onClick={() => setAlert(null)} />}
-//                         <form>
-//                             <ol>
-//                                 <li className="mt-4">
-//                                     <FloatingInput
-//                                         id="player1"
-//                                         label="Name of player 1"
-//                                         value={player1}
-//                                         onChange={e => setPlayer1(e.target.value)}
-//                                         hasError={player1 !== "" && player2 !== "" && player1 === player2}
-//                                     />
-//                                 </li>
-//                                 <li className="mt-4">
-//                                     <FloatingInput
-//                                         id="player2"
-//                                         label="Name of player 2"
-//                                         value={player2}
-//                                         onChange={e => setPlayer2(e.target.value)}
-//                                         hasError={player1 !== "" && player2 !== "" && player1 === player2}
-//                                     />
-//                                 </li>
-//                                 <li>
-//                                     {player1 && player2 && player1 === player2 && <p className="mt-2 text-sm text-red-400">
-//                                         <span className="font-medium">Names must be unique</span>
-//                                     </p>}
-//                                 </li>
-//                                 <li className="mt-4">
-//                                     <button
-//                                         type="button"
-//                                         className={classNames(
-//                                             "rounded border-2",
-//                                             "border-neutral-50",
-//                                             "px-7",
-//                                             "pb-[8px]",
-//                                             "pt-[10px]",
-//                                             "text-sm",
-//                                             "font-medium",
-//                                             "uppercase",
-//                                             "leading-normal",
-//                                             "text-neutral-50",
-//                                             "transition duration-150",
-//                                             "ease-in-out",
-//                                             "hover:border-neutral-100",
-//                                             "hover:text-neutral-100",
-//                                             "focus:border-neutral-100",
-//                                             "focus:text-neutral-100",
-//                                             "focus:outline-none",
-//                                             "focus:ring-0",
-//                                             "active:border-neutral-200",
-//                                             "active:text-neutral-200",
-//                                             "hover:bg-neutral-100",
-//                                             "hover:bg-opacity-10",
-//                                             { "cursor-not-allowed opacity-30": !valid }
-//                                         )}
-//                                         data-te-ripple-init
-//                                         data-te-ripple-color="light"
-//                                         disabled={!valid}
-//                                         onClick={() => onSubmit()}
-//                                     >
-//                                         Play
-//                                     </button>
-//                                 </li>
-//                             </ol>
-//                         </form>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
+//     fetchData();
+//   }, []);
+
+//   return (
+//     <>
+//       <div>
+//         <a href="https://vitejs.dev" target="_blank">
+//           <img src={viteLogo} className="logo" alt="Vite logo" />
+//         </a>
+//         <a href="https://react.dev" target="_blank">
+//           <img src={reactLogo} className="logo react" alt="React logo" />
+//         </a>
+//       </div>
+//       <h1>Vite + React</h1>
+//       <div className="card">
+//         <button onClick={{data} => <p>{data}</p>}>
+//         count is
+//         </button>
+//         <p>
+//           Edit <code>src/App.tsx</code> and save to test HMR
+//         </p>
+//       </div>
+//       <p className="read-the-docs">
+//         Click on the Vite and React logos to learn more
+//       </p>
+//     </>
+//   )
+
+// }
+
+// export default App;
