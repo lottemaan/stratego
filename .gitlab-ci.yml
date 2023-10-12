@@ -1,0 +1,35 @@
+image: gradle:latest
+
+variables:
+  BUILD_NUMBER: $CI_PIPELINE_IID
+  BRANCH_NAME: $CI_COMMIT_REF_NAME
+  COMMIT_HASH: $CI_COMMIT_SHA
+  
+stages:
+    - build
+    - test
+    - deploy
+
+build-job:
+    stage: build 
+    script:
+        - echo "This is the build stage"
+        - gradle build jacocoTestCoverageVerification
+        - chmod +x generate_version.sh
+        - ./generate_version.sh
+
+test-job:
+    stage: test
+    script:
+        - echo "This is the test stage"
+        - echo "Build Gradle.."
+        - gradle build 
+        - echo "Test report.."
+        - gradle jacocoTestReport
+        - cat domain/build/jacocoHtml/index.html
+    coverage: /Total.*?([0-9]{1,3})%/
+
+deploy-job:
+    stage: deploy
+    script:
+        - echo "This is the deploy stage"
