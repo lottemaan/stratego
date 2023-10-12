@@ -6,26 +6,26 @@ type ContextType = {
     setGameState: (gameState: GameState) => void;
 }
 
-const MancalaGameContext = createContext<ContextType>({
+const StrategoGameContext = createContext<ContextType>({
     gameState: undefined,
     setGameState() { },
 });
 
 type Props = React.PropsWithChildren;
 
-export const MancalaGameProvider = (props: Props) => {
+export const StrategoGameProvider = (props: Props) => {
     const { children } = props;
 
     const [gameState, setGameState] = useState<GameState | undefined>(undefined);
 
-    return <MancalaGameContext.Provider value={{
+    return <StrategoGameContext.Provider value={{
         gameState: gameState,
         setGameState: setGameState
-    }}>{children}</MancalaGameContext.Provider>
+    }}>{children}</StrategoGameContext.Provider>
 }
 
 export const useMancalaGame = () => {
-    const context = useContext(MancalaGameContext);
+    const context = useContext(StrategoGameContext);
 
     if (context === undefined) {
         throw new Error('useMancalaGame must be used within a MancalaGameProvider');

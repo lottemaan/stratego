@@ -3,12 +3,13 @@ import React from 'react';
 import { useMancalaGame } from "../contexts/StrategoGameContext";
 import { startGame } from '../services/api';
 import { isGameState } from '../types';
+import { Alert } from "../components/Alert";
 
 
 export const Start = () => {
     const { setGameState } = useMancalaGame();
 
-
+    const [alert, setAlert] = useState<string | null>(null);
     const [input1, setInput1] = useState('');
     const [input2, setInput2] = useState('');
 
@@ -29,6 +30,8 @@ export const Start = () => {
 
         if (isGameState(result)) {
             setGameState(result);
+        } else {
+            setAlert(`${result.statusCode} ${result.statusText}`);
         }
     }
 

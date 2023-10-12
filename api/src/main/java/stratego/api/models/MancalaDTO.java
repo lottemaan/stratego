@@ -4,9 +4,31 @@ import stratego.domain.StrategoGame;
 
 public class MancalaDTO {
 
-    public String name;
+    private GameStatusDTO gameStatus;
+    private PlayerDTO[] players;
 
-    public MancalaDTO(StrategoGame stratego) {
-        this.name = stratego.getNameOfPlayerOne();
+    public MancalaDTO(StrategoGame StrategoGame) {
+        players = new PlayerDTO[2];
+        
+        players[0] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerOne());
+        players[1] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerTwo());
+
+        gameStatus = new GameStatusDTO(StrategoGame);
+    }
+
+    public PlayerDTO[] getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(PlayerDTO[] players) {
+        this.players = players;
+    }
+
+    public GameStatusDTO getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(GameStatusDTO gameStatus) {
+        this.gameStatus = gameStatus;
     }
 }
