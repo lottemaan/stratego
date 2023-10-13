@@ -16,7 +16,7 @@ public class FirstTest {
 
     @Test
     public void TestIfStrategogameCanBeCreated() {
-        StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        StrategoGame strategoGame = new StrategoGame( "Jantje", "Jip");
         assertNotNull(strategoGame);
     }
 
@@ -41,15 +41,15 @@ public class FirstTest {
 
 
     @Test
-    public void TestIfStukCanBeCreated() {
-        Stuk stuk = new Stuk();
-        assertNotNull(stuk);
+    public void TestIfPieceCanBeCreated() {
+        Piece piece = new Piece();
+        assertNotNull(piece);
     }
 
     @Test
-    public void TestIfVakCanBeCreated() {
-    Vak vak = new Vak();
-    assertNotNull(vak);
+    public void TestIfSquareCanBeCreated() {
+    Square square = new Square();
+    assertNotNull(square);
     }
 
 
