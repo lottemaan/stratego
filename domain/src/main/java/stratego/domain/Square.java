@@ -12,12 +12,12 @@ public class Square {
         return this.yCoordinate;
     }
 
-    protected int setXCoordinate(int xCoordinate) {
-        return this.xCoordinate = xCoordinate;
+    protected void setXCoordinate(int xCoordinate) {
+        this.xCoordinate = xCoordinate;
     }
 
-    protected int setYCoordinate(int yCoordinate) {
-        return this.yCoordinate = yCoordinate;
+    protected void setYCoordinate(int yCoordinate) {
+        this.yCoordinate = yCoordinate;
     }
 
 }
