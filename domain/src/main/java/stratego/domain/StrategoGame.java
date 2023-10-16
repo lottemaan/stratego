@@ -20,7 +20,11 @@ public class StrategoGame {
     }
     public boolean isEndOfGame() {
         return false;
-    }   
+    }
+    
+    public Square getSquare(int xCoordinate, int yCoordinate){
+        return this.board.getSquare(xCoordinate, yCoordinate);
+    }
 
     public int getXCoordinateFromSquare(int xCoordinate, int yCoordinate){
         return this.board.getSquare(xCoordinate, yCoordinate).getXCoordinate();

@@ -3,6 +3,7 @@ package stratego.domain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -50,11 +51,29 @@ public class BoardAndSquaresTest {
     }
 
     @Test
-    public void aSquareShouldBeAbleToReturnAPieceWithNameScout() {
+    public void aSquareShouldBeAbleToReturnAPieceWithNameMarshal() {
         Board board = new Board();
         Square squareWithCoordinates10by10 = board.getSquare(10, 10);
-        assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "scout");
+        assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "marshal");
     }
+
+    @Test
+    public void aSquareShouldBeAbleToReturnNoPiece() {
+        Board board = new Board();
+        Square squareWithCoordinates5by5 = board.getSquare(5, 5);
+        assertNull(squareWithCoordinates5by5.getPieceFromSquare());
+    }
+
+    @Test
+    public void aSquareShouldBeAbleToUpdateASquareWithPieceNameMarshal() {
+        Board board = new Board();
+        Square squareWithCoordinates5by5 = board.getSquare(5, 5);
+        squareWithCoordinates5by5.updatePiece(new Piece("marshal"));
+        assertEquals(squareWithCoordinates5by5.getPieceFromSquare().getName(), "marshal");
+    }
+
+
+
 
 
     

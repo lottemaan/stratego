@@ -7,7 +7,7 @@ export const Play = () => {
     const { gameState, setGameState } = useMancalaGame();
 
     const imageMapping: Record<string, string> = {
-        "scoutThatHasTurn": "/tower.png",
+        "marshalThatHasTurn": "/tower.png",
         "noPiece": "/grass.png"
     };
 

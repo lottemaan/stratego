@@ -6,15 +6,11 @@ public class Board {
     private Square[][] squares;
 
     public Board() {
-        squares = new Square[10][10];
+        this.squares = new Square[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                squares[i][j] = new Square(); 
-                squares[i][j].setXCoordinate(i + 1); //because you want to start at coordinate 1,1
-                squares[i][j].setYCoordinate(j + 1);
-                if ((i < 2 && j < 10) || (i > 7 && j < 10)) {
-                    squares[i][j].updatePieceFromSquare(new Piece("scout"));}
-            }
+                this.squares[i][j] = new Square(i + 1, j + 1); //because you want to start at coordinate 1,1
+            } 
         }
     }
 

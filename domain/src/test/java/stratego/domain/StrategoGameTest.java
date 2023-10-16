@@ -2,17 +2,17 @@ package stratego.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class FirstTest {
+public class StrategoGameTest {
 
     @Test
     public void ThisTestShouldPass() {
         boolean passingTest = true;
         assertEquals(true, passingTest); 
     }
-
 
     @Test
     public void TestIfStrategogameCanBeCreated() {
@@ -39,18 +39,16 @@ public class FirstTest {
         assertEquals(isEndOfGame, false);
     }
 
-
     @Test
-    public void TestIfPieceCanBeCreated() {
-        Piece piece = new Piece("scout");
-        assertNotNull(piece);
+    public void TestIfNameFromPiece1by1IsMarshal() {
+        StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(strategoGame.getNameFromPiece(1, 1), "marshal");
     }
 
     @Test
-    public void TestIfSquareCanBeCreated() {
-    Square square = new Square();
-    assertNotNull(square);
+    public void TestIfNameFromPiece5by5ReturnsNull() {
+        StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        assertNull(strategoGame.getNameFromPiece(5,5));
     }
-
 
 }
