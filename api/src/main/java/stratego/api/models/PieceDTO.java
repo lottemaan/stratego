@@ -1,9 +1,9 @@
-package stratego.domain;
+package stratego.api.models;
 
-public class Piece {
+public class PieceDTO {
     private String name;
 
-    public Piece(String name){
+    public PieceDTO(String name){
         this.name = name; 
     }
 
@@ -15,3 +15,5 @@ public class Piece {
         this.name = name;
     }
 }
+
+

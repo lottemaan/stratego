@@ -29,5 +29,16 @@ public class StrategoGame {
     public int getYCoordinateFromSquare(int xCoordinate, int yCoordinate){
         return this.board.getSquare(xCoordinate, yCoordinate).getYCoordinate();
     }
+
+    public Piece getPieceFromSquare(int xCoordinate, int yCoordinate){
+        return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare();
+    }
+
+    public String getNameFromPiece(int xCoordinate, int yCoordinate){
+        Piece piece = getPieceFromSquare(xCoordinate, yCoordinate);
+        if (piece != null) {
+            return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getName();
+        } else {return null;}
+    }
     
 }

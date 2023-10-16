@@ -49,6 +49,14 @@ public class BoardAndSquaresTest {
         assertEquals(squareWithCoordinates10by10.getYCoordinate(), 10);
     }
 
+    @Test
+    public void aSquareShouldBeAbleToReturnAPieceWithNameScout() {
+        Board board = new Board();
+        Square squareWithCoordinates10by10 = board.getSquare(10, 10);
+        assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "scout");
+    }
+
+
     
 
 

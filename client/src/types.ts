@@ -15,6 +15,11 @@ export type Board = {
 export type Square = {
     xCoordinate: number;
     yCoordinate: number;
+    piece: Piece;
+}
+
+export type Piece = {
+    name: string;
 }
 
 export type Player = {

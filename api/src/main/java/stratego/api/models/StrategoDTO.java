@@ -2,13 +2,13 @@ package stratego.api.models;
 
 import stratego.domain.StrategoGame;
 
-public class MancalaDTO {
+public class StrategoDTO {
 
     private GameStatusDTO gameStatus;
     private PlayerDTO[] players;
     private BoardDTO board;
 
-    public MancalaDTO(StrategoGame StrategoGame) {
+    public StrategoDTO(StrategoGame StrategoGame) {
         players = new PlayerDTO[2];
         board = new BoardDTO(StrategoGame);
         players[0] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerOne());

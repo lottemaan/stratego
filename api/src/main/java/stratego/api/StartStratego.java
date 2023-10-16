@@ -3,7 +3,7 @@ package stratego.api;
 import jakarta.servlet.http.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
-import stratego.api.models.MancalaDTO;
+import stratego.api.models.StrategoDTO;
 import stratego.api.models.PlayerInputDTO;
 import stratego.domain.StrategoGame;
 
@@ -25,7 +25,7 @@ public class StartStratego {
         // Attach game to session.
         session.setAttribute("stratego", stratego);
 
-        var output = new MancalaDTO(stratego);
+        var output = new StrategoDTO(stratego);
 
 
         return Response.status(200).entity(output).build();

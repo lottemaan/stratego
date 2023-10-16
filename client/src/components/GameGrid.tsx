@@ -1,41 +1,50 @@
-// src/GameGrid.tsx
+// GameGrid.tsx
 import React from 'react';
+import { GameState } from '../types';
+
 
 interface GameGridProps {
-  board: string[][];
-  imageMapping: { [key: string]: string };
+  gameState?: GameState; // Define the GameState type
+  imageMapping: Record<string, string>;
 }
 
-const cellStyle: React.CSSProperties = {
-  width: '100px', // Adjust to your desired square size
-  height: '100px', // Adjust to your desired square size
-  border: '2px solid #ccc', // Thicker borders
-  textAlign: 'center',
-};
+const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping }) => {
+  // Assuming you have gameState and imageMapping available
+  const gridRows = gameState?.board.squares;
 
-const GameGrid: React.FC<GameGridProps> = ({ board, imageMapping }) => {
-  return (
-    <table className="game-grid">
-      <tbody>
-        {board.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {row.map((cellValue, cellIndex) => (
-              <td key={cellIndex} style={cellStyle}>
-                <img
-                  src={imageMapping[cellValue]}
-                  alt={`Square ${rowIndex}-${cellIndex}`}
-                  width="100%"
-                  height="100%"
-                />
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
+  // Check if gridRows is defined before rendering the grid
+  if (gridRows) {
+    const gridImages = gridRows.map((row, rowIndex) => (
+      <tr key={rowIndex}>
+        {row.map((cell, colIndex) => {
+          const pieceName = cell.piece.name;
+          // const hasTurn = cell.piece.player.HasTurn;
+          let imageUrl;
+
+          if (pieceName === "scout") {
+            imageUrl = imageMapping["scoutThatHasTurn"];
+          } else if (pieceName == null) {
+            imageUrl = imageMapping["noPiece"];
+          }
+
+          return (
+            <td key={colIndex}>
+              <img src={imageUrl} alt={`Square ${rowIndex}-${colIndex}`} />
+            </td>
+          );
+        })}
+      </tr>
+    ));
+
+    return (
+      <table>
+        <tbody>{gridImages}</tbody>
+      </table>
+    );
+  } else {
+    // Handle the case where gridRows is undefined (e.g., display a loading message)
+    return <div>Gamestate does not exist...</div>;
+  }
+}
 
 export default GameGrid;
-
-

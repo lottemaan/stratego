@@ -4,7 +4,7 @@ package stratego.api;
 import jakarta.servlet.http.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
-import stratego.api.models.MancalaDTO;
+import stratego.api.models.StrategoDTO;
 import stratego.api.models.ZetDTO;
 import stratego.domain.StrategoGame;
 
@@ -22,7 +22,7 @@ public class PlayStratego {
 
 
         // Use the game to create a DTO.
-        MancalaDTO output = new MancalaDTO(StrategoGame);
+        StrategoDTO output = new StrategoDTO(StrategoGame);
 
         // Send DTO back in response.
         return Response.status(200).entity(output).build();

@@ -12,8 +12,14 @@ public class Board {
                 squares[i][j] = new Square(); 
                 squares[i][j].setXCoordinate(i + 1); //because you want to start at coordinate 1,1
                 squares[i][j].setYCoordinate(j + 1);
+                if ((i < 2 && j < 10) || (i > 7 && j < 10)) {
+                    squares[i][j].updatePieceFromSquare(new Piece("scout"));}
             }
         }
+    }
+
+    public Square getSquare(int xCoordinate, int yCoordinate) {
+        return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
     }
 
     public Square[] getRows() {
@@ -22,10 +28,6 @@ public class Board {
 
     public Square[] getColumns() {
         return this.squares[1];
-    }
-
-    public Square getSquare(int xCoordinate, int yCoordinate) {
-        return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
     }
 
 }

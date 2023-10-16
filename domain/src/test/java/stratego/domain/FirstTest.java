@@ -42,7 +42,7 @@ public class FirstTest {
 
     @Test
     public void TestIfPieceCanBeCreated() {
-        Piece piece = new Piece();
+        Piece piece = new Piece("scout");
         assertNotNull(piece);
     }
 
