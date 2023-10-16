@@ -1,9 +1,25 @@
 export type GameState = {
+    board: Board;
     players: [Player, Player];
     gameStatus: {
         endOfGame: boolean;
         winner: string;
     };
+}
+
+export type Board = {
+    squares: Square[][];
+}
+
+
+export type Square = {
+    xCoordinate: number;
+    yCoordinate: number;
+    piece: Piece;
+}
+
+export type Piece = {
+    name: string;
 }
 
 export type Player = {
