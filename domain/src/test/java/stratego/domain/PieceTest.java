@@ -11,4 +11,11 @@ public class PieceTest {
         Piece piece = new Piece("marshal");
         assertEquals(piece.getName(), "marshal");
     }
+
+    @Test
+    public void TestIfAPieceItsNameCanBeSetToScout() {
+        Piece piece = new Piece("marshal");
+        piece.setName("scout");
+        assertEquals(piece.getName(), "scout");
+    }
 }
