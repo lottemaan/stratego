@@ -3,6 +3,7 @@ package stratego.domain;
 abstract class Piece {
     protected String name;
     protected boolean active = true;
+    protected int rank;
 
     public String getName() {
         return this.name;
@@ -23,10 +24,29 @@ abstract class Piece {
     public void win() {
         this.active = true;
     }
+
+    public int getRank() {
+        return this.rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public void beAttacked(Piece attackingPiece) {
+        if (this.getRank() < attackingPiece.getRank()) {
+            this.win();
+        } else {this.fall();}
+    }
 }
 
 abstract class DynamicPiece extends Piece {
 
+    public void attack(Piece pieceToBeAttacked){
+        if(this.getRank() < pieceToBeAttacked.getRank() || pieceToBeAttacked instanceof StaticPiece) {
+	        this.win();
+        } else {this.fall();}
+    }
 }
 
 abstract class StaticPiece extends Piece {
@@ -37,6 +57,7 @@ class Marshal extends DynamicPiece {
 
     public Marshal() {
         this.name = "marshal";
+        this.rank = 1;
     }
 }
 
@@ -55,5 +76,10 @@ class Flag extends StaticPiece {
 
     public void beCaptured() {
         this.captured = true;
+        this.active = false;
+    }
+
+    public void beAttacked() {
+        this.beCaptured();
     }
 }
