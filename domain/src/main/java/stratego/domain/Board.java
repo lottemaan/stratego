@@ -1,7 +1,5 @@
 package stratego.domain;
 
-//test
-
 public class Board {
     private Square[][] squares;
 

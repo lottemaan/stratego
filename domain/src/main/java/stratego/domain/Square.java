@@ -11,7 +11,7 @@ public class Square {
         
         if ((xCoordinate == 1 && yCoordinate == 1) || (xCoordinate == 10 && yCoordinate == 10)) {
             this.piece = new Flag();
-        } else if ((xCoordinate > 4 && xCoordinate < 7)) {
+        } else if ((yCoordinate > 4 && yCoordinate < 7)) {
             this.piece = null;
         } else {this.piece = new Marshal();}
     }
@@ -37,5 +37,6 @@ public class Square {
     public void deletePiece() {
         this.piece = null;
     }
+
 
 }

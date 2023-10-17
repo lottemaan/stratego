@@ -1,42 +1,49 @@
-// GameGrid.tsx
 import React from 'react';
 import { GameState } from '../types';
 
-
 interface GameGridProps {
-  gameState?: GameState; // Define the GameState type
+  gameState?: GameState;
   imageMapping: Record<string, string>;
 }
 
 const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping }) => {
-  // Assuming you have gameState and imageMapping available
   const gridRows = gameState?.board.squares;
 
-  // Check if gridRows is defined before rendering the grid
   if (gridRows) {
-    const gridImages = gridRows.map((row, rowIndex) => (
-      <tr key={rowIndex}>
-        {row.map((cell, colIndex) => {
-          const pieceName = cell.piece.name;
-          // const hasTurn = cell.piece.player.HasTurn;
-          let imageUrl;
+    const numRows = gridRows.length;
+    const numCols = gridRows[0].length; // Assuming all rows have the same number of columns
 
-          if (pieceName === "marshal") {
-            imageUrl = imageMapping["marshalThatHasTurn"];
-          } else if (pieceName == null) {
-            imageUrl = imageMapping["noPiece"];
-          } else if (pieceName == "flag") {
-            imageUrl = imageMapping["flagThatHasTurn"];
-          }
+    const gridImages = [];
 
-          return (
-            <td key={colIndex}>
-              <img src={imageUrl} alt={`Square ${rowIndex}-${colIndex}`} />
-            </td>
-          );
-        })}
-      </tr>
-    ));
+    for (let x = 0; x < numCols; x++) {
+      const colImages = [];
+
+      for (let y = 0; y < numRows; y++) {
+        const cell = gridRows[y][x]; // Swap the indices
+        const pieceName = cell.piece.name;
+        let imageUrl;
+
+        if (pieceName === "marshal") {
+          imageUrl = imageMapping["marshalThatHasTurn"];
+        } else if (pieceName == null) {
+          imageUrl = imageMapping["noPiece"];
+        } else if (pieceName === "flag") {
+          imageUrl = imageMapping["flagThatHasTurn"];
+        }
+
+        colImages.push(
+          <td key={y}>
+            <img src={imageUrl} alt={`Square ${x}-${y}`} />
+          </td>
+        );
+      }
+
+      gridImages.push(
+        <tr key={x}>
+          {colImages}
+        </tr>
+      );
+    }
 
     return (
       <table>
@@ -44,7 +51,6 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping }) => {
       </table>
     );
   } else {
-    // Handle the case where gridRows is undefined (e.g., display a loading message)
     return <div>Gamestate does not exist...</div>;
   }
 }

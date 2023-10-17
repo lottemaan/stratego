@@ -69,13 +69,13 @@ public class StrategoGameTest {
     @Test
     public void TestIfMarshalCanDo1Step() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
-        Square fromSquare = strategoGame.getSquare(4, 1);
-        Square toSquare = strategoGame.getSquare(5,1);
+        Square fromSquare = strategoGame.getSquare(1, 4);
+        Square toSquare = strategoGame.getSquare(1,5);
 
         assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
         assertNull(toSquare.getPieceFromSquare());
 
-        strategoGame.doMove(4,1,5,1); 
+        strategoGame.doMove(1,4,1,5); 
         
         assertNull(fromSquare.getPieceFromSquare());
         assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");

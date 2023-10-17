@@ -20,7 +20,7 @@ public class PlayStratego {
         // Retrieve game.
         StrategoGame StrategoGame = (StrategoGame)session.getAttribute("stratego");
 
-        StrategoGame.doMove(4,1,5,1);
+        StrategoGame.doMove(10,4,10,5);
 
         // Use the game to create a DTO.
         StrategoDTO output = new StrategoDTO(StrategoGame);

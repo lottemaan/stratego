@@ -98,6 +98,31 @@ public class BoardAndSquaresTest {
         assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
     }
 
+    @Test
+    public void AnotherTestToCheckWhatPieceIsOnSquare1by1() {
+        Board board = new Board();
+        Square square1By1 = board.getSquare(1, 1);
+        assertEquals("flag", square1By1.getPieceFromSquare().getName());
+    }
+
+    @Test
+    public void AnotherTestToCheckWhatPieceIsOnSquare5by1() {
+        Board board = new Board();
+        Square square5By1 = board.getSquare(5, 1);
+        assertEquals("marshal", square5By1.getPieceFromSquare().getName());
+    }
+
+    @Test
+    public void AnotherTestToCheckWhatPieceIsOnSquare1by5() {
+        Board board = new Board();
+        Square square1By5 = board.getSquare(1, 5);
+        assertNull(square1By5.getPieceFromSquare());
+    }
+
+
+
+
+
 
 
 
