@@ -12,7 +12,7 @@ export const Play = () => {
         "flagThatHasTurn": "/flag.png"
     };
 
-    async function playGame(xCoordinaatVanVak: number, yCoordinaatVanVak: number, xCoordinaatNaarVak: number, yCoordinaatNaarVak: number) {
+    async function playGame() {
         const response = await fetch("stratego/api/play", {
             method: "POST",
             headers: {
@@ -20,10 +20,7 @@ export const Play = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                xCoordinaatVanVak: xCoordinaatVanVak,
-                yCoordinaatVanVak: yCoordinaatVanVak,
-                xCoordinaatNaarVak: xCoordinaatNaarVak,
-                yCoordinaatNaarVak: yCoordinaatNaarVak
+
             }),
         });
 
@@ -64,7 +61,7 @@ export const Play = () => {
 
         <button
             type="button"
-            onClick={() => playGame(3, 2, 4, 5)}
+            onClick={() => playGame()}
         >
             Play
         </button></>

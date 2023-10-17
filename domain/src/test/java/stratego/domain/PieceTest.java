@@ -61,4 +61,5 @@ public class PieceTest {
         flag.beCaptured();
         assertEquals(flag.isCaptured(), true);
     }
+
 }

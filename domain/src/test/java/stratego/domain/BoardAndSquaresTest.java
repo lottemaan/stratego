@@ -79,6 +79,25 @@ public class BoardAndSquaresTest {
         assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "flag");
     }
 
+    @Test
+    public void TestIfMarshalCanDo1Step() {
+        Board board = new Board();
+        
+        Square fromSquare = board.getSquare(1,4);
+        Square toSquare = board.getSquare(1,5);
+
+        fromSquare.deletePiece();
+        toSquare.deletePiece();
+        fromSquare.updatePiece(new Marshal());
+
+        assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
+        assertNull(toSquare.getPieceFromSquare());
+        
+        board.doMove(fromSquare, toSquare);
+        assertNull(fromSquare.getPieceFromSquare());
+        assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
+    }
+
 
 
 

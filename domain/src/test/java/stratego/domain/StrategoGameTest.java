@@ -66,4 +66,19 @@ public class StrategoGameTest {
         assertEquals(strategoGame.getYCoordinateFromSquare(3,3), 3);
     }
 
+    @Test
+    public void TestIfMarshalCanDo1Step() {
+        StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        Square fromSquare = strategoGame.getSquare(4, 1);
+        Square toSquare = strategoGame.getSquare(5,1);
+
+        assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
+        assertNull(toSquare.getPieceFromSquare());
+
+        strategoGame.doMove(4,1,5,1); 
+        
+        assertNull(fromSquare.getPieceFromSquare());
+        assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
+    }
+
 }
