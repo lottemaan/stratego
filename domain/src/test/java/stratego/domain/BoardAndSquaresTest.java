@@ -53,8 +53,8 @@ public class BoardAndSquaresTest {
     @Test
     public void aSquareShouldBeAbleToReturnAPieceWithNameMarshal() {
         Board board = new Board();
-        Square squareWithCoordinates10by10 = board.getSquare(10, 10);
-        assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "marshal");
+        Square squareWithCoordinates9by9 = board.getSquare(9, 9);
+        assertEquals(squareWithCoordinates9by9.getPieceFromSquare().getName(), "marshal");
     }
 
     @Test
@@ -68,8 +68,15 @@ public class BoardAndSquaresTest {
     public void aSquareShouldBeAbleToUpdateASquareWithPieceNameMarshal() {
         Board board = new Board();
         Square squareWithCoordinates5by5 = board.getSquare(5, 5);
-        squareWithCoordinates5by5.updatePiece(new Piece("marshal"));
+        squareWithCoordinates5by5.updatePiece(new Marshal());
         assertEquals(squareWithCoordinates5by5.getPieceFromSquare().getName(), "marshal");
+    }
+
+    @Test
+    public void aSquareShouldBeAbleToReturnAPieceWithNameFlag() {
+        Board board = new Board();
+        Square squareWithCoordinates10by10 = board.getSquare(10, 10);
+        assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "flag");
     }
 
 

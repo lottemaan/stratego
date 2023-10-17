@@ -25,6 +25,8 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping }) => {
             imageUrl = imageMapping["marshalThatHasTurn"];
           } else if (pieceName == null) {
             imageUrl = imageMapping["noPiece"];
+          } else if (pieceName == "flag") {
+            imageUrl = imageMapping["flagThatHasTurn"];
           }
 
           return (
