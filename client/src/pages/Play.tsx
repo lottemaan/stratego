@@ -8,7 +8,8 @@ export const Play = () => {
 
     const imageMapping: Record<string, string> = {
         "marshalThatHasTurn": "/tower.png",
-        "noPiece": "/grass.png"
+        "noPiece": "/grass.png",
+        "flagThatHasTurn": "/flag.png"
     };
 
     async function playGame(xCoordinaatVanVak: number, yCoordinaatVanVak: number, xCoordinaatNaarVak: number, yCoordinaatNaarVak: number) {

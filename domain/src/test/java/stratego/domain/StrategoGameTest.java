@@ -43,7 +43,7 @@ public class StrategoGameTest {
     @Test
     public void TestIfNameFromPiece1by1IsMarshal() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
-        assertEquals(strategoGame.getNameFromPiece(1, 1), "marshal");
+        assertEquals(strategoGame.getNameFromPiece(9, 9), "marshal");
     }
 
     @Test
