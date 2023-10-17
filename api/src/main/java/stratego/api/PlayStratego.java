@@ -4,8 +4,8 @@ package stratego.api;
 import jakarta.servlet.http.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import stratego.api.models.MoveDTO;
 import stratego.api.models.StrategoDTO;
-import stratego.api.models.ZetDTO;
 import stratego.domain.StrategoGame;
 
 @Path("/play")
@@ -13,14 +13,19 @@ public class PlayStratego {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response play(@Context HttpServletRequest request, ZetDTO zet) {
+    public Response play(@Context HttpServletRequest request, MoveDTO doMove) {
         // Retrieve HTTP session.
         HttpSession session = request.getSession(false);       
     
         // Retrieve game.
         StrategoGame StrategoGame = (StrategoGame)session.getAttribute("stratego");
 
-        StrategoGame.doMove(10,4,10,5);
+        int xFromSquare = doMove.getxFromSquare();
+        int yFromSquare = doMove.getyFromSquare();
+        int xToSquare = doMove.getxToSquare();
+        int yToSquare = doMove.getyToSquare();
+
+        StrategoGame.doMove(xFromSquare, yFromSquare, xToSquare, yToSquare);
 
         // Use the game to create a DTO.
         StrategoDTO output = new StrategoDTO(StrategoGame);

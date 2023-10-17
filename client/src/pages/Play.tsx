@@ -6,13 +6,16 @@ import GameGrid from '../components/GameGrid';
 export const Play = () => {
     const { gameState, setGameState } = useMancalaGame();
 
+
+
+
     const imageMapping: Record<string, string> = {
         "marshalThatHasTurn": "/tower.png",
         "noPiece": "/grass.png",
         "flagThatHasTurn": "/flag.png"
     };
 
-    async function playGame() {
+    async function playGame(xFromSquare: number, yFromSquare: number, xToSquare: number, yToSquare: number) {
         const response = await fetch("stratego/api/play", {
             method: "POST",
             headers: {
@@ -20,7 +23,10 @@ export const Play = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-
+                xFromSquare: xFromSquare,
+                yFromSquare: yFromSquare,
+                xToSquare: xToSquare,
+                yToSquare: yToSquare
             }),
         });
 
@@ -55,13 +61,13 @@ export const Play = () => {
         <div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
 
             <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto' }}>
-                <GameGrid gameState={gameState} imageMapping={imageMapping} />
+            <GameGrid gameState={gameState} imageMapping={imageMapping} onImageClick={(x1, y1, x2, y2) => playGame(x1+1, y1+1, x2+1, y2+1)} />
             </div>
         </div>
 
         <button
             type="button"
-            onClick={() => playGame()}
+            // onClick={() => playGame()}
         >
             Play
         </button></>
