@@ -1,6 +1,6 @@
 package stratego.domain;
 public class StrategoGame {
-    public Board board;
+    private Board board;
     public String playerOne;
     public String playerTwo;
 
@@ -18,6 +18,11 @@ public class StrategoGame {
     public String getNameOfPlayerTwo(){
         return this.playerTwo;
     }
+
+    public Board getBoard() {
+        return this.board;
+    }
+
     public boolean isEndOfGame() {
         return false;
     }

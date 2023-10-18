@@ -8,15 +8,8 @@ public class Square {
     public Square(int xCoordinate, int yCoordinate) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-        
-        if ((xCoordinate == 1 && yCoordinate == 1) || (xCoordinate == 10 && yCoordinate == 10)) {
-            this.piece = new Flag();
-        } else if ((yCoordinate > 4 && yCoordinate < 7)) {
-            this.piece = null;
-        } else {this.piece = new Marshal();}
     }
     
-
     public int getXCoordinate() {
         return this.xCoordinate;
     }

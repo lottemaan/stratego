@@ -1,7 +1,8 @@
 package stratego.domain;
+import java.util.Random;
 
 public class Board {
-    private Square[][] squares;
+    Square[][] squares;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -10,8 +11,44 @@ public class Board {
                 this.squares[i][j] = new Square(i + 1, j + 1); //because you want to start at coordinate 1,1
             } 
         }
+        this.initializeRandomly();
     }
 
+    public void initializeRandomly() {
+        Random random = new Random();
+        int choice = random.nextInt(2);
+
+        if (choice == 0) {
+            initializeScript1();
+        } else {
+            initializeScript2();
+        }
+    }
+
+    private void initializeScript1() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if ((i == 1 && j == 3) || (i == 7 && j == 7)) {
+                    this.squares[i][j].updatePiece(new Flag()); 
+                } else if (j > 3 && j < 6) {
+                    this.squares[i][j].updatePiece(null);
+                } else {this.squares[i][j].updatePiece(new Marshal());}
+            } 
+        }
+    }
+
+    private void initializeScript2() {
+         for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if ((i == 2 && j == 2) || (i == 8 && j == 8)) {
+                    this.squares[i][j].updatePiece(new Flag()); 
+                } else if (j > 3 && j < 6) {
+                    this.squares[i][j].updatePiece(null);
+                } else {this.squares[i][j].updatePiece(new Marshal());}
+            } 
+        }
+    }
+        
     public Square getSquare(int xCoordinate, int yCoordinate) {
         return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
     }
