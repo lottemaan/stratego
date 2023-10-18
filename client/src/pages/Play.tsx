@@ -53,10 +53,10 @@ export const Play = () => {
 
     return <>
 
-        <div>
+        {/* <div>
             Player 1: {gameState?.players[0].name} Player 2: {gameState?.players[1].name}
 
-        </div>
+        </div> */}
 
         <div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
 

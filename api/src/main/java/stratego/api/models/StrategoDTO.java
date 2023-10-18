@@ -11,8 +11,8 @@ public class StrategoDTO {
     public StrategoDTO(StrategoGame StrategoGame) {
         players = new PlayerDTO[2];
         board = new BoardDTO(StrategoGame);
-        players[0] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerOne());
-        players[1] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerTwo());
+        // players[0] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerOne());
+        // players[1] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerTwo());
         
         gameStatus = new GameStatusDTO(StrategoGame);
 

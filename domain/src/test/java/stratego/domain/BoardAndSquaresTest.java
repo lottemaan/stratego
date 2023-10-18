@@ -22,6 +22,18 @@ public class BoardAndSquaresTest {
         }
     }
 
+    private void assignPlayersToPieces(Board board) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (j < 4) {
+                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player.getOpponent());
+                } if (j > 5) {
+                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player);
+                }
+            }
+        }
+    }
+
     @Test
     public void aBoardThatIsCreatedShouldNotBeNull() {
         Board board = new Board();
@@ -105,13 +117,10 @@ public class BoardAndSquaresTest {
     public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         Board board = new Board();
         initializeForTesting(board);
+        assignPlayersToPieces(board);
         
-        Square fromSquare = board.getSquare(1,4);
-        Square toSquare = board.getSquare(1,5);
-
-        fromSquare.deletePiece();
-        toSquare.deletePiece();
-        fromSquare.updatePiece(new Marshal());
+        Square fromSquare = board.getSquare(1,7);
+        Square toSquare = board.getSquare(1,6);
 
         assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
         assertNull(toSquare.getPieceFromSquare());
@@ -160,6 +169,7 @@ public class BoardAndSquaresTest {
     public void TestIfMarshalWinsAfterCapturingTheFlag() {
         Board board = new Board();
         initializeForTesting(board);
+        
         Marshal marshal1 = new Marshal();
         Flag flag1 = new Flag();
         board.meet(marshal1, flag1);
@@ -171,19 +181,31 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfBoardIsClearedAferFall() throws InvalidMoveException {
         Board board = new Board();
+        Player player = new Player();
         initializeForTesting(board);
-        board.doMove(board.getSquare(1,4),board.getSquare(2,4));
-        assertNull(board.getSquare(1,4).getPieceFromSquare());
-        assertNull(board.getSquare(2,4).getPieceFromSquare());
+        assignPlayersToPieces(board);
+
+        board.getSquare(1,6).updatePiece(new Marshal());
+        board.getSquare(1,6).getPieceFromSquare().assignPlayer(player.getOpponent());
+
+        board.doMove(board.getSquare(1,7),board.getSquare(1,6));
+        assertNull(board.getSquare(1,7).getPieceFromSquare());
+        assertNull(board.getSquare(1,6).getPieceFromSquare());
     }
 
     @Test
     public void testIfMarshalReplacesFlagOnBoardAfterCapturingFlag() throws InvalidMoveException {
         Board board = new Board();
+        Player player = new Player();
         initializeForTesting(board);
-        board.doMove(board.getSquare(1,2),board.getSquare(1,1));
-        assertNull(board.getSquare(1,2).getPieceFromSquare());
-        assertEquals("marshal", board.getSquare(1, 1).getPieceFromSquare().getName());
+        assignPlayersToPieces(board);
+
+        board.getSquare(1,6).updatePiece(new Flag());
+        board.getSquare(1,6).getPieceFromSquare().assignPlayer(player.getOpponent());
+
+        board.doMove(board.getSquare(1,7),board.getSquare(1,6));
+        assertNull(board.getSquare(1,7).getPieceFromSquare());
+        assertEquals("marshal", board.getSquare(1, 6).getPieceFromSquare().getName());
     }
 
     @Test
@@ -242,9 +264,58 @@ public class BoardAndSquaresTest {
         Assertions.assertEquals("this piece is not allowed to move", thrown.getMessage());
     }
 
+    @Test
+    public void testIfPieceIsAssignedByRightPlayerDuringInitialization() {
+        Board board = new Board();
+        Player otherPlayer = board.getSquare(7, 7).getPieceFromSquare().getPlayer();
+        Player player = board.getSquare(1, 1).getPieceFromSquare().getPlayer();
+        assertEquals(player.getNamePlayer(), "two");
+        assertEquals(otherPlayer.getNamePlayer(), "one");
+    }
 
+    @Test
+    public void testIfPlayersSwitchTurnAfterAMove() throws InvalidMoveException {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        Square fromSquare = board.getSquare(2, 7);
+        Square toSquare = board.getSquare(2,6);
+        assertEquals(board.player.hasTurn(), true);
+        assertEquals(board.opponent.hasTurn(), false);
+        board.doMove(fromSquare, toSquare);
+        assertEquals(board.player.hasTurn(), false);
+        assertEquals(board.opponent.hasTurn(), true);
+    }
 
+    @Test
+    public void testIfMoveCannotBeDoneIfPlayerHasNotTurn() throws InvalidMoveException {
+            InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Board board = new Board();
+            Square fromSquare = board.getSquare(1, 4); //square that contains a piece from opponent
+            Square toSquare = board.getSquare(1,5);
+            
+            board.doMove(fromSquare, toSquare);
+        });
+
+        Assertions.assertEquals("the attacking piece does not belong to player that has turn", thrown.getMessage());
+        
+    }
+
+    @Test
+    public void testIfPieceCannotAttackPieceFromSamePlayer() throws InvalidMoveException {
+            InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Board board = new Board();
+            Square fromSquare = board.getSquare(1, 8);
+            Square toSquare = board.getSquare(1,7);
+            
+            board.doMove(fromSquare, toSquare);
+        });
+
+        Assertions.assertEquals(   "player attacks its own piece", thrown.getMessage());
+    }
 }
+    
+
     
  
 

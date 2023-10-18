@@ -3,6 +3,8 @@ import java.util.Random;
 
 public class Board {
     Square[][] squares;
+    Player player = new Player();
+    Player opponent = player.getOpponent();
 
     public Board() {
         this.squares = new Square[10][10];
@@ -35,10 +37,11 @@ public class Board {
                 } else {this.squares[i][j].updatePiece(new Marshal());}
             } 
         }
-    }
+        assignPlayersToPieces();
+    } 
 
-    private void initializeScript2() {
-         for (int i = 0; i < 10; i++) {
+    private void initializeScript2() { 
+        for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if ((i == 2 && j == 2) || (i == 8 && j == 8)) {
                     this.squares[i][j].updatePiece(new Flag()); 
@@ -47,6 +50,19 @@ public class Board {
                 } else {this.squares[i][j].updatePiece(new Marshal());}
             } 
         }
+        assignPlayersToPieces();
+    }
+
+    private void assignPlayersToPieces() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (j < 4) {
+                    this.squares[i][j].getPieceFromSquare().assignPlayer(opponent);
+                } if (j > 5) {
+                    this.squares[i][j].getPieceFromSquare().assignPlayer(player);
+                }
+    }
+}
     }
         
     public Square getSquare(int xCoordinate, int yCoordinate) {
@@ -65,21 +81,23 @@ public class Board {
         isMoveLegal(fromSquare, toSquare);
         if (toSquare.getPieceFromSquare() == null) {
             this.translocatePiece(fromSquare, toSquare);
+            
         } else {
             meet(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
             translocatePiecesAfterAttack(fromSquare, toSquare);
             fromSquare.clearFallenPiece();
-            toSquare.clearFallenPiece();}
+            toSquare.clearFallenPiece();
+            
+        }
+        this.player.switchTurns();
+        
+        
     }
         
-        // else {
-        //     fromSquare.getPieceFromSquare().attack(toSquare.getPiece());
-        //     toSquare.getPiece().beAttacked(fromSquare.getPiece());
-        //     this.updatePiecesAfterAttack();
-        // } 
         // if (toSquare.getPiece() instanceof Flag && toSquare.getPiece.isCaptured || checkIfOpponentsHasADynamicPiece) {
         //     gameEnds();
         // }
+        
     public void translocatePiece(Square fromSquare, Square toSquare) {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
             toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
@@ -124,8 +142,14 @@ public class Board {
             throw new InvalidMoveException("the direction or distance the piece has to cover is not allowed");
         } else if (fromSquare.getPieceFromSquare() == null) {
             throw new InvalidMoveException("this square does not contain a piece");
+        } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
+            throw new InvalidMoveException("the attacking piece does not belong to player that has turn");
+        } else if (toSquare.getPieceFromSquare() != null && toSquare.getPieceFromSquare().getPlayer().hasTurn()) {
+            throw new InvalidMoveException("player attacks its own piece");
         }
     }
+
+    
 
     public boolean correctMovingDistance(Square fromSquare, Square toSquare) {
         int xSteps = Math.abs(toSquare.getXCoordinate() - fromSquare.getXCoordinate());
@@ -136,15 +160,11 @@ public class Board {
     }
 
 
-    //fromSquare.checkIfMoveIsLegal();			
-    //toSquare.checkIfMoveIslegal();		
-    //has to contain a dynamic piece of player	
-    //has to be empty or contain a piece of opponent
     //if !fromSquare.getPiece() instanceof Scout, toSquare has to be one step away from fromSquare. 
     //if fromSquare.getPiece() instanceof Scout, there can’t be pieces on the ‘way’ to toSquare
 
 }
 
-// gameEnds();
+
 
 
