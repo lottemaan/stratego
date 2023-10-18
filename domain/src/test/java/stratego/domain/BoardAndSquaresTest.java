@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class BoardAndSquaresTest {
@@ -80,7 +81,7 @@ public class BoardAndSquaresTest {
     }
 
     @Test
-    public void TestIfMarshalCanDo1Step() {
+    public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         Board board = new Board();
         
         Square fromSquare = board.getSquare(1,4);
@@ -141,7 +142,7 @@ public class BoardAndSquaresTest {
     }
 
     @Test
-    public void testIfBoardIsClearedAferFall() {
+    public void testIfBoardIsClearedAferFall() throws InvalidMoveException {
         Board board = new Board();
         board.doMove(board.getSquare(1,4),board.getSquare(2,4));
         assertNull(board.getSquare(1,4).getPieceFromSquare());
@@ -149,12 +150,66 @@ public class BoardAndSquaresTest {
     }
 
     @Test
-    public void testIfMarshalReplacesFlagOnBoardAfterCapturingFlag() {
+    public void testIfMarshalReplacesFlagOnBoardAfterCapturingFlag() throws InvalidMoveException {
         Board board = new Board();
         board.doMove(board.getSquare(1,2),board.getSquare(1,1));
         assertNull(board.getSquare(1,2).getPieceFromSquare());
         assertEquals("marshal", board.getSquare(1, 1).getPieceFromSquare().getName());
     }
+
+    @Test
+    public void testIfMarshalCannotBePlayedIfDistanceIsNotCorrect() {
+
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Board board = new Board();
+            board.doMove(board.getSquare(1,3), board.getSquare(1,5));
+        });
+
+        Assertions.assertEquals("the direction or distance the piece has to cover is not allowed", thrown.getMessage());
+    }
+
+    @Test
+    public void testIfMarshalCannotBePlayedIfDistanceIsDiagonal() {
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Board board = new Board();
+            board.doMove(board.getSquare(4,4), board.getSquare(5,5));
+        });
+
+        Assertions.assertEquals("the direction or distance the piece has to cover is not allowed", thrown.getMessage());
+    }
+
+    @Test
+    public void testIfMarshalCannotBePlayedIfSquareIsChosenTwoTimes() {
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Board board = new Board();
+            board.doMove(board.getSquare(4,4), board.getSquare(4,4));
+        });
+
+        Assertions.assertEquals("the direction or distance the piece has to cover is not allowed", thrown.getMessage());
+    }
+
+    @Test
+    public void testIfAnEmptySquareIsNotAllowedToPlay() {
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Board board = new Board();
+            board.doMove(board.getSquare(5,5), board.getSquare(5,6));
+        });
+
+        Assertions.assertEquals("this square does not contain a piece", thrown.getMessage());
+    }
+
+    
+
+    @Test
+    public void testIfFlagCannotBePlayed() {
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Board board = new Board();
+            board.doMove(board.getSquare(1,1), board.getSquare(1,2));
+        });
+
+        Assertions.assertEquals("this piece is not allowed to move", thrown.getMessage());
+    }
+
 }
     
  

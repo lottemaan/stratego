@@ -45,7 +45,7 @@ public class StrategoGame {
         } else {return null;}
     }
 
-    public void doMove(int i, int j, int k, int l) {
+    public void doMove(int i, int j, int k, int l) throws InvalidMoveException {
         Square fromSquare = this.board.getSquare(i, j);
         Square toSquare = this.board.getSquare(k,l);
         this.board.doMove(fromSquare, toSquare); 

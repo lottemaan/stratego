@@ -67,7 +67,7 @@ public class StrategoGameTest {
     }
 
     @Test
-    public void TestIfMarshalCanDo1Step() {
+    public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
         Square fromSquare = strategoGame.getSquare(1, 4);
         Square toSquare = strategoGame.getSquare(1,5);

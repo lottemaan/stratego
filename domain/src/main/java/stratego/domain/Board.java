@@ -24,16 +24,8 @@ public class Board {
         return this.squares[1];
     }
 
-    public void doMove(Square fromSquare, Square toSquare) {
-        
-
-        // fromSquare.checkIfMoveIsLegal();			
-        // toSquare.checkIfMoveIslegal();		
-        //has to contain a dynamic piece of player	
-        //has to be empty or contain a piece of opponent
-        //if !fromSquare.getPiece() instanceof Scout, toSquare has to be one step away from fromSquare. 
-        //if fromSquare.getPiece() instanceof Scout, there can’t be pieces on the ‘way’ to toSquare
-        
+    public void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
+        isMoveLegal(fromSquare, toSquare);
         if (toSquare.getPieceFromSquare() == null) {
             this.translocatePiece(fromSquare, toSquare);
         } else {
@@ -87,18 +79,35 @@ public class Board {
         }
     }
         
+
+    public void isMoveLegal(Square fromSquare, Square toSquare) throws InvalidMoveException {
+        if (fromSquare.getPieceFromSquare() instanceof StaticPiece) {
+            throw new InvalidMoveException("this piece is not allowed to move");
+        } else if (correctMovingDistance(fromSquare, toSquare) == false) {
+            throw new InvalidMoveException("the direction or distance the piece has to cover is not allowed");
+        } else if (fromSquare.getPieceFromSquare() == null) {
+            throw new InvalidMoveException("this square does not contain a piece");
+        }
+    }
+
+    public boolean correctMovingDistance(Square fromSquare, Square toSquare) {
+        int xSteps = Math.abs(toSquare.getXCoordinate() - fromSquare.getXCoordinate());
+        int ySteps = Math.abs(toSquare.getYCoordinate() - fromSquare.getYCoordinate());
+        if ((xSteps == 0 && ySteps == 0) || (xSteps > 0 && ySteps > 0) || (xSteps > 1 || ySteps > 1)) {
+            return false;
+        } else {return true;}
+    }
+
+
+    //fromSquare.checkIfMoveIsLegal();			
+    //toSquare.checkIfMoveIslegal();		
+    //has to contain a dynamic piece of player	
+    //has to be empty or contain a piece of opponent
+    //if !fromSquare.getPiece() instanceof Scout, toSquare has to be one step away from fromSquare. 
+    //if fromSquare.getPiece() instanceof Scout, there can’t be pieces on the ‘way’ to toSquare
+
 }
 
-//     board.updatePiecesAfterAttack() {
-// 	if (toSquare.getPiece().isActive() && !fromSquare.getPiece().isActive()) {
-// 		fromSquare.deletePiece();
-// 	{ if else (!toSquare.getPiece().isActive() && fromSquare.getPiece().isActive()) {
-// 		translocatePiece();
-// } if else (!toSquare.getPiece().isActive() && !fromSquare.getPiece().isActive()) {	
-// 		fromSquare.deletePiece();
-// toSquare.deletePiece();
-// }
-
 // gameEnds();
-// checkIfOpponentsHasADynamicPiece();
+
 

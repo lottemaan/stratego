@@ -6,6 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import stratego.api.models.MoveDTO;
 import stratego.api.models.StrategoDTO;
+import stratego.domain.InvalidMoveException;
 import stratego.domain.StrategoGame;
 
 @Path("/play")
@@ -13,7 +14,7 @@ public class PlayStratego {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response play(@Context HttpServletRequest request, MoveDTO doMove) {
+    public Response play(@Context HttpServletRequest request, MoveDTO doMove) throws InvalidMoveException {
         // Retrieve HTTP session.
         HttpSession session = request.getSession(false);       
     
