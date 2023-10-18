@@ -81,12 +81,17 @@ public class Board {
         isMoveLegal(fromSquare, toSquare);
         if (toSquare.getPieceFromSquare() == null) {
             this.translocatePiece(fromSquare, toSquare);
+            
         } else {
             meet(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
             translocatePiecesAfterAttack(fromSquare, toSquare);
             fromSquare.clearFallenPiece();
-            toSquare.clearFallenPiece();}
+            toSquare.clearFallenPiece();
+            
+        }
         this.player.switchTurns();
+        
+        
     }
         
         // else {
@@ -101,6 +106,7 @@ public class Board {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
             toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
             fromSquare.deletePiece();
+            this.player.switchTurns();
         }
     }
 
@@ -142,7 +148,9 @@ public class Board {
         } else if (fromSquare.getPieceFromSquare() == null) {
             throw new InvalidMoveException("this square does not contain a piece");
         } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
-            throw new InvalidMoveException("this piece does not belong to player that has turn");
+            throw new InvalidMoveException("the attacking piece does not belong to player that has turn");
+        } else if (toSquare.getPieceFromSquare() != null && toSquare.getPieceFromSquare().getPlayer().hasTurn()) {
+            throw new InvalidMoveException("player attacks its own piece");
         }
     }
 

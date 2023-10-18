@@ -1,7 +1,7 @@
 package stratego.domain;
 
 public class Player {
-
+    
     private final Player opponent;
     private boolean hasTurn;
     private String name;
