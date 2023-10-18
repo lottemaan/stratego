@@ -4,15 +4,22 @@ public class Player {
 
     private final Player opponent;
     private boolean hasTurn;
+    private String name;
 
     public Player() {
         this.hasTurn = true;
+        this.name = "one";
         this.opponent = new Player(this);
     }
 
     private Player(Player opponent) {
         this.hasTurn = false;
+        this.name = "two";
         this.opponent = opponent;
+    }
+
+    public String getNamePlayer() {
+        return this.name;
     }
 
     public boolean hasTurn() {

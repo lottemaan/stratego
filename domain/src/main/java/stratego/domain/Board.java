@@ -3,6 +3,8 @@ import java.util.Random;
 
 public class Board {
     Square[][] squares;
+    Player player = new Player();
+    Player opponent = player.getOpponent();
 
     public Board() {
         this.squares = new Square[10][10];
@@ -35,10 +37,11 @@ public class Board {
                 } else {this.squares[i][j].updatePiece(new Marshal());}
             } 
         }
-    }
+        assignPlayersToPieces();
+    } 
 
-    private void initializeScript2() {
-         for (int i = 0; i < 10; i++) {
+    private void initializeScript2() { 
+        for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if ((i == 2 && j == 2) || (i == 8 && j == 8)) {
                     this.squares[i][j].updatePiece(new Flag()); 
@@ -47,6 +50,19 @@ public class Board {
                 } else {this.squares[i][j].updatePiece(new Marshal());}
             } 
         }
+        assignPlayersToPieces();
+    }
+
+    private void assignPlayersToPieces() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (j < 4) {
+                    this.squares[i][j].getPieceFromSquare().assignPlayer(opponent);
+                } if (j > 5) {
+                    this.squares[i][j].getPieceFromSquare().assignPlayer(player);
+                }
+    }
+}
     }
         
     public Square getSquare(int xCoordinate, int yCoordinate) {

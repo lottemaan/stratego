@@ -242,8 +242,14 @@ public class BoardAndSquaresTest {
         Assertions.assertEquals("this piece is not allowed to move", thrown.getMessage());
     }
 
-
-
+    @Test
+    public void testIfPieceIsAssignedByRightPlayerDuringInitialization() {
+        Board board = new Board();
+        Player otherPlayer = board.getSquare(7, 7).getPieceFromSquare().getPlayer();
+        Player player = board.getSquare(1, 1).getPieceFromSquare().getPlayer();
+        assertEquals(player.getNamePlayer(), "two");
+        assertEquals(otherPlayer.getNamePlayer(), "one");
+    }
 }
     
  

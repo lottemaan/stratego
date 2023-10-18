@@ -4,6 +4,7 @@ abstract class Piece {
     protected String name;
     protected boolean active = true;
     protected int rank;
+    protected Player player;
 
     public String getName() {
         return this.name;
@@ -27,6 +28,14 @@ abstract class Piece {
 
     public int getRank() {
         return this.rank;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public void assignPlayer(Player player) {
+        this.player = player;
     }
 
 }

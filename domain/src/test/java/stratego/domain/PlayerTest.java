@@ -42,4 +42,34 @@ public class PlayerTest {
         assertEquals(player.hasTurn(), false);
         assertEquals(opponent.hasTurn(), true);
     }
+
+    @Test
+    public void testIfFirstPlayerIsCalledOne() {
+        Player player = new Player();
+        assertEquals(player.getNamePlayer(), "one");
+    }
+
+    @Test
+    public void testIfSecondPlayerIsCalledTwo() {
+        Player player = new Player();
+        Player opponent = player.getOpponent();
+        assertEquals(opponent.getNamePlayer(), "two");
+    }
+
+    @Test
+    public void testIfAPieceCanReturnCorrectPlayer() {
+        Player player = new Player();
+        Piece piece = new Marshal();
+        piece.assignPlayer(player);
+        assertEquals(piece.getPlayer(), player);
+    }
+
+    @Test
+    public void testIfAPieceCanReturnCorrectPlayerWithCorrectName() {
+        Player player = new Player();
+        Player opponent = player.getOpponent();
+        Piece piece = new Marshal();
+        piece.assignPlayer(opponent);
+        assertEquals(piece.getPlayer().getNamePlayer(), "two");
+    }
 }
