@@ -86,6 +86,7 @@ public class Board {
             translocatePiecesAfterAttack(fromSquare, toSquare);
             fromSquare.clearFallenPiece();
             toSquare.clearFallenPiece();}
+        this.player.switchTurns();
     }
         
         // else {
@@ -140,8 +141,12 @@ public class Board {
             throw new InvalidMoveException("the direction or distance the piece has to cover is not allowed");
         } else if (fromSquare.getPieceFromSquare() == null) {
             throw new InvalidMoveException("this square does not contain a piece");
+        } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
+            throw new InvalidMoveException("this piece does not belong to player that has turn");
         }
     }
+
+    
 
     public boolean correctMovingDistance(Square fromSquare, Square toSquare) {
         int xSteps = Math.abs(toSquare.getXCoordinate() - fromSquare.getXCoordinate());

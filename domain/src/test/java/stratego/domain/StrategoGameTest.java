@@ -89,14 +89,14 @@ public class StrategoGameTest {
     @Test
      public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
-        initializeForTesting(strategoGame.getBoard());
-        Square fromSquare = strategoGame.getSquare(1, 4);
-        Square toSquare = strategoGame.getSquare(1,5);
+
+        Square fromSquare = strategoGame.getSquare(1, 7);
+        Square toSquare = strategoGame.getSquare(1,6);
 
         assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
         assertNull(toSquare.getPieceFromSquare());
 
-        strategoGame.doMove(1,4,1,5); 
+        strategoGame.doMove(1,7,1,6); 
         
         assertNull(fromSquare.getPieceFromSquare());
         assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
