@@ -9,6 +9,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class BoardAndSquaresTest {
+
+    public void initializeForTesting(Board board) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if ((i == 0 && j == 0) || (i == 9 && j == 9)) {
+                    board.squares[i][j].updatePiece(new Flag()); 
+                } else if (j > 3 && j < 6) {
+                    board.squares[i][j].updatePiece(null);
+                } else {board.squares[i][j].updatePiece(new Marshal());}
+            } 
+        }
+    }
+
     @Test
     public void aBoardThatIsCreatedShouldNotBeNull() {
         Board board = new Board();
@@ -18,6 +31,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aBoardShouldHaveAMatrixOf10By10Squares() {
         Board board = new Board();
+        initializeForTesting(board);
         int rowCount = board.getRows().length;
         int columnCount = board.getColumns().length;
         assertEquals(10, rowCount);
@@ -27,6 +41,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aBoardShouldBeAbleToReturnTheSquareWithCoordinates3By3() {
         Board board = new Board();
+        initializeForTesting(board);
         Square squareWithCoordinates3by3 = board.getSquare(3, 3);
         assertNotSame(squareWithCoordinates3by3, board.getSquare(2, 2));
         assertEquals(squareWithCoordinates3by3.getXCoordinate(), 3);
@@ -36,6 +51,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aBoardShouldBeAbleToReturnTheFirstSquareWithCoordinates1By1() {
         Board board = new Board();
+        initializeForTesting(board);
         Square squareWithCoordinates1by1 = board.getSquare(1, 1);
         assertNotSame(squareWithCoordinates1by1, board.getSquare(2, 2));
         assertEquals(squareWithCoordinates1by1.getXCoordinate(), 1);
@@ -45,6 +61,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aBoardShouldBeAbleToReturnTheFirstSquareWithCoordinates10By10() {
         Board board = new Board();
+        initializeForTesting(board);
         Square squareWithCoordinates10by10 = board.getSquare(10, 10);
         assertNotSame(squareWithCoordinates10by10, board.getSquare(2, 2));
         assertEquals(squareWithCoordinates10by10.getXCoordinate(), 10);
@@ -54,6 +71,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aSquareShouldBeAbleToReturnAPieceWithNameMarshal() {
         Board board = new Board();
+        initializeForTesting(board);
         Square squareWithCoordinates9by9 = board.getSquare(9, 9);
         assertEquals(squareWithCoordinates9by9.getPieceFromSquare().getName(), "marshal");
     }
@@ -61,6 +79,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aSquareShouldBeAbleToReturnNoPiece() {
         Board board = new Board();
+        initializeForTesting(board);
         Square squareWithCoordinates5by5 = board.getSquare(5, 5);
         assertNull(squareWithCoordinates5by5.getPieceFromSquare());
     }
@@ -68,6 +87,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aSquareShouldBeAbleToUpdateASquareWithPieceNameMarshal() {
         Board board = new Board();
+        initializeForTesting(board);
         Square squareWithCoordinates5by5 = board.getSquare(5, 5);
         squareWithCoordinates5by5.updatePiece(new Marshal());
         assertEquals(squareWithCoordinates5by5.getPieceFromSquare().getName(), "marshal");
@@ -76,6 +96,7 @@ public class BoardAndSquaresTest {
     @Test
     public void aSquareShouldBeAbleToReturnAPieceWithNameFlag() {
         Board board = new Board();
+        initializeForTesting(board);
         Square squareWithCoordinates10by10 = board.getSquare(10, 10);
         assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "flag");
     }
@@ -83,6 +104,7 @@ public class BoardAndSquaresTest {
     @Test
     public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         Board board = new Board();
+        initializeForTesting(board);
         
         Square fromSquare = board.getSquare(1,4);
         Square toSquare = board.getSquare(1,5);
@@ -102,6 +124,7 @@ public class BoardAndSquaresTest {
     @Test
     public void AnotherTestToCheckWhatPieceIsOnSquare1by1() {
         Board board = new Board();
+        initializeForTesting(board);
         Square square1By1 = board.getSquare(1, 1);
         assertEquals("flag", square1By1.getPieceFromSquare().getName());
     }
@@ -109,6 +132,7 @@ public class BoardAndSquaresTest {
     @Test
     public void AnotherTestToCheckWhatPieceIsOnSquare5by1() {
         Board board = new Board();
+        initializeForTesting(board);
         Square square5By1 = board.getSquare(5, 1);
         assertEquals("marshal", square5By1.getPieceFromSquare().getName());
     }
@@ -116,6 +140,7 @@ public class BoardAndSquaresTest {
     @Test
     public void AnotherTestToCheckWhatPieceIsOnSquare1by5() {
         Board board = new Board();
+        initializeForTesting(board);
         Square square1By5 = board.getSquare(1, 5);
         assertNull(square1By5.getPieceFromSquare());
     }
@@ -123,6 +148,7 @@ public class BoardAndSquaresTest {
     @Test
     public void TestIfMarshalCanAttackOtherMarshalAndIfTheyBothGetInactiveAfter() {
         Board board = new Board();
+        initializeForTesting(board);
         Marshal marshal1 = new Marshal();
         Marshal marshal2 = new Marshal();
         board.meet(marshal1, marshal2);
@@ -133,6 +159,7 @@ public class BoardAndSquaresTest {
     @Test
     public void TestIfMarshalWinsAfterCapturingTheFlag() {
         Board board = new Board();
+        initializeForTesting(board);
         Marshal marshal1 = new Marshal();
         Flag flag1 = new Flag();
         board.meet(marshal1, flag1);
@@ -144,6 +171,7 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfBoardIsClearedAferFall() throws InvalidMoveException {
         Board board = new Board();
+        initializeForTesting(board);
         board.doMove(board.getSquare(1,4),board.getSquare(2,4));
         assertNull(board.getSquare(1,4).getPieceFromSquare());
         assertNull(board.getSquare(2,4).getPieceFromSquare());
@@ -152,6 +180,7 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfMarshalReplacesFlagOnBoardAfterCapturingFlag() throws InvalidMoveException {
         Board board = new Board();
+        initializeForTesting(board);
         board.doMove(board.getSquare(1,2),board.getSquare(1,1));
         assertNull(board.getSquare(1,2).getPieceFromSquare());
         assertEquals("marshal", board.getSquare(1, 1).getPieceFromSquare().getName());
@@ -162,6 +191,7 @@ public class BoardAndSquaresTest {
 
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
             Board board = new Board();
+            initializeForTesting(board);
             board.doMove(board.getSquare(1,3), board.getSquare(1,5));
         });
 
@@ -172,6 +202,7 @@ public class BoardAndSquaresTest {
     public void testIfMarshalCannotBePlayedIfDistanceIsDiagonal() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
             Board board = new Board();
+            initializeForTesting(board);
             board.doMove(board.getSquare(4,4), board.getSquare(5,5));
         });
 
@@ -182,6 +213,7 @@ public class BoardAndSquaresTest {
     public void testIfMarshalCannotBePlayedIfSquareIsChosenTwoTimes() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
             Board board = new Board();
+            initializeForTesting(board);
             board.doMove(board.getSquare(4,4), board.getSquare(4,4));
         });
 
@@ -192,23 +224,25 @@ public class BoardAndSquaresTest {
     public void testIfAnEmptySquareIsNotAllowedToPlay() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
             Board board = new Board();
+            initializeForTesting(board);
             board.doMove(board.getSquare(5,5), board.getSquare(5,6));
         });
 
         Assertions.assertEquals("this square does not contain a piece", thrown.getMessage());
     }
 
-    
-
     @Test
     public void testIfFlagCannotBePlayed() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
             Board board = new Board();
+            initializeForTesting(board);
             board.doMove(board.getSquare(1,1), board.getSquare(1,2));
         });
 
         Assertions.assertEquals("this piece is not allowed to move", thrown.getMessage());
     }
+
+
 
 }
     

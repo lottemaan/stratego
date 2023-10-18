@@ -9,6 +9,18 @@ import org.junit.jupiter.api.Test;
 
 public class StrategoGameTest {
 
+    public void initializeForTesting(Board board) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if ((i == 0 && j == 0) || (i == 9 && j == 9)) {
+                    board.squares[i][j].updatePiece(new Flag()); 
+                } else if (j > 3 && j < 6) {
+                    board.squares[i][j].updatePiece(null);
+                } else {board.squares[i][j].updatePiece(new Marshal());}
+            } 
+        }
+    }
+
     @Test
     public void ThisTestShouldPass() {
         boolean passingTest = true;
@@ -18,24 +30,28 @@ public class StrategoGameTest {
     @Test
     public void TestIfStrategogameCanBeCreated() {
         StrategoGame strategoGame = new StrategoGame( "Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertNotNull(strategoGame);
     }
 
     @Test
     public void TestIfPlayerOneIsCalledJantje() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(strategoGame.getNameOfPlayerOne(), "Jantje");        
     }
 
     @Test
     public void TestIfPlayerTwoIsCalledJip() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(strategoGame.getNameOfPlayerTwo(), "Jip");        
     }
 
     @Test
     public void TestIfGameHasNotEnded() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         boolean isEndOfGame = strategoGame.isEndOfGame();
         assertEquals(isEndOfGame, false);
     }
@@ -43,18 +59,21 @@ public class StrategoGameTest {
     @Test
     public void TestIfNameFromPiece1by1IsMarshal() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(strategoGame.getNameFromPiece(9, 9), "marshal");
     }
 
     @Test
     public void TestIfNameFromPiece5by5ReturnsNull() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertNull(strategoGame.getNameFromPiece(5,5));
     }
 
     @Test
     public void TestIfStrategoGameCanReturnTheSquareWithCoordinates3By3() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(strategoGame.getSquare(3,3).getXCoordinate(), 3);
         assertEquals(strategoGame.getSquare(3,3).getYCoordinate(), 3);
     }
@@ -62,6 +81,7 @@ public class StrategoGameTest {
     @Test
     public void TestIfStrategoGameCanReturnXCoordinateWithCoordinates3By3() {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(strategoGame.getXCoordinateFromSquare(3,3), 3);
         assertEquals(strategoGame.getYCoordinateFromSquare(3,3), 3);
     }
@@ -69,6 +89,7 @@ public class StrategoGameTest {
     @Test
      public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         Square fromSquare = strategoGame.getSquare(1, 4);
         Square toSquare = strategoGame.getSquare(1,5);
 
