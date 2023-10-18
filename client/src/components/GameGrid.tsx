@@ -1,42 +1,60 @@
-// GameGrid.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { GameState } from '../types';
 
-
 interface GameGridProps {
-  gameState?: GameState; // Define the GameState type
+  gameState?: GameState;
   imageMapping: Record<string, string>;
+  onImageClick: (x1: number, y1: number, x2: number, y2: number) => void;
 }
 
-const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping }) => {
-  // Assuming you have gameState and imageMapping available
+const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageClick }) => {
   const gridRows = gameState?.board.squares;
+  const [firstClick, setFirstClick] = useState<{ x: number, y: number } | null>(null);
 
-  // Check if gridRows is defined before rendering the grid
+  const handleImageClick = (x: number, y: number) => {
+    if (firstClick) {
+      onImageClick(firstClick.x, firstClick.y, x, y); // Pass the coordinates of both clicks
+      setFirstClick(null); // Reset the firstClick
+    } else {
+      setFirstClick({ x, y }); // Store the first click
+    }
+  };
+
   if (gridRows) {
-    const gridImages = gridRows.map((row, rowIndex) => (
-      <tr key={rowIndex}>
-        {row.map((cell, colIndex) => {
-          const pieceName = cell.piece.name;
-          // const hasTurn = cell.piece.player.HasTurn;
-          let imageUrl;
+    const numRows = gridRows.length;
+    const numCols = gridRows[0].length;
 
-          if (pieceName === "marshal") {
-            imageUrl = imageMapping["marshalThatHasTurn"];
-          } else if (pieceName == null) {
-            imageUrl = imageMapping["noPiece"];
-          } else if (pieceName == "flag") {
-            imageUrl = imageMapping["flagThatHasTurn"];
-          }
+    const gridImages = [];
 
-          return (
-            <td key={colIndex}>
-              <img src={imageUrl} alt={`Square ${rowIndex}-${colIndex}`} />
-            </td>
-          );
-        })}
-      </tr>
-    ));
+    for (let y = 0; y < numCols; y++) {
+      const colImages = [];
+
+      for (let x = 0; x < numRows; x++) {
+        const cell = gridRows[x][y]; // Swap the indices
+        const pieceName = cell.piece.name;
+        let imageUrl;
+
+        if (pieceName === "marshal") {
+          imageUrl = imageMapping["marshalThatHasTurn"];
+        } else if (pieceName == null) {
+          imageUrl = imageMapping["noPiece"];
+        } else if (pieceName === "flag") {
+          imageUrl = imageMapping["flagThatHasTurn"];
+        }
+
+        colImages.push(
+          <td key={x} onClick={() => handleImageClick(x, y)}> {/* Swap x and y in the onClick handler */}
+            <img src={imageUrl} alt={`Square ${y}-${x}`} /> {/* Swap y and x in the alt text */}
+          </td>
+        );
+      }
+
+      gridImages.push(
+        <tr key={y}>
+          {colImages}
+        </tr>
+      );
+    }
 
     return (
       <table>
@@ -44,7 +62,6 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping }) => {
       </table>
     );
   } else {
-    // Handle the case where gridRows is undefined (e.g., display a loading message)
     return <div>Gamestate does not exist...</div>;
   }
 }

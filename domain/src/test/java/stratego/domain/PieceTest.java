@@ -61,4 +61,13 @@ public class PieceTest {
         flag.beCaptured();
         assertEquals(flag.isCaptured(), true);
     }
+
+    @Test
+    public void testIfMarshalHasRank1() {
+        Marshal marshal = new Marshal();
+        assertEquals(1, marshal.getRank());
+    }
+
+
+
 }
