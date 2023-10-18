@@ -94,19 +94,14 @@ public class Board {
         
     }
         
-        // else {
-        //     fromSquare.getPieceFromSquare().attack(toSquare.getPiece());
-        //     toSquare.getPiece().beAttacked(fromSquare.getPiece());
-        //     this.updatePiecesAfterAttack();
-        // } 
         // if (toSquare.getPiece() instanceof Flag && toSquare.getPiece.isCaptured || checkIfOpponentsHasADynamicPiece) {
         //     gameEnds();
         // }
+        
     public void translocatePiece(Square fromSquare, Square toSquare) {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
             toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
             fromSquare.deletePiece();
-            this.player.switchTurns();
         }
     }
 
@@ -165,15 +160,11 @@ public class Board {
     }
 
 
-    //fromSquare.checkIfMoveIsLegal();			
-    //toSquare.checkIfMoveIslegal();		
-    //has to contain a dynamic piece of player	
-    //has to be empty or contain a piece of opponent
     //if !fromSquare.getPiece() instanceof Scout, toSquare has to be one step away from fromSquare. 
     //if fromSquare.getPiece() instanceof Scout, there can’t be pieces on the ‘way’ to toSquare
 
 }
 
-// gameEnds();
+
 
 
