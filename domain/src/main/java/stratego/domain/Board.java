@@ -26,6 +26,7 @@ public class Board {
 
     public void doMove(Square fromSquare, Square toSquare) {
         
+
         // fromSquare.checkIfMoveIsLegal();			
         // toSquare.checkIfMoveIslegal();		
         //has to contain a dynamic piece of player	
@@ -34,8 +35,12 @@ public class Board {
         //if fromSquare.getPiece() instanceof Scout, there can’t be pieces on the ‘way’ to toSquare
         
         if (toSquare.getPieceFromSquare() == null) {
-                this.translocatePiece(fromSquare, toSquare);
-        } 
+            this.translocatePiece(fromSquare, toSquare);
+        } else {
+            meet(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
+            translocatePiecesAfterAttack(fromSquare, toSquare);
+            fromSquare.clearFallenPiece();
+            toSquare.clearFallenPiece();}
     }
         
         // else {
@@ -47,10 +52,40 @@ public class Board {
         //     gameEnds();
         // }
     public void translocatePiece(Square fromSquare, Square toSquare) {
-        toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
-        fromSquare.deletePiece();
+        if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
+            toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
+            fromSquare.deletePiece();
+        }
     }
 
+    public void meet(Piece attackingPiece, Piece pieceToBeAttacked) {
+        if (!(pieceToBeAttacked instanceof StaticPiece)) {
+            battle(attackingPiece, pieceToBeAttacked);
+        } else {
+            attackingPiece.win();
+
+            ((Flag) pieceToBeAttacked).beCaptured();
+        }
+    }
+
+    public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
+        if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
+            attackingPiece.win();
+            pieceToBeAttacked.fall();
+        } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
+            attackingPiece.fall();
+            pieceToBeAttacked.win();
+        } else {
+            attackingPiece.fall();
+            pieceToBeAttacked.fall();
+        }
+    }
+
+    public void translocatePiecesAfterAttack(Square fromSquare, Square toSquare) {
+        if (!toSquare.getPieceFromSquare().isActive()){
+            translocatePiece(fromSquare, toSquare);
+        }
+    }
         
 }
 

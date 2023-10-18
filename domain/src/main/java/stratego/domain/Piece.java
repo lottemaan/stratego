@@ -29,24 +29,11 @@ abstract class Piece {
         return this.rank;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
-    public void beAttacked(Piece attackingPiece) {
-        if (this.getRank() < attackingPiece.getRank()) {
-            this.win();
-        } else {this.fall();}
-    }
 }
 
 abstract class DynamicPiece extends Piece {
 
-    public void attack(Piece pieceToBeAttacked){
-        if(this.getRank() < pieceToBeAttacked.getRank() || pieceToBeAttacked instanceof StaticPiece) {
-	        this.win();
-        } else {this.fall();}
-    }
+
 }
 
 abstract class StaticPiece extends Piece {

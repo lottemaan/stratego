@@ -118,23 +118,63 @@ public class BoardAndSquaresTest {
         Square square1By5 = board.getSquare(1, 5);
         assertNull(square1By5.getPieceFromSquare());
     }
-
-
-
-
-
-
-
-
-
     
+    @Test
+    public void TestIfMarshalCanAttackOtherMarshalAndIfTheyBothGetInactiveAfter() {
+        Board board = new Board();
+        Marshal marshal1 = new Marshal();
+        Marshal marshal2 = new Marshal();
+        board.meet(marshal1, marshal2);
+        assertEquals(false, marshal2.isActive());
+        assertEquals(false, marshal1.isActive());
+    }
 
+    @Test
+    public void TestIfMarshalWinsAfterCapturingTheFlag() {
+        Board board = new Board();
+        Marshal marshal1 = new Marshal();
+        Flag flag1 = new Flag();
+        board.meet(marshal1, flag1);
+        assertEquals(true, flag1.isCaptured());
+        assertEquals(false, flag1.isActive());
+        assertEquals(true, marshal1.isActive());
+    }
 
+    @Test
+    public void testIfBoardIsClearedAferFall() {
+        Board board = new Board();
+        board.doMove(board.getSquare(1,4),board.getSquare(2,4));
+        assertNull(board.getSquare(1,4).getPieceFromSquare());
+        assertNull(board.getSquare(2,4).getPieceFromSquare());
+    }
 
-    
-
-
+    @Test
+    public void testIfMarshalReplacesFlagOnBoardAfterCapturingFlag() {
+        Board board = new Board();
+        board.doMove(board.getSquare(1,2),board.getSquare(1,1));
+        assertNull(board.getSquare(1,2).getPieceFromSquare());
+        assertEquals("marshal", board.getSquare(1, 1).getPieceFromSquare().getName());
+    }
 }
+    
+ 
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    
+
+
+
 
 
 

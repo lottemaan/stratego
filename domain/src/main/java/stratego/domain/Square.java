@@ -33,9 +33,15 @@ public class Square {
         this.piece = piece;
     }
 
-
     public void deletePiece() {
         this.piece = null;
+    }
+
+    public void clearFallenPiece() {
+        Piece piece = this.getPieceFromSquare();
+        if (piece != null && !piece.isActive()) {
+            this.deletePiece();
+        }
     }
 
 

@@ -68,25 +68,6 @@ public class PieceTest {
         assertEquals(1, marshal.getRank());
     }
 
-    @Test
-    public void TestIfMarshalCanAttackOtherMarshalAndIfTheyBothGetInactiveAfter() {
-        Marshal marshal1 = new Marshal();
-        Marshal marshal2 = new Marshal();
-        marshal1.attack(marshal2);
-        marshal2.beAttacked(marshal1);
-        assertEquals(false, marshal2.isActive());
-        assertEquals(false, marshal1.isActive());
-    }
 
-    @Test
-    public void TestIfMarshalWinsAfterCapturingTheFlag() {
-        Marshal marshal1 = new Marshal();
-        Flag flag1 = new Flag();
-        marshal1.attack(flag1);
-        flag1.beAttacked();
-        assertEquals(true, flag1.isCaptured());
-        assertEquals(false, flag1.isActive());
-        assertEquals(true, marshal1.isActive());
-    }
 
 }
