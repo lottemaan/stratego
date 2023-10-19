@@ -368,7 +368,24 @@ public class BoardAndSquaresTest {
         assertEquals(true, board.hasGameEnded());
     }
     
+    @Test
+    public void testIfBothPlayersAreInactiveAfterGameEnds() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
 
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (board.squares[i][j].getPieceFromSquare() instanceof Flag) {
+                } else {board.squares[i][j].deletePiece();}
+            }
+        }
+        board.gameEnds();
+        assertEquals(true, board.hasGameEnded()); 
+        assertEquals(false, board.player.hasTurn()); 
+        assertEquals(false, board.opponent.hasTurn()); 
+    }
+    
 }
     
 

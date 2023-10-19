@@ -38,4 +38,9 @@ public class Player {
     private void switchTurn() {
         this.hasTurn = !this.hasTurn;
     }
+
+    public void gameOver() {
+        this.hasTurn = false;
+        this.opponent.hasTurn = false;
+    }
 }

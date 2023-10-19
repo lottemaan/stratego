@@ -90,18 +90,19 @@ public class Board {
             toSquare.clearFallenPiece();
             
         }
-
         
-        // if(this.hasGameEnded) {
-        //     this.gameEnds();
-        // }
+        if(this.hasGameEnded()) {
+            this.gameEnds();
+        }
 
         this.player.switchTurns();
         
-
-        
     }
         
+    public void gameEnds() {
+        this.player.gameOver();
+    }
+
     public void checkIfGameHasEnded() {
         boolean dynamicPieceFound = false;
         boolean flagCaptured = false;
@@ -122,8 +123,6 @@ public class Board {
     }
 
 
-
-    
     public boolean hasGameEnded() {
         this.checkIfGameHasEnded();
         return this.gameEnded;

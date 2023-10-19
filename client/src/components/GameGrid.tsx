@@ -13,10 +13,10 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
 
   const handleImageClick = (x: number, y: number) => {
     if (firstClick) {
-      onImageClick(firstClick.x, firstClick.y, x, y); // Pass the coordinates of both clicks
-      setFirstClick(null); // Reset the firstClick
+      onImageClick(firstClick.x, firstClick.y, x, y);
+      setFirstClick(null);
     } else {
-      setFirstClick({ x, y }); // Store the first click
+      setFirstClick({ x, y });
     }
   };
 
@@ -30,7 +30,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
       const colImages = [];
 
       for (let x = 0; x < numRows; x++) {
-        const cell = gridRows[x][y]; // Swap the indices
+        const cell = gridRows[x][y];
         const pieceName = cell.piece.name;
         let imageUrl;
 
@@ -42,9 +42,13 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
           imageUrl = imageMapping["flagThatHasTurn"];
         }
 
+        const tdStyle = {
+          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'red' : 'transparent', // Set background color to red for the selected cell
+        };
+
         colImages.push(
-          <td key={x} onClick={() => handleImageClick(x, y)}> {/* Swap x and y in the onClick handler */}
-            <img src={imageUrl} alt={`Square ${y}-${x}`} /> {/* Swap y and x in the alt text */}
+          <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>
+            <img src={imageUrl} alt={`Square ${y}-${x}`} />
           </td>
         );
       }
