@@ -31,8 +31,8 @@ public class Player {
     }
 
     public void switchTurns() {
-        this.switchTurn();
-        this.opponent.switchTurn();
+        this.switchTurn();           // Switch the turn for the current player
+        this.opponent.switchTurn();  // Switch the turn for the opponent
     }
 
     private void switchTurn() {

@@ -1,7 +1,6 @@
 package stratego.api.models;
 
 import stratego.domain.Playable;
-import stratego.domain.StrategoGame;
 
 public class BoardDTO {
     

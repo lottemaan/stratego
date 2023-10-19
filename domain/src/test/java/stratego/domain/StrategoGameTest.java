@@ -119,6 +119,27 @@ public class StrategoGameTest {
     }
 
     @Test
+    public void testIfPlayersSwitchTurnAfterMove() throws InvalidMoveException {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        String namePlayerOne = strategoGame.getNameOfPlayerOne();
+        String namePlayerTwo = strategoGame.getNameOfPlayerTwo();
+        boolean isItJantjesTurn = strategoGame.isPlayersTurn("Jantje");
+        boolean isItJipsTurn = strategoGame.isPlayersTurn("Jip");
+        assertEquals("Jantje", namePlayerOne);
+        assertEquals(true, isItJantjesTurn);
+        assertEquals("Jip", namePlayerTwo);
+        assertEquals(false, isItJipsTurn);
+    
+        strategoGame.doMove(1, 7, 1, 6);
+    
+        isItJantjesTurn = strategoGame.isPlayersTurn("Jantje");
+        isItJipsTurn = strategoGame.isPlayersTurn("Jip");
+    
+        assertEquals(false, isItJantjesTurn);
+        assertEquals(true, isItJipsTurn);
+    }
+
+    @Test
     public void testIfGameCanReturnTheWinner() {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
         Winner winner = strategoGame.getWinner();

@@ -1,13 +1,14 @@
 package stratego.api.models;
 
-
+import stratego.domain.Player;
 
 public class SquareDTO {
     
     private int xCoordinate;
     private int yCoordinate;
     public PieceDTO piece;
-    
+
+
     public SquareDTO(int xCoordinate, int yCoordinate, String name) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
@@ -30,6 +31,7 @@ public class SquareDTO {
     public void setyCoordinate(int yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
+
 
 
 }

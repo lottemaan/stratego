@@ -59,11 +59,12 @@ public class Board {
             for (int j = 0; j < 10; j++) {
                 if (j < 4) {
                     this.squares[i][j].getPieceFromSquare().assignPlayer(opponent);
-                } if (j > 5) {
+                }
+                if (j > 5) {
                     this.squares[i][j].getPieceFromSquare().assignPlayer(player);
                 }
-    }
-}
+            }
+        }
     }
         
     public Square getSquare(int xCoordinate, int yCoordinate) {
@@ -93,9 +94,9 @@ public class Board {
         
         if(this.hasGameEnded()) {
             this.gameEnds();
-        }
+        } else {this.player.switchTurns();}
 
-        this.player.switchTurns();
+        
         
     }
         

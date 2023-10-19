@@ -25,13 +25,12 @@ public class StrategoGame implements Playable{
 
     @Override
     public boolean isPlayersTurn(String name) {
-        if (this.playerOne.equals(name)) {
-            if (this.board.getPlayer().hasTurn() == true)
-                return true;
-            else {
-                return false;
-            }
-        } else {return false;}
+        if (this.playerOne.equals(name) && this.board.getPlayer().hasTurn()) {
+            return true;
+        } else if (this.playerTwo.equals(name) && this.board.getPlayer().getOpponent() != null && this.board.getPlayer().getOpponent().hasTurn()) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -99,6 +98,14 @@ public class StrategoGame implements Playable{
         Piece piece = getPieceFromSquare(xCoordinate, yCoordinate);
         if (piece != null) {
             return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getName();
+        } else {return null;}
+    }
+
+    @Override
+    public Player getPlayerFromPiece(int xCoordinate, int yCoordinate){
+        Piece piece = getPieceFromSquare(xCoordinate, yCoordinate);
+        if (piece != null) {
+            return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getPlayer();
         } else {return null;}
     }
 }
