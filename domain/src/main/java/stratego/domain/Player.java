@@ -40,7 +40,11 @@ public class Player {
     }
 
     public void gameOver() {
+        this.setToInactive();
+        this.opponent.setToInactive();
+    }
+
+    public void setToInactive() {
         this.hasTurn = false;
-        this.opponent.hasTurn = false;
     }
 }
