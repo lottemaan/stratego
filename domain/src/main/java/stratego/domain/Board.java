@@ -5,6 +5,7 @@ public class Board {
     Square[][] squares;
     Player player = new Player();
     Player opponent = player.getOpponent();
+    private boolean gameEnded = false;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -89,14 +90,46 @@ public class Board {
             toSquare.clearFallenPiece();
             
         }
+
+        
+        // if(this.hasGameEnded) {
+        //     this.gameEnds();
+        // }
+
         this.player.switchTurns();
         
+
         
     }
         
-        // if (toSquare.getPiece() instanceof Flag && toSquare.getPiece.isCaptured || checkIfOpponentsHasADynamicPiece) {
-        //     gameEnds();
-        // }
+    public void checkIfGameHasEnded() {
+        boolean dynamicPieceFound = false;
+        boolean flagCaptured = false;
+    
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (this.squares[i][j].hasCapturedFlag()) {
+                    flagCaptured = true;
+                } else if (this.squares[i][j].hasDynamicPiece()) {
+                    dynamicPieceFound = true;
+                }
+            }
+        }
+    
+        if (flagCaptured || !dynamicPieceFound) {
+            this.gameEnded = true;
+        }
+    }
+
+
+
+    
+    public boolean hasGameEnded() {
+        this.checkIfGameHasEnded();
+        return this.gameEnded;
+    }
+    
+    
         
     public void translocatePiece(Square fromSquare, Square toSquare) {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {

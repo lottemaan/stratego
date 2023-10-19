@@ -22,6 +22,18 @@ public class Square {
         return this.piece;
     }
 
+    public boolean hasDynamicPiece() {
+        if (this.piece != null && !this.piece.getPlayer().hasTurn() && this.piece instanceof DynamicPiece) {
+            return true;
+        } else {return false;}
+    }
+
+    public boolean hasCapturedFlag() {
+        if (this.piece != null && !this.piece.getPlayer().hasTurn() && this.piece instanceof Flag && ((Flag)this.piece).isCaptured()) {
+            return true;
+        } else {return false;}
+    }
+
     protected void updatePiece(Piece piece) {
         this.piece = piece;
     }
