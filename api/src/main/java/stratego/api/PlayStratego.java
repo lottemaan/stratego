@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.*;
 import stratego.api.models.MoveDTO;
 import stratego.api.models.StrategoDTO;
 import stratego.domain.InvalidMoveException;
+import stratego.domain.Playable;
 import stratego.domain.StrategoGame;
 
 @Path("/play")
@@ -19,7 +20,7 @@ public class PlayStratego {
         HttpSession session = request.getSession(false);       
     
         // Retrieve game.
-        StrategoGame StrategoGame = (StrategoGame)session.getAttribute("stratego");
+        Playable StrategoGame = (StrategoGame)session.getAttribute("stratego");
 
         int xFromSquare = doMove.getxFromSquare();
         int yFromSquare = doMove.getyFromSquare();

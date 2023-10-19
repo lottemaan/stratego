@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import stratego.api.models.StrategoDTO;
 import stratego.api.models.PlayerInputDTO;
+import stratego.domain.Playable;
 import stratego.domain.StrategoGame;
 
 @Path("/start")
@@ -20,7 +21,7 @@ public class StartStratego {
 		String playerTwo = players.getPlayer2();
 
         // Initialize game.
-        StrategoGame stratego = new StrategoGame(playerOne, playerTwo);
+        Playable stratego = new StrategoGame(playerOne, playerTwo);
 
         // Attach game to session.
         session.setAttribute("stratego", stratego);

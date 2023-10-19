@@ -1,13 +1,13 @@
 package stratego.api.models;
 
-import stratego.domain.StrategoGame;
+import stratego.domain.Playable;
 
 public class PlayerDTO {
 
 	public String name;
-	public StrategoGame strategoGame;
+	public Playable strategoGame;
 
-	public PlayerDTO(StrategoGame strategoGame, String name) {
+	public PlayerDTO(Playable strategoGame, String name) {
 		this.strategoGame = strategoGame;
 		this.name = name;
 	}

@@ -122,6 +122,15 @@ public class Board {
         }
     }
 
+    public Square getSquareWithFlag(Player player) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (this.squares[i][j].getPieceFromSquare() instanceof Flag && this.squares[i][j].getPieceFromSquare().getPlayer() == player) {
+                    return this.squares[i][j];
+                } 
+            }
+        } return null;
+    }
 
     public boolean hasGameEnded() {
         this.checkIfGameHasEnded();
@@ -189,6 +198,14 @@ public class Board {
         if ((xSteps == 0 && ySteps == 0) || (xSteps > 0 && ySteps > 0) || (xSteps > 1 || ySteps > 1)) {
             return false;
         } else {return true;}
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public Player getOpponent() {
+        return this.player.getOpponent();
     }
 
 
