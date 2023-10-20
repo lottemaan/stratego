@@ -22,6 +22,7 @@ export type Square = {
 export type Piece = {
     name: string;
     playerId: number;
+    hasTurn: boolean;
 }
 
 export type Player = {

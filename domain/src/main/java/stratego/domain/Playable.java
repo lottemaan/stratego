@@ -41,5 +41,7 @@ public interface Playable {
     int getPlayerIdFromPiece(int xCoordinate, int yCoordinate);
 
 	boolean hasGameBegun();
+
+    boolean getPlayersTurnFromPiece(int xCoordinate, int yCoordinate);
 }
   

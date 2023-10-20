@@ -32,14 +32,19 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
       for (let x = 0; x < numRows; x++) {
         const cell = gridRows[x][y];
         const pieceName = cell.piece.name;
+        const hasTurn = cell.piece.hasTurn;
         let imageUrl;
 
-        if (pieceName === "marshal") {
+        if (pieceName === "marshal" && hasTurn === true) {
           imageUrl = imageMapping["marshalThatHasTurn"];
+        } else if (pieceName === "flag" && hasTurn === true) {
+          imageUrl = imageMapping["flagThatHasTurn"];
+
         } else if (pieceName == null) {
           imageUrl = imageMapping["noPiece"];
-        } else if (pieceName === "flag") {
-          imageUrl = imageMapping["flagThatHasTurn"];
+
+        } else if (pieceName != null && hasTurn == false) {
+          imageUrl = imageMapping["pieceWithoutTurn"];
         }
 
         const tdStyle = {

@@ -98,9 +98,6 @@ public class Board {
         if(this.hasGameEnded()) {
             this.gameEnds();
         } else {this.player.switchTurns();}
-
-        
-        
     }
         
     public void gameEnds() {
