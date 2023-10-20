@@ -1,6 +1,7 @@
 package stratego.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -395,6 +396,24 @@ public class BoardAndSquaresTest {
         board.doMove(board.getSquare(1,7), board.getSquare(1,6)); 
         assertEquals(true, board.hasGameBegun());
     }
+
+    @Test
+    public void testIfBoardCanReturnTheFlagOfFirstPlayer() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        assertInstanceOf(Flag.class, board.getSquareWithFlag(board.getPlayer()).getPieceFromSquare());
+    }
+
+    @Test
+    public void testIfBoardCanReturnNullIfInputPlayerIsNotCorrect() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        assertNull(board.getSquareWithFlag(new Player()));
+    }
+
+
     
 }
     

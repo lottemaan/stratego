@@ -17,6 +17,17 @@ export const Play = () => {
     const [isPlayer2PopupVisible, setPlayer2PopupVisible] = useState(false);
     const [isEndOfTurnPlayer1PopupVisible, setEndOfTurnPlayer1PopupVisible] = useState(false);
     const [isEndOfTurnPlayer2PopupVisible, setEndOfTurnPlayer2PopupVisible] = useState(false);
+    const [gameIsOver, setGameIsOver] = useState(false);
+    const [winner, setWinner] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (gameState && gameState.gameStatus.endOfGame) {
+            setGameIsOver(true);
+            setWinner(gameState.gameStatus.winner);
+        } else {
+            setGameIsOver(false);
+        }
+    }, [gameState]);
 
     useEffect(() => {
         if (gameState && gameState.players[0].hasTurn === true) {
@@ -26,7 +37,7 @@ export const Play = () => {
         }
     }, [gameState]);
 
-    useEffect(() => { 
+    useEffect(() => {
         if (gameState && gameState.players[1].hasTurn === true) {
             setPlayer2PopupVisible(true);
         } else {
@@ -35,7 +46,7 @@ export const Play = () => {
     }, [gameState]);
 
     useEffect(() => {
-        if (gameState && gameState.players[0].hasTurn === false) {
+        if (gameState && gameState.players[0].hasTurn === false && !gameState.gameStatus.endOfGame) {
             setEndOfTurnPlayer1PopupVisible(true);
         } else {
             setEndOfTurnPlayer1PopupVisible(false);
@@ -43,13 +54,12 @@ export const Play = () => {
     }, [gameState]);
 
     useEffect(() => {
-        if (gameState && gameState.players[1].hasTurn === false  && gameState.gameStatus.gameBegun) {
+        if (gameState && gameState.players[1].hasTurn === false && gameState.gameStatus.gameBegun && !gameState.gameStatus.endOfGame) {
             setEndOfTurnPlayer2PopupVisible(true);
         } else {
             setEndOfTurnPlayer2PopupVisible(false);
         }
     }, [gameState]);
-
 
     async function playGame(xFromSquare: number, yFromSquare: number, xToSquare: number, yToSquare: number) {
         const response = await fetch("stratego/api/play", {
@@ -76,6 +86,20 @@ export const Play = () => {
             };
         }
     }
+
+    // Function to display the winner popup
+    function showWinnerPopup() {
+        if (winner) {
+            alert("Game Over!\nThe winner is: " + winner);
+        }
+    }
+
+    // Call the function when the game ends
+    useEffect(() => {
+        if (gameIsOver) {
+            showWinnerPopup();
+        }
+    }, [gameIsOver, winner]);
 
     return (
         <>
@@ -121,9 +145,13 @@ export const Play = () => {
                 </div>
             </div>
 
+
+
             <div>
-                Player 1: {gameState?.players[1].name}  Player 2: {gameState?.players[1].name}
+                Player 1: {gameState?.players[0].name}  Player 2: {gameState?.players[1].name}
             </div>
         </>
     );
 };
+
+
