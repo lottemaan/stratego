@@ -42,7 +42,7 @@ export const Play = () => {
     }, [gameState]);
 
     useEffect(() => {
-        if (gameState && gameState.players[1].hasTurn === false) {
+        if (gameState && gameState.players[1].hasTurn === false  && gameState.gameStatus.gameBegun) {
             setEndOfTurnPlayer2PopupVisible(true);
         } else {
             setEndOfTurnPlayer2PopupVisible(false);

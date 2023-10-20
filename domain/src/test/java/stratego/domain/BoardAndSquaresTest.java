@@ -385,6 +385,16 @@ public class BoardAndSquaresTest {
         assertEquals(false, board.player.hasTurn()); 
         assertEquals(false, board.opponent.hasTurn()); 
     }
+
+    @Test
+    public void testIfGameHasBegunAfterFirstMove() throws InvalidMoveException {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        assertEquals(false, board.hasGameBegun());
+        board.doMove(board.getSquare(1,7), board.getSquare(1,6)); 
+        assertEquals(true, board.hasGameBegun());
+    }
     
 }
     

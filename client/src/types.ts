@@ -4,6 +4,7 @@ export type GameState = {
     gameStatus: {
         endOfGame: boolean;
         winner: string;
+        gameBegun: boolean;
     };
 }
 

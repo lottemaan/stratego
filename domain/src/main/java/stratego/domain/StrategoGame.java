@@ -116,4 +116,10 @@ public class StrategoGame implements Playable{
             return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getPlayer().getId();
         } else {return 0;}
     }
+
+    @Override
+    public boolean hasGameBegun() {
+        return this.board.hasGameBegun();
+    }
+
 }
