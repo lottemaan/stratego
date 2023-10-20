@@ -1,6 +1,6 @@
 export type GameState = {
-    board: Board;
     players: [Player, Player];
+    board: Board;
     gameStatus: {
         endOfGame: boolean;
         winner: string;
@@ -20,18 +20,13 @@ export type Square = {
 
 export type Piece = {
     name: string;
+    playerId: number;
 }
 
 export type Player = {
     name: string;
-    pits: Pit[];
     type: "player1" | "player2";
     hasTurn: boolean;
-}
-
-export type Pit = {
-    index: number;
-    nrOfStones: number;
 }
 
 export function isGameState(gameState: unknown): gameState is GameState {

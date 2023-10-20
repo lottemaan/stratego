@@ -5,6 +5,7 @@ public class Board {
     Square[][] squares;
     Player player = new Player();
     Player opponent = player.getOpponent();
+    private boolean gameEnded = false;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -58,11 +59,12 @@ public class Board {
             for (int j = 0; j < 10; j++) {
                 if (j < 4) {
                     this.squares[i][j].getPieceFromSquare().assignPlayer(opponent);
-                } if (j > 5) {
+                }
+                if (j > 5) {
                     this.squares[i][j].getPieceFromSquare().assignPlayer(player);
                 }
-    }
-}
+            }
+        }
     }
         
     public Square getSquare(int xCoordinate, int yCoordinate) {
@@ -89,14 +91,54 @@ public class Board {
             toSquare.clearFallenPiece();
             
         }
-        this.player.switchTurns();
+        
+        if(this.hasGameEnded()) {
+            this.gameEnds();
+        } else {this.player.switchTurns();}
+
         
         
     }
         
-        // if (toSquare.getPiece() instanceof Flag && toSquare.getPiece.isCaptured || checkIfOpponentsHasADynamicPiece) {
-        //     gameEnds();
-        // }
+    public void gameEnds() {
+        this.player.gameOver();
+    }
+
+    public void checkIfGameHasEnded() {
+        boolean dynamicPieceFound = false;
+        boolean flagCaptured = false;
+    
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (this.squares[i][j].hasCapturedFlag()) {
+                    flagCaptured = true;
+                } else if (this.squares[i][j].hasDynamicPiece()) {
+                    dynamicPieceFound = true;
+                }
+            }
+        }
+    
+        if (flagCaptured || !dynamicPieceFound) {
+            this.gameEnded = true;
+        }
+    }
+
+    public Square getSquareWithFlag(Player player) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (this.squares[i][j].getPieceFromSquare() instanceof Flag && this.squares[i][j].getPieceFromSquare().getPlayer() == player) {
+                    return this.squares[i][j];
+                } 
+            }
+        } return null;
+    }
+
+    public boolean hasGameEnded() {
+        this.checkIfGameHasEnded();
+        return this.gameEnded;
+    }
+    
+    
         
     public void translocatePiece(Square fromSquare, Square toSquare) {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
@@ -157,6 +199,14 @@ public class Board {
         if ((xSteps == 0 && ySteps == 0) || (xSteps > 0 && ySteps > 0) || (xSteps > 1 || ySteps > 1)) {
             return false;
         } else {return true;}
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public Player getOpponent() {
+        return this.player.getOpponent();
     }
 
 

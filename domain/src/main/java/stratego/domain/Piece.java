@@ -72,10 +72,5 @@ class Flag extends StaticPiece {
 
     public void beCaptured() {
         this.captured = true;
-        this.active = false;
-    }
-
-    public void beAttacked() {
-        this.beCaptured();
     }
 }

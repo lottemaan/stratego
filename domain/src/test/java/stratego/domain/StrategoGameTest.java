@@ -4,8 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.Test;
+
+import stratego.domain.Playable.Winner;
 
 public class StrategoGameTest {
 
@@ -87,7 +90,7 @@ public class StrategoGameTest {
     }
 
     @Test
-     public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
+    public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
 
         Square fromSquare = strategoGame.getSquare(1, 7);
@@ -100,6 +103,85 @@ public class StrategoGameTest {
         
         assertNull(fromSquare.getPieceFromSquare());
         assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
+    }
+
+    @Test
+    public void testIfPlayersTurnCanBeReturned() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        String namePlayerOne = strategoGame.getNameOfPlayerOne();
+        String namePlayerTwo = strategoGame.getNameOfPlayerTwo();
+        boolean isItJantjesTurn = strategoGame.isPlayersTurn("Jantje");
+        boolean isItJipsTurn = strategoGame.isPlayersTurn("Jip");
+        assertEquals("Jantje", namePlayerOne);
+        assertEquals(true, isItJantjesTurn);
+        assertEquals("Jip", namePlayerTwo);
+        assertEquals(false, isItJipsTurn);       
+    }
+
+    @Test
+    public void testIfPlayersSwitchTurnAfterMove() throws InvalidMoveException {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        String namePlayerOne = strategoGame.getNameOfPlayerOne();
+        String namePlayerTwo = strategoGame.getNameOfPlayerTwo();
+        boolean isItJantjesTurn = strategoGame.isPlayersTurn("Jantje");
+        boolean isItJipsTurn = strategoGame.isPlayersTurn("Jip");
+        assertEquals("Jantje", namePlayerOne);
+        assertEquals(true, isItJantjesTurn);
+        assertEquals("Jip", namePlayerTwo);
+        assertEquals(false, isItJipsTurn);
+    
+        strategoGame.doMove(1, 7, 1, 6);
+    
+        isItJantjesTurn = strategoGame.isPlayersTurn("Jantje");
+        isItJipsTurn = strategoGame.isPlayersTurn("Jip");
+    
+        assertEquals(false, isItJantjesTurn);
+        assertEquals(true, isItJipsTurn);
+    }
+
+    @Test
+    public void testIfGameCanReturnTheWinner() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        Winner winner = strategoGame.getWinner();
+        assertSame(Winner.NO_ONE, winner);
+    }
+
+    @Test
+    public void testIfGameCanReturnTheRightPlayerFromAPiece() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(strategoGame.getBoard().getPlayer().getOpponent(), strategoGame.getPlayerFromPiece(1, 1));
+    }
+
+    @Test
+    public void testIfGameCanReturnTheRightPlayerFromAPieceTwo() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(strategoGame.getBoard().getPlayer(), strategoGame.getPlayerFromPiece(10, 10));
+    }
+
+    @Test
+    public void testIfGameReturnsPlayerIdOneFromPieceThatBelongsToPlayerOne() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(1, strategoGame.getPlayerIdFromPiece(10, 10));
+    }
+
+    @Test
+    public void testIfGameReturnsPlayerIdTwoFromPieceThatBelongsToPlayerTwo() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(2, strategoGame.getPlayerIdFromPiece(1, 1));
+    }
+
+    @Test
+    public void testIfGameReturnsMarshalForSquare1by4() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals("marshal", strategoGame.getPieceNameForSquare(1,4));
+    }
+
+    @Test
+    public void testIfGameReturnsNullIfSquareNotOccupiedByPiece() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertNull(strategoGame.getNameFromPiece(5,5));
+        assertNull(strategoGame.getPlayerFromPiece(5,5));
+        assertEquals(0, strategoGame.getPlayerIdFromPiece(5,5));
     }
 
 }

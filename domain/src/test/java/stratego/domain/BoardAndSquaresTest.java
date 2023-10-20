@@ -174,7 +174,6 @@ public class BoardAndSquaresTest {
         Flag flag1 = new Flag();
         board.meet(marshal1, flag1);
         assertEquals(true, flag1.isCaptured());
-        assertEquals(false, flag1.isActive());
         assertEquals(true, marshal1.isActive());
     }
 
@@ -191,21 +190,6 @@ public class BoardAndSquaresTest {
         board.doMove(board.getSquare(1,7),board.getSquare(1,6));
         assertNull(board.getSquare(1,7).getPieceFromSquare());
         assertNull(board.getSquare(1,6).getPieceFromSquare());
-    }
-
-    @Test
-    public void testIfMarshalReplacesFlagOnBoardAfterCapturingFlag() throws InvalidMoveException {
-        Board board = new Board();
-        Player player = new Player();
-        initializeForTesting(board);
-        assignPlayersToPieces(board);
-
-        board.getSquare(1,6).updatePiece(new Flag());
-        board.getSquare(1,6).getPieceFromSquare().assignPlayer(player.getOpponent());
-
-        board.doMove(board.getSquare(1,7),board.getSquare(1,6));
-        assertNull(board.getSquare(1,7).getPieceFromSquare());
-        assertEquals("marshal", board.getSquare(1, 6).getPieceFromSquare().getName());
     }
 
     @Test
@@ -313,6 +297,95 @@ public class BoardAndSquaresTest {
 
         Assertions.assertEquals(   "player attacks its own piece", thrown.getMessage());
     }
+
+    @Test 
+    public void testIfSquareReturnsTrueForDynamicPieceIfItHasMarshal() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        Square squareThatHasMarshal = board.getSquare(3,3);
+        assertEquals(true, squareThatHasMarshal.hasDynamicPiece());
+    }
+
+    @Test 
+    public void testIfSquareReturnsFalseForDynamicPieceIfItHasFlag() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        Square squareThatHasFlag = board.getSquare(1,1);
+        assertEquals(false, squareThatHasFlag.hasDynamicPiece());
+    }
+
+    @Test 
+    public void testIfSquareReturnsFalseForCapturedFlagIfFlagIsStillInGame() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        Square squareThatHasFlag = board.getSquare(1,1);
+        assertEquals(false, squareThatHasFlag.hasCapturedFlag());
+    }
+    
+    @Test 
+    public void testIfSquareReturnsTrueForCapturedFlagIfFlagIsStolen() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        Square squareThatHasFlag = board.getSquare(1,1);
+        ((Flag)(squareThatHasFlag.getPieceFromSquare())).beCaptured();
+        assertEquals(true, squareThatHasFlag.hasCapturedFlag());
+    }
+
+    @Test 
+    public void testIfBoardReturnsFalseForGameHasEndedIfFlagHasNotBeenStolenYet() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        assertEquals(false, board.hasGameEnded());
+    }
+
+    @Test
+    public void testIfBoardReturnsTrueForGameHasEndedIfFlagHasBeenCaptured() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        Square squareThatHasFlag = board.getSquare(1,1);
+        ((Flag)(squareThatHasFlag.getPieceFromSquare())).beCaptured();
+        assertEquals(true, board.hasGameEnded());
+    }
+    
+    @Test
+    public void testIfBoardReturnsTrueForGameHasEndedIfOtherPlayerDoesNotHaveDynamicPiecesAnymore() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (board.squares[i][j].getPieceFromSquare() instanceof Flag) {
+                } else {board.squares[i][j].deletePiece();}
+            }
+        }
+        assertEquals(true, board.hasGameEnded());
+    }
+    
+    @Test
+    public void testIfBothPlayersAreInactiveAfterGameEnds() {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (board.squares[i][j].getPieceFromSquare() instanceof Flag) {
+                } else {board.squares[i][j].deletePiece();}
+            }
+        }
+        board.gameEnds();
+        assertEquals(true, board.hasGameEnded()); 
+        assertEquals(false, board.player.hasTurn()); 
+        assertEquals(false, board.opponent.hasTurn()); 
+    }
+    
 }
     
 

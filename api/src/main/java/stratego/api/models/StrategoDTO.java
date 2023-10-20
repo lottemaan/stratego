@@ -1,5 +1,6 @@
 package stratego.api.models;
 
+import stratego.domain.Playable;
 import stratego.domain.StrategoGame;
 
 public class StrategoDTO {
@@ -8,11 +9,11 @@ public class StrategoDTO {
     private PlayerDTO[] players;
     private BoardDTO board;
 
-    public StrategoDTO(StrategoGame StrategoGame) {
+    public StrategoDTO(Playable StrategoGame) {
         players = new PlayerDTO[2];
         board = new BoardDTO(StrategoGame);
-        // players[0] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerOne());
-        // players[1] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerTwo());
+        players[0] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerOne());
+        players[1] = new PlayerDTO(StrategoGame, StrategoGame.getNameOfPlayerTwo());
         
         gameStatus = new GameStatusDTO(StrategoGame);
 

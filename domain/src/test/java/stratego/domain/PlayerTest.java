@@ -72,4 +72,13 @@ public class PlayerTest {
         piece.assignPlayer(opponent);
         assertEquals(piece.getPlayer().getNamePlayer(), "two");
     }
+
+    @Test
+    public void testIfPlayersAreBothSwitchedToInactiveAfterGameEnds() {
+        Player player = new Player();
+        Player opponent = player.getOpponent();
+        player.gameOver();
+        assertEquals(player.hasTurn(), false);
+        assertEquals(opponent.hasTurn(), false);
+    }
 }
