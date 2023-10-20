@@ -146,4 +146,42 @@ public class StrategoGameTest {
         assertSame(Winner.NO_ONE, winner);
     }
 
+    @Test
+    public void testIfGameCanReturnTheRightPlayerFromAPiece() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(strategoGame.getBoard().getPlayer().getOpponent(), strategoGame.getPlayerFromPiece(1, 1));
+    }
+
+    @Test
+    public void testIfGameCanReturnTheRightPlayerFromAPieceTwo() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(strategoGame.getBoard().getPlayer(), strategoGame.getPlayerFromPiece(10, 10));
+    }
+
+    @Test
+    public void testIfGameReturnsPlayerIdOneFromPieceThatBelongsToPlayerOne() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(1, strategoGame.getPlayerIdFromPiece(10, 10));
+    }
+
+    @Test
+    public void testIfGameReturnsPlayerIdTwoFromPieceThatBelongsToPlayerTwo() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(2, strategoGame.getPlayerIdFromPiece(1, 1));
+    }
+
+    @Test
+    public void testIfGameReturnsMarshalForSquare1by4() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals("marshal", strategoGame.getPieceNameForSquare(1,4));
+    }
+
+    @Test
+    public void testIfGameReturnsNullIfSquareNotOccupiedByPiece() {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertNull(strategoGame.getNameFromPiece(5,5));
+        assertNull(strategoGame.getPlayerFromPiece(5,5));
+        assertEquals(0, strategoGame.getPlayerIdFromPiece(5,5));
+    }
+
 }
