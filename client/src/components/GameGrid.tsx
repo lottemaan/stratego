@@ -43,7 +43,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
         }
 
         const tdStyle = {
-          border: firstClick && firstClick.x === x && firstClick.y === y ? '2px solid red' : '2px solid transparent', // Set transparent border by default
+          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'red' : 'transparent', // Set background color to red for the selected cell
         };
 
         colImages.push(
@@ -61,7 +61,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
     }
 
     return (
-      <table style={{ borderCollapse: 'collapse' }}>
+      <table>
         <tbody>{gridImages}</tbody>
       </table>
     );
