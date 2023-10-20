@@ -1,14 +1,13 @@
 package stratego.api.models;
 
-import stratego.domain.Player;
 
 public class PieceDTO {
     private String name;
-    public Player player;
+    public int playerId;
 
-    public PieceDTO(String name){
+    public PieceDTO(String name, int playerId){
         this.name = name; 
-        this.player = player;
+        this.playerId = playerId;
     }
 
     public String getName() {
@@ -19,8 +18,8 @@ public class PieceDTO {
         this.name = name;
     }
 
-    public Player getPlayer() {
-        return this.player;
+    public int getPlayerId() {
+        return this.playerId;
     }
 }
 

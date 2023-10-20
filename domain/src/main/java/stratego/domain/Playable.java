@@ -37,5 +37,7 @@ public interface Playable {
     String getNameFromPiece(int xCoordinate, int yCoordinate);
 
 	Player getPlayerFromPiece(int xCoordinate, int yCoordinate);
+
+    int getPlayerIdFromPiece(int xCoordinate, int yCoordinate);
 }
   

@@ -1,7 +1,5 @@
 package stratego.api.models;
 
-import stratego.domain.Player;
-
 public class SquareDTO {
     
     private int xCoordinate;
@@ -9,10 +7,10 @@ public class SquareDTO {
     public PieceDTO piece;
 
 
-    public SquareDTO(int xCoordinate, int yCoordinate, String name) {
+    public SquareDTO(int xCoordinate, int yCoordinate, String name, int playerId) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-        this.piece = new PieceDTO(name);
+        this.piece = new PieceDTO(name, playerId);
     }
 
     public int getxCoordinate() {

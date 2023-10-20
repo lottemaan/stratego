@@ -20,7 +20,7 @@ export type Square = {
 
 export type Piece = {
     name: string;
-    players: [Player, Player];
+    playerId: number;
 }
 
 export type Player = {

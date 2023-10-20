@@ -12,7 +12,8 @@ public class BoardDTO {
 			    this.squares[i][j] = new SquareDTO(
 					strategoGame.getXCoordinateFromSquare(i+1, j+1),
                     strategoGame.getYCoordinateFromSquare(i+1, j+1),
-                    strategoGame.getNameFromPiece(i+1, j+1));
+                    strategoGame.getNameFromPiece(i+1, j+1),
+                    strategoGame.getPlayerIdFromPiece(i+1, j+1));
 		    }
         }
     }

@@ -108,4 +108,12 @@ public class StrategoGame implements Playable{
             return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getPlayer();
         } else {return null;}
     }
+
+    @Override
+    public int getPlayerIdFromPiece(int xCoordinate, int yCoordinate){
+        Piece piece = getPieceFromSquare(xCoordinate, yCoordinate);
+        if (piece != null) {
+            return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getPlayer().getId();
+        } else {return 0;}
+    }
 }
