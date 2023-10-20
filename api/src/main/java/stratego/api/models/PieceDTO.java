@@ -3,11 +3,13 @@ package stratego.api.models;
 
 public class PieceDTO {
     private String name;
-    public int playerId;
+    private int playerId;
+    private boolean hasTurn;
 
-    public PieceDTO(String name, int playerId){
+    public PieceDTO(String name, int playerId, boolean hasTurn){
         this.name = name; 
         this.playerId = playerId;
+        this.hasTurn = hasTurn;
     }
 
     public String getName() {
@@ -20,6 +22,10 @@ public class PieceDTO {
 
     public int getPlayerId() {
         return this.playerId;
+    }
+
+    public boolean getHasTurn() {
+        return this.hasTurn;
     }
 }
 

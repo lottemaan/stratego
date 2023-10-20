@@ -1,0 +1,27 @@
+/* modal.css */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top of other content */
+}
+
+.modal-content {
+    background: white;
+    padding: 400px; /* Increase padding to make the box larger */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 80%; /* Control the maximum width of the modal content */
+}
+
+.modal-content h2 {
+    font-size: 24px;
+    margin: 0;
+}

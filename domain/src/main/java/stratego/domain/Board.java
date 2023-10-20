@@ -6,6 +6,7 @@ public class Board {
     Player player = new Player();
     Player opponent = player.getOpponent();
     private boolean gameEnded = false;
+    private boolean gameBegun = false;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -80,6 +81,8 @@ public class Board {
     }
 
     public void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
+        theGameHasBegun();
+
         isMoveLegal(fromSquare, toSquare);
         if (toSquare.getPieceFromSquare() == null) {
             this.translocatePiece(fromSquare, toSquare);
@@ -95,13 +98,20 @@ public class Board {
         if(this.hasGameEnded()) {
             this.gameEnds();
         } else {this.player.switchTurns();}
-
-        
-        
     }
         
     public void gameEnds() {
         this.player.gameOver();
+    }
+
+    public boolean hasGameBegun() {
+        return this.gameBegun;
+    }
+
+    public void theGameHasBegun() {
+        if (!hasGameBegun()) {
+            this.gameBegun = true;
+        }
     }
 
     public void checkIfGameHasEnded() {

@@ -184,4 +184,12 @@ public class StrategoGameTest {
         assertEquals(0, strategoGame.getPlayerIdFromPiece(5,5));
     }
 
+    @Test
+    public void testIfGameHasBegunAfterFirstMove() throws InvalidMoveException {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        assertEquals(false, strategoGame.hasGameBegun());
+        strategoGame.doMove(1,7,1,6); 
+        assertEquals(true, strategoGame.hasGameBegun());
+    }
+
 }
