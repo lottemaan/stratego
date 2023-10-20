@@ -14,6 +14,8 @@ export const Play = () => {
 
     const [isPlayer1PopupVisible, setPlayer1PopupVisible] = useState(false);
     const [isPlayer2PopupVisible, setPlayer2PopupVisible] = useState(false);
+    const [isEndOfTurnPlayer1PopupVisible, setEndOfTurnPlayer1PopupVisible] = useState(false);
+    const [isEndOfTurnPlayer2PopupVisible, setEndOfTurnPlayer2PopupVisible] = useState(false);
 
     useEffect(() => {
         if (gameState && gameState.players[0].hasTurn === true) {
@@ -23,13 +25,30 @@ export const Play = () => {
         }
     }, [gameState]);
 
-    useEffect(() => {
+    useEffect(() => { 
         if (gameState && gameState.players[1].hasTurn === true) {
             setPlayer2PopupVisible(true);
         } else {
             setPlayer2PopupVisible(false);
         }
     }, [gameState]);
+
+    useEffect(() => {
+        if (gameState && gameState.players[0].hasTurn === false) {
+            setEndOfTurnPlayer1PopupVisible(true);
+        } else {
+            setEndOfTurnPlayer1PopupVisible(false);
+        }
+    }, [gameState]);
+
+    useEffect(() => {
+        if (gameState && gameState.players[1].hasTurn === false) {
+            setEndOfTurnPlayer2PopupVisible(true);
+        } else {
+            setEndOfTurnPlayer2PopupVisible(false);
+        }
+    }, [gameState]);
+
 
     async function playGame(xFromSquare: number, yFromSquare: number, xToSquare: number, yToSquare: number) {
         const response = await fetch("stratego/api/play", {
@@ -77,6 +96,24 @@ export const Play = () => {
                     <div className="modal-content">
                         <h2>Speler 2 ben je klaar voor je beurt?</h2>
                         <button onClick={() => setPlayer2PopupVisible(false)}>Ja!</button>
+                    </div>
+                </div>
+            )}
+
+            {isEndOfTurnPlayer1PopupVisible && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Speler 1, geef je beurt door aan speler 2!</h2>
+                        <button onClick={() => setEndOfTurnPlayer1PopupVisible(false)}>Oké</button>
+                    </div>
+                </div>
+            )}
+
+            {isEndOfTurnPlayer2PopupVisible && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Speler 2, geef je beurt door aan speler 1!</h2>
+                        <button onClick={() => setEndOfTurnPlayer2PopupVisible(false)}>Oké</button>
                     </div>
                 </div>
             )}
