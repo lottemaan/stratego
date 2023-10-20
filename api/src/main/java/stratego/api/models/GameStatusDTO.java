@@ -1,22 +1,23 @@
 package stratego.api.models;
 
 import stratego.domain.Playable;
-import stratego.domain.StrategoGame;
+import stratego.domain.Playable.Winner;
 
 public class GameStatusDTO {
 
     public boolean endOfGame;
-    public String winner;
+    public Winner winner;
 
     public GameStatusDTO(Playable StrategoGame) {
         this.endOfGame = StrategoGame.isEndOfGame();
+        this.winner = StrategoGame.getWinner();
     }
 
     public boolean getEndOfGame() {
         return endOfGame;
     }
 
-    public String getWinner() {
-        return winner;
+    public Winner getWinner() {
+        return this.winner;
     }
 }
