@@ -413,8 +413,65 @@ public class BoardAndSquaresTest {
         assertNull(board.getSquareWithFlag(new Player()));
     }
 
+    @Test
+    public void testIfGameEndsWhenSpyEncountersFlag() throws InvalidMoveException {
+        Spy spy = new Spy();
+        Flag flag = new Flag();
+        Board board = new Board();
+        Player player = new Player();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        board.getSquare(5,5).updatePiece(flag);
+        board.getSquare(5,6).updatePiece(spy);
+        Square fromSquare = board.getSquare(5,6);
+        fromSquare.getPieceFromSquare().assignPlayer(player);
+        Square toSquare = board.getSquare(5,5);
+        toSquare.getPieceFromSquare().assignPlayer(player.getOpponent());
+        board.doMove(fromSquare, toSquare);
+        assertEquals(board.hasGameEnded(), true);
+    }
 
-    
+    @Test
+    public void testIfSpyWinsWhenItEncountersMarshal() throws InvalidMoveException {
+        Spy spy = new Spy();
+        Marshal marshal = new Marshal();
+        Board board = new Board();
+        Player player = new Player();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        board.getSquare(5,5).updatePiece(marshal);
+        board.getSquare(5,6).updatePiece(spy);
+        Square fromSquare = board.getSquare(5,6);
+        fromSquare.getPieceFromSquare().assignPlayer(player);
+        Square toSquare = board.getSquare(5,5);
+        toSquare.getPieceFromSquare().assignPlayer(player.getOpponent());
+        board.doMove(fromSquare, toSquare);
+        assertNull(board.getSquare(5,6).getPieceFromSquare());
+        assertInstanceOf(Spy.class, board.getSquare(5,5).getPieceFromSquare());
+        assertEquals(true, board.getSquare(5,5).getPieceFromSquare().isActive());
+    }  
+
+    @Test
+    public void testIfSpyWinsWhenMarshalEncountersSpy() throws InvalidMoveException {
+        Spy spy = new Spy();
+        Marshal marshal = new Marshal();
+        Board board = new Board();
+        Player player = new Player();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        board.getSquare(5,6).updatePiece(marshal);
+        board.getSquare(5,5).updatePiece(spy);
+        Square fromSquare = board.getSquare(5,6);
+        fromSquare.getPieceFromSquare().assignPlayer(player);
+        Square toSquare = board.getSquare(5,5);
+        toSquare.getPieceFromSquare().assignPlayer(player.getOpponent());
+        board.doMove(fromSquare, toSquare);
+        assertNull(board.getSquare(5,6).getPieceFromSquare());
+        assertInstanceOf(Spy.class, board.getSquare(5,5).getPieceFromSquare());
+        assertEquals(true, board.getSquare(5,5).getPieceFromSquare().isActive());
+    } 
+
+
 }
     
 

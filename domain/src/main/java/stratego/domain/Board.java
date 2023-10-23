@@ -161,6 +161,7 @@ public class Board {
         if (!(pieceToBeAttacked instanceof StaticPiece)) {
             battle(attackingPiece, pieceToBeAttacked);
         } else {
+            
             attackingPiece.win();
 
             ((Flag) pieceToBeAttacked).beCaptured();
@@ -168,15 +169,23 @@ public class Board {
     }
 
     public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
-        if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
-            attackingPiece.win();
-            pieceToBeAttacked.fall();
-        } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
+        if (pieceToBeAttacked instanceof Spy && attackingPiece instanceof Marshal) {
             attackingPiece.fall();
             pieceToBeAttacked.win();
-        } else {
-            attackingPiece.fall();
+        } else if (pieceToBeAttacked instanceof Marshal && attackingPiece instanceof Spy) {
+            attackingPiece.win();
             pieceToBeAttacked.fall();
+        } else {
+            if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
+                attackingPiece.win();
+                pieceToBeAttacked.fall();
+            } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
+                attackingPiece.fall();
+                pieceToBeAttacked.win();
+            } else {
+                attackingPiece.fall();
+                pieceToBeAttacked.fall();
+            }
         }
     }
 

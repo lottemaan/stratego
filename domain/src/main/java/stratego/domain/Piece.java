@@ -57,6 +57,14 @@ class Marshal extends DynamicPiece {
     }
 }
 
+class Spy extends DynamicPiece {
+
+    public Spy() {
+        this.name = "spy";
+        this.rank = 10;
+    }
+}
+
 class Flag extends StaticPiece {
 
     private boolean captured;
