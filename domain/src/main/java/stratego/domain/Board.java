@@ -209,6 +209,8 @@ public class Board {
             throw new InvalidMoveException("this piece is not allowed to move");
         } else if (correctMovingDistance(fromSquare, toSquare) == false) {
             throw new InvalidMoveException("the direction or distance the piece has to cover is not allowed");
+        } else if (areInBetweenSquaresClear(fromSquare, toSquare) == false) {
+            throw new InvalidMoveException("a scout is not allowed to jump over pieces");
         } else if (fromSquare.getPieceFromSquare() == null) {
             throw new InvalidMoveException("this square does not contain a piece");
         } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
@@ -220,14 +222,39 @@ public class Board {
             {throw new InvalidMoveException("player attacks its own piece");}
     }
 
+    public boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
+        int x1 = fromSquare.getXCoordinate();
+        int y1 = fromSquare.getYCoordinate();
+        int x2 = toSquare.getXCoordinate();
+        int y2 = toSquare.getYCoordinate();
+    
+        int xStep = (x2 > x1) ? 1 : (x2 < x1) ? -1 : 0;
+        int yStep = (y2 > y1) ? 1 : (y2 < y1) ? -1 : 0;
+    
+        x1 += xStep;
+        y1 += yStep;
+    
+        while (x1 != x2 || y1 != y2) {
+            if (this.getSquare(x1, y1).getPieceFromSquare() != null) {
+                return false; // There's a piece in the way
+            }
+            x1 += xStep;
+            y1 += yStep;
+        }
+    
+        return true;
+    }
     
 
     public boolean correctMovingDistance(Square fromSquare, Square toSquare) {
         int xSteps = Math.abs(toSquare.getXCoordinate() - fromSquare.getXCoordinate());
         int ySteps = Math.abs(toSquare.getYCoordinate() - fromSquare.getYCoordinate());
-        if ((xSteps == 0 && ySteps == 0) || (xSteps > 0 && ySteps > 0) || (xSteps > 1 || ySteps > 1)) {
-            return false;
-        } else {return true;}
+    
+        if (fromSquare.getPieceFromSquare() instanceof Scout) {
+            return (xSteps == 0 && ySteps < 11) || (xSteps < 11 && ySteps == 0);
+        } else {
+            return (xSteps == 1 && ySteps == 0) || (xSteps == 0 && ySteps == 1);
+        }
     }
 
     public Player getPlayer() {

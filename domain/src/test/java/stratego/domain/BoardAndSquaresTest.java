@@ -23,6 +23,15 @@ public class BoardAndSquaresTest {
         }
     }
 
+    public void initializeForTestingEmptyBoard(Board board) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                board.squares[i][j].updatePiece(null);
+                }
+            } 
+        }
+    
+
     private void assignPlayersToPieces(Board board) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -511,6 +520,59 @@ public class BoardAndSquaresTest {
         assertEquals(true, board.getSquare(5,5).getPieceFromSquare().isActive());
     } 
 
+    @Test
+    public void testIfScoutIsAllowedToDoMultipleSteps() throws InvalidMoveException {
+        Scout scout = new Scout();
+        Flag flag = new Flag();
+        Flag flag2 = new Flag();
+        Board board = new Board();
+        Player player = new Player();
+
+        initializeForTestingEmptyBoard(board);
+        board.getSquare(1,1).updatePiece(scout);
+        board.getSquare(3,2).updatePiece(flag);
+        board.getSquare(10,10).updatePiece(flag2);
+
+        board.getSquare(1,1).getPieceFromSquare().assignPlayer(player);
+        board.getSquare(3,2).getPieceFromSquare().assignPlayer(player);
+        board.getSquare(10,10).getPieceFromSquare().assignPlayer(player.getOpponent());
+
+        Square fromSquare = board.getSquare(1,1);
+        Square toSquare = board.getSquare(1,10);
+
+        board.doMove(fromSquare, toSquare);
+        assertNull(board.getSquare(1,1).getPieceFromSquare());
+        assertInstanceOf(Scout.class, board.getSquare(1,10).getPieceFromSquare());
+    }
+
+    @Test
+    public void testIfScoutIsNotAllowedToJumpOverOtherPieces() throws InvalidMoveException {
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Scout scout = new Scout();
+            Flag flag = new Flag();
+            Flag flag2 = new Flag();
+            Board board = new Board();
+            Player player = new Player();
+
+            initializeForTestingEmptyBoard(board);
+            board.getSquare(1,1).updatePiece(scout);
+            board.getSquare(1,2).updatePiece(flag);
+            board.getSquare(10,10).updatePiece(flag2);
+
+            board.getSquare(1,1).getPieceFromSquare().assignPlayer(player);
+            board.getSquare(1,2).getPieceFromSquare().assignPlayer(player);
+            board.getSquare(10,10).getPieceFromSquare().assignPlayer(player.getOpponent());
+
+            Square fromSquare = board.getSquare(1,1);
+            Square toSquare = board.getSquare(1,10);
+
+            board.doMove(fromSquare, toSquare);
+            assertNull(board.getSquare(1,1).getPieceFromSquare());
+            assertInstanceOf(Scout.class, board.getSquare(1,10).getPieceFromSquare());
+        });
+
+        Assertions.assertEquals("a scout is not allowed to jump over pieces", thrown.getMessage());
+    }
 
 }
     
