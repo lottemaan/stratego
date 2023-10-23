@@ -7,6 +7,12 @@ public class Board {
     Player opponent = player.getOpponent();
     private boolean gameEnded = false;
     private boolean gameBegun = false;
+    private int consecutiveMovesPlayer = 0;
+    private int consecutiveMovesOpponent = 0;
+    private Square lastMoveFromSquarePlayer;
+    private Square lastMoveToSquarePlayer;
+    private Square lastMoveFromSquareOpponent;
+    private Square lastMoveToSquareOpponent;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -105,7 +111,9 @@ public class Board {
         
         if(this.hasGameEnded()) {
             this.gameEnds();
-        } else {this.player.switchTurns();}
+        } else {
+            this.moveRecorder(fromSquare, toSquare);
+            this.player.switchTurns();}
     }
         
     public void gameEnds() {
@@ -215,11 +223,49 @@ public class Board {
             throw new InvalidMoveException("this square does not contain a piece");
         } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
             throw new InvalidMoveException("the attacking piece does not belong to player that has turn");
-        } else if (
-            toSquare.getPieceFromSquare() != null && 
-            toSquare.getPieceFromSquare().getPlayer() != null && 
-            toSquare.getPieceFromSquare().getPlayer().hasTurn()) 
-            {throw new InvalidMoveException("player attacks its own piece");}
+        } else if (toSquare.getPieceFromSquare() != null && toSquare.getPieceFromSquare().getPlayer().hasTurn()) {
+            throw new InvalidMoveException("player attacks its own piece");
+        } else if (sameMove5TimesInRow() == true) {
+            throw new InvalidMoveException("it is not allowed to do the same move five times in a row");
+        }
+    }
+
+    private boolean sameMove5TimesInRow() {
+        if (this.consecutiveMovesPlayer == 5 || this.consecutiveMovesOpponent == 5) {
+            return true;
+        } else {return false;}
+    }
+        
+    private void moveRecorder(Square fromSquare, Square toSquare) {
+        if (this.player.hasTurn()) {
+            if (fromSquare.equals(this.lastMoveToSquarePlayer) && toSquare.equals(this.lastMoveFromSquarePlayer)) {
+                // This is a return move for the player, don't count it
+            } else {
+                // This is a new forward move
+                if (toSquare.equals(this.lastMoveToSquarePlayer)) {
+                    // Increment only once for the return move
+                    this.consecutiveMovesPlayer++;
+                } else {
+                    this.consecutiveMovesPlayer = 1;
+                }
+                this.lastMoveFromSquarePlayer = fromSquare;
+                this.lastMoveToSquarePlayer = toSquare;
+            }
+        } else {
+            if (fromSquare.equals(this.lastMoveToSquareOpponent) && toSquare.equals(this.lastMoveFromSquareOpponent)) {
+                // This is a return move for the opponent, don't count it
+            } else {
+                // This is a new forward move for the opponent
+                if (toSquare.equals(this.lastMoveToSquareOpponent)) {
+                    // Increment only once for the return move
+                    this.consecutiveMovesOpponent++;
+                } else {
+                    this.consecutiveMovesOpponent = 1;
+                }
+                this.lastMoveFromSquareOpponent = fromSquare;
+                this.lastMoveToSquareOpponent = toSquare;
+            }
+        }
     }
 
     public boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
@@ -264,11 +310,6 @@ public class Board {
     public Player getOpponent() {
         return this.player.getOpponent();
     }
-
-
-    //if !fromSquare.getPiece() instanceof Scout, toSquare has to be one step away from fromSquare. 
-    //if fromSquare.getPiece() instanceof Scout, there can’t be pieces on the ‘way’ to toSquare
-
 }
 
 
