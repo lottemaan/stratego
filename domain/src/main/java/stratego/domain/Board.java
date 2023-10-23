@@ -36,9 +36,11 @@ public class Board {
                     this.squares[i][j].updatePiece(new Flag()); 
                 } else if ((i == 2 && j == 3) || (i == 8 && j == 8)) {
                     this.squares[i][j].updatePiece(new Spy());
+                } else if ((i == 3 && j == 3) || (i == 9 && j == 9)) {
+                    this.squares[i][j].updatePiece(new Marshal());
                 } else if (j > 3 && j < 6) {
                     this.squares[i][j].updatePiece(null);
-                } else {this.squares[i][j].updatePiece(new Marshal());}
+                } else {this.squares[i][j].updatePiece(new Scout());}
             } 
         }
         assignPlayersToPieces();
@@ -51,9 +53,11 @@ public class Board {
                     this.squares[i][j].updatePiece(new Flag()); 
                 } else if ((i == 3 && j == 3) || (i == 7 && j == 7)) {
                     this.squares[i][j].updatePiece(new Spy());
+                } else if ((i == 1 && j == 3) || (i == 9 && j == 8)) {
+                    this.squares[i][j].updatePiece(new Marshal());
                 } else if (j > 3 && j < 6) {
                     this.squares[i][j].updatePiece(null);
-                } else {this.squares[i][j].updatePiece(new Marshal());}
+                } else {this.squares[i][j].updatePiece(new Scout());}
             } 
         }
         assignPlayersToPieces();
@@ -209,9 +213,11 @@ public class Board {
             throw new InvalidMoveException("this square does not contain a piece");
         } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
             throw new InvalidMoveException("the attacking piece does not belong to player that has turn");
-        } else if (toSquare.getPieceFromSquare() != null && toSquare.getPieceFromSquare().getPlayer().hasTurn()) {
-            throw new InvalidMoveException("player attacks its own piece");
-        }
+        } else if (
+            toSquare.getPieceFromSquare() != null && 
+            toSquare.getPieceFromSquare().getPlayer() != null && 
+            toSquare.getPieceFromSquare().getPlayer().hasTurn()) 
+            {throw new InvalidMoveException("player attacks its own piece");}
     }
 
     

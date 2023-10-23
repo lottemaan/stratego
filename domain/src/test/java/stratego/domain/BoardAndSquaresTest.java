@@ -471,6 +471,46 @@ public class BoardAndSquaresTest {
         assertEquals(true, board.getSquare(5,5).getPieceFromSquare().isActive());
     } 
 
+    @Test
+    public void testIfScoutWinsWhenScoutEncountersSpy() throws InvalidMoveException {
+        Spy spy = new Spy();
+        Scout scout = new Scout();
+        Board board = new Board();
+        Player player = new Player();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        board.getSquare(5,6).updatePiece(scout);
+        board.getSquare(5,5).updatePiece(spy);
+        Square fromSquare = board.getSquare(5,6);
+        fromSquare.getPieceFromSquare().assignPlayer(player);
+        Square toSquare = board.getSquare(5,5);
+        toSquare.getPieceFromSquare().assignPlayer(player.getOpponent());
+        board.doMove(fromSquare, toSquare);
+        assertNull(board.getSquare(5,6).getPieceFromSquare());
+        assertInstanceOf(Scout.class, board.getSquare(5,5).getPieceFromSquare());
+        assertEquals(true, board.getSquare(5,5).getPieceFromSquare().isActive());
+    } 
+
+    @Test
+    public void testIfMarshalWinsWhenMarshalEncountersScout() throws InvalidMoveException {
+        Scout scout = new Scout();
+        Marshal marshal = new Marshal();
+        Board board = new Board();
+        Player player = new Player();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        board.getSquare(5,6).updatePiece(marshal);
+        board.getSquare(5,5).updatePiece(scout);
+        Square fromSquare = board.getSquare(5,6);
+        fromSquare.getPieceFromSquare().assignPlayer(player);
+        Square toSquare = board.getSquare(5,5);
+        toSquare.getPieceFromSquare().assignPlayer(player.getOpponent());
+        board.doMove(fromSquare, toSquare);
+        assertNull(board.getSquare(5,6).getPieceFromSquare());
+        assertInstanceOf(Marshal.class, board.getSquare(5,5).getPieceFromSquare());
+        assertEquals(true, board.getSquare(5,5).getPieceFromSquare().isActive());
+    } 
+
 
 }
     

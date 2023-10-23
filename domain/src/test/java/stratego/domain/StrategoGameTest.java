@@ -12,6 +12,18 @@ import stratego.domain.Playable.Winner;
 
 public class StrategoGameTest {
 
+    private void assignPlayersToPieces(Board board) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (j < 4) {
+                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player.getOpponent());
+                } if (j > 5) {
+                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player);
+                }
+            }
+        }
+    }
+
     public void initializeForTesting(Board board) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -22,6 +34,7 @@ public class StrategoGameTest {
                 } else {board.squares[i][j].updatePiece(new Marshal());}
             } 
         }
+        assignPlayersToPieces(board);
     }
 
     @Test
@@ -92,6 +105,7 @@ public class StrategoGameTest {
     @Test
     public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
         StrategoGame strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
 
         Square fromSquare = strategoGame.getSquare(1, 7);
         Square toSquare = strategoGame.getSquare(1,6);
@@ -173,6 +187,7 @@ public class StrategoGameTest {
     @Test
     public void testIfGameReturnsMarshalForSquare1by4() {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals("marshal", strategoGame.getPieceNameForSquare(1,4));
     }
 

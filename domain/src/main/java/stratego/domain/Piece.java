@@ -65,6 +65,13 @@ class Spy extends DynamicPiece {
     }
 }
 
+class Scout extends DynamicPiece {
+    public Scout() {
+        this.name = "scout";
+        this.rank = 9;
+    }
+}
+
 class Flag extends StaticPiece {
 
     private boolean captured;

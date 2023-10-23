@@ -43,6 +43,8 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
             imageUrl = imageMapping["flagThatHasTurn"];
           } else if (pieceName === 'spy') {
             imageUrl = imageMapping["spyThatHasTurn"];
+          } else if (pieceName === "scout") {
+            imageUrl = imageMapping["scoutThatHasTurn"];
           } else if (pieceName == null) {
             imageUrl = imageMapping["noPiece"];
           } else {
@@ -57,6 +59,8 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
             imageUrl = imageMapping["flagThatHasTurn"];
           } else if (pieceName === 'spy' && hasTurn == true) {
             imageUrl = imageMapping["spyThatHasTurn"];
+          } else if (pieceName === "scout" && hasTurn == true) {
+            imageUrl = imageMapping["scoutThatHasTurn"];
           } else if (pieceName == null) {
             imageUrl = imageMapping["noPiece"];
           } else if (pieceName != null && hasTurn === false) {
