@@ -68,6 +68,33 @@ public class PieceTest {
         assertEquals(1, marshal.getRank());
     }
 
+    @Test
+    public void testIfSpyCanBeCreated() {
+        Spy spy = new Spy();
+        assertNotNull(spy);
+        assertEquals("spy", spy.getName());
+    }
+
+    @Test
+    public void testIfSpyHasRank() {
+        Spy spy = new Spy();
+        assertEquals(10, spy.getRank());
+    }
+
+    @Test
+    public void testIfScoutCanBeCreated() {
+        Scout scout = new Scout();
+        assertNotNull(scout);
+        assertEquals("scout", scout.getName());
+    }
+
+    @Test
+    public void testIfScoutHasRank() {
+        Scout scout = new Scout();
+        assertEquals(9, scout.getRank());
+    }
+
+
 
 
 }

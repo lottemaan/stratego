@@ -34,9 +34,13 @@ public class Board {
             for (int j = 0; j < 10; j++) {
                 if ((i == 1 && j == 3) || (i == 7 && j == 7)) {
                     this.squares[i][j].updatePiece(new Flag()); 
+                } else if ((i == 2 && j == 3) || (i == 8 && j == 8)) {
+                    this.squares[i][j].updatePiece(new Spy());
+                } else if ((i == 3 && j == 3) || (i == 9 && j == 9)) {
+                    this.squares[i][j].updatePiece(new Marshal());
                 } else if (j > 3 && j < 6) {
                     this.squares[i][j].updatePiece(null);
-                } else {this.squares[i][j].updatePiece(new Marshal());}
+                } else {this.squares[i][j].updatePiece(new Scout());}
             } 
         }
         assignPlayersToPieces();
@@ -47,9 +51,13 @@ public class Board {
             for (int j = 0; j < 10; j++) {
                 if ((i == 2 && j == 2) || (i == 8 && j == 8)) {
                     this.squares[i][j].updatePiece(new Flag()); 
+                } else if ((i == 3 && j == 3) || (i == 7 && j == 7)) {
+                    this.squares[i][j].updatePiece(new Spy());
+                } else if ((i == 1 && j == 3) || (i == 9 && j == 8)) {
+                    this.squares[i][j].updatePiece(new Marshal());
                 } else if (j > 3 && j < 6) {
                     this.squares[i][j].updatePiece(null);
-                } else {this.squares[i][j].updatePiece(new Marshal());}
+                } else {this.squares[i][j].updatePiece(new Scout());}
             } 
         }
         assignPlayersToPieces();
@@ -161,6 +169,7 @@ public class Board {
         if (!(pieceToBeAttacked instanceof StaticPiece)) {
             battle(attackingPiece, pieceToBeAttacked);
         } else {
+            
             attackingPiece.win();
 
             ((Flag) pieceToBeAttacked).beCaptured();
@@ -168,15 +177,23 @@ public class Board {
     }
 
     public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
-        if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
-            attackingPiece.win();
-            pieceToBeAttacked.fall();
-        } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
+        if (pieceToBeAttacked instanceof Spy && attackingPiece instanceof Marshal) {
             attackingPiece.fall();
             pieceToBeAttacked.win();
-        } else {
-            attackingPiece.fall();
+        } else if (pieceToBeAttacked instanceof Marshal && attackingPiece instanceof Spy) {
+            attackingPiece.win();
             pieceToBeAttacked.fall();
+        } else {
+            if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
+                attackingPiece.win();
+                pieceToBeAttacked.fall();
+            } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
+                attackingPiece.fall();
+                pieceToBeAttacked.win();
+            } else {
+                attackingPiece.fall();
+                pieceToBeAttacked.fall();
+            }
         }
     }
 
@@ -192,23 +209,52 @@ public class Board {
             throw new InvalidMoveException("this piece is not allowed to move");
         } else if (correctMovingDistance(fromSquare, toSquare) == false) {
             throw new InvalidMoveException("the direction or distance the piece has to cover is not allowed");
+        } else if (areInBetweenSquaresClear(fromSquare, toSquare) == false) {
+            throw new InvalidMoveException("a scout is not allowed to jump over pieces");
         } else if (fromSquare.getPieceFromSquare() == null) {
             throw new InvalidMoveException("this square does not contain a piece");
         } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
             throw new InvalidMoveException("the attacking piece does not belong to player that has turn");
-        } else if (toSquare.getPieceFromSquare() != null && toSquare.getPieceFromSquare().getPlayer().hasTurn()) {
-            throw new InvalidMoveException("player attacks its own piece");
-        }
+        } else if (
+            toSquare.getPieceFromSquare() != null && 
+            toSquare.getPieceFromSquare().getPlayer() != null && 
+            toSquare.getPieceFromSquare().getPlayer().hasTurn()) 
+            {throw new InvalidMoveException("player attacks its own piece");}
     }
 
+    public boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
+        int x1 = fromSquare.getXCoordinate();
+        int y1 = fromSquare.getYCoordinate();
+        int x2 = toSquare.getXCoordinate();
+        int y2 = toSquare.getYCoordinate();
+    
+        int xStep = (x2 > x1) ? 1 : (x2 < x1) ? -1 : 0;
+        int yStep = (y2 > y1) ? 1 : (y2 < y1) ? -1 : 0;
+    
+        x1 += xStep;
+        y1 += yStep;
+    
+        while (x1 != x2 || y1 != y2) {
+            if (this.getSquare(x1, y1).getPieceFromSquare() != null) {
+                return false; // There's a piece in the way
+            }
+            x1 += xStep;
+            y1 += yStep;
+        }
+    
+        return true;
+    }
     
 
     public boolean correctMovingDistance(Square fromSquare, Square toSquare) {
         int xSteps = Math.abs(toSquare.getXCoordinate() - fromSquare.getXCoordinate());
         int ySteps = Math.abs(toSquare.getYCoordinate() - fromSquare.getYCoordinate());
-        if ((xSteps == 0 && ySteps == 0) || (xSteps > 0 && ySteps > 0) || (xSteps > 1 || ySteps > 1)) {
-            return false;
-        } else {return true;}
+    
+        if (fromSquare.getPieceFromSquare() instanceof Scout) {
+            return (xSteps == 0 && ySteps < 11) || (xSteps < 11 && ySteps == 0);
+        } else {
+            return (xSteps == 1 && ySteps == 0) || (xSteps == 0 && ySteps == 1);
+        }
     }
 
     public Player getPlayer() {
