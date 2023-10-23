@@ -10,7 +10,8 @@ export const Play = () => {
         "marshalThatHasTurn": "/marshal.png",
         "pieceWithoutTurn": "/tower.png",
         "noPiece": "/grass.png",
-        "flagThatHasTurn": "/flag.png"
+        "flagThatHasTurn": "/flag.png",
+        "spyThatHasTurn": "/spy.png"
     };
 
     const [isPlayer1PopupVisible, setPlayer1PopupVisible] = useState(false);

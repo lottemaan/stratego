@@ -34,6 +34,8 @@ public class Board {
             for (int j = 0; j < 10; j++) {
                 if ((i == 1 && j == 3) || (i == 7 && j == 7)) {
                     this.squares[i][j].updatePiece(new Flag()); 
+                } else if ((i == 2 && j == 4) || (i == 8 && j == 8)) {
+                    this.squares[i][j].updatePiece(new Spy());
                 } else if (j > 3 && j < 6) {
                     this.squares[i][j].updatePiece(null);
                 } else {this.squares[i][j].updatePiece(new Marshal());}
@@ -47,6 +49,8 @@ public class Board {
             for (int j = 0; j < 10; j++) {
                 if ((i == 2 && j == 2) || (i == 8 && j == 8)) {
                     this.squares[i][j].updatePiece(new Flag()); 
+                } else if ((i == 4 && j == 3) || (i == 7 && j == 7)) {
+                    this.squares[i][j].updatePiece(new Spy());
                 } else if (j > 3 && j < 6) {
                     this.squares[i][j].updatePiece(null);
                 } else {this.squares[i][j].updatePiece(new Marshal());}
