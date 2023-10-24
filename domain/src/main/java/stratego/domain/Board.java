@@ -7,12 +7,6 @@ public class Board {
     Player opponent = player.getOpponent();
     private boolean gameEnded = false;
     private boolean gameBegun = false;
-    private int consecutiveMovesPlayer = 0;
-    private int consecutiveMovesOpponent = 0;
-    private Square lastMoveFromSquarePlayer;
-    private Square lastMoveToSquarePlayer;
-    private Square lastMoveFromSquareOpponent;
-    private Square lastMoveToSquareOpponent;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -96,6 +90,7 @@ public class Board {
 
     public void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
         theGameHasBegun();
+        this.moveRecorder(fromSquare, toSquare);
 
         isMoveLegal(fromSquare, toSquare);
         if (toSquare.getPieceFromSquare() == null) {
@@ -112,7 +107,6 @@ public class Board {
         if(this.hasGameEnded()) {
             this.gameEnds();
         } else {
-            this.moveRecorder(fromSquare, toSquare);
             this.player.switchTurns();}
     }
         
@@ -231,42 +225,23 @@ public class Board {
     }
 
     private boolean sameMove5TimesInRow() {
-        if (this.consecutiveMovesPlayer == 5 || this.consecutiveMovesOpponent == 5) {
+        if (this.getPlayerThatHasTurn().getConsecutiveMoves() == 5) {
             return true;
         } else {return false;}
     }
         
     private void moveRecorder(Square fromSquare, Square toSquare) {
-        if (this.player.hasTurn()) {
-            if (fromSquare.equals(this.lastMoveToSquarePlayer) && toSquare.equals(this.lastMoveFromSquarePlayer)) {
-                // This is a return move for the player, don't count it
-            } else {
-                // This is a new forward move
-                if (toSquare.equals(this.lastMoveToSquarePlayer)) {
-                    // Increment only once for the return move
-                    this.consecutiveMovesPlayer++;
-                } else {
-                    this.consecutiveMovesPlayer = 1;
-                }
-                this.lastMoveFromSquarePlayer = fromSquare;
-                this.lastMoveToSquarePlayer = toSquare;
-            }
+        if (fromSquare.equals(this.getPlayerThatHasTurn().getLastMoveToSquare()) && toSquare.equals(this.getPlayerThatHasTurn().getLastMoveFromSquare())) {
         } else {
-            if (fromSquare.equals(this.lastMoveToSquareOpponent) && toSquare.equals(this.lastMoveFromSquareOpponent)) {
-                // This is a return move for the opponent, don't count it
+            if (toSquare.equals(this.getPlayerThatHasTurn().getLastMoveToSquare())) {
+                this.getPlayerThatHasTurn().addConsecutiveMove();
             } else {
-                // This is a new forward move for the opponent
-                if (toSquare.equals(this.lastMoveToSquareOpponent)) {
-                    // Increment only once for the return move
-                    this.consecutiveMovesOpponent++;
-                } else {
-                    this.consecutiveMovesOpponent = 1;
-                }
-                this.lastMoveFromSquareOpponent = fromSquare;
-                this.lastMoveToSquareOpponent = toSquare;
+                this.getPlayerThatHasTurn().resetConsecutiveMove();
             }
+            this.getPlayerThatHasTurn().setLastMoveFromSquare(fromSquare);
+            this.getPlayerThatHasTurn().setLastMoveToSquare(toSquare);
         }
-    }
+    } 
 
     public boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
         int x1 = fromSquare.getXCoordinate();
@@ -282,7 +257,7 @@ public class Board {
     
         while (x1 != x2 || y1 != y2) {
             if (this.getSquare(x1, y1).getPieceFromSquare() != null) {
-                return false; // There's a piece in the way
+                return false; 
             }
             x1 += xStep;
             y1 += yStep;
@@ -310,6 +285,13 @@ public class Board {
     public Player getOpponent() {
         return this.player.getOpponent();
     }
+
+    public Player getPlayerThatHasTurn() {
+        if (this.player.hasTurn() == true) {
+            return this.player;
+        } else {return this.opponent;}
+    }
+
 }
 
 

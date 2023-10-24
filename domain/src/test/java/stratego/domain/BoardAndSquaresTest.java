@@ -594,22 +594,23 @@ public class BoardAndSquaresTest {
             
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //1
             board.doMove(board.getSquare(8,9), board.getSquare(9,9));
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //2
             board.doMove(board.getSquare(8,9), board.getSquare(9,9));
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //3
             board.doMove(board.getSquare(8,9), board.getSquare(9,9));
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //4
             board.doMove(board.getSquare(8,9), board.getSquare(9,9));
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
+               board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //5
             });
 
         Assertions.assertEquals("it is not allowed to do the same move five times in a row", thrown.getMessage());
@@ -637,30 +638,132 @@ public class BoardAndSquaresTest {
             board.getSquare(10,10).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
             
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
-            board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));    
-            board.doMove(board.getSquare(8,9), board.getSquare(9,9));
+            board.doMove(board.getSquare(9,9), board.getSquare(8,9));  
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1));  //1  
+            board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //1 opponent
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));
-            board.doMove(board.getSquare(8,9), board.getSquare(9,9));
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //2
+            board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //2 opponent
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));
-            board.doMove(board.getSquare(8,9), board.getSquare(9,9));
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //3
+            board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //3 opponent
             board.doMove(board.getSquare(1,1), board.getSquare(2,1));
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(3,1));
-            board.doMove(board.getSquare(8,9), board.getSquare(9,9));
-            board.doMove(board.getSquare(3,1), board.getSquare(2,1));
+            board.doMove(board.getSquare(2,1), board.getSquare(3,1)); 
+            board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //4 opponent
+            board.doMove(board.getSquare(3,1), board.getSquare(2,1)); 
             board.doMove(board.getSquare(9,9), board.getSquare(8,9));
-            board.doMove(board.getSquare(2,1), board.getSquare(1,1));
-            board.doMove(board.getSquare(8,9), board.getSquare(9,9));
+            board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //1
+            board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //5 opponent
             });
 
         Assertions.assertEquals("it is not allowed to do the same move five times in a row", thrown.getMessage());
 
 }
+
+    @Test
+    public void testIfConsecutiveCountsIsNotCountWhenDifferentMovesAreMade() throws InvalidMoveException {
+        Scout scout = new Scout();
+        Scout scout2 = new Scout();
+        Flag flag = new Flag();
+        Flag flag2 = new Flag();
+        Board board = new Board();
+
+        initializeForTestingEmptyBoard(board);
+        board.getSquare(1,1).updatePiece(scout);
+        board.getSquare(1,2).updatePiece(flag);
+        board.getSquare(9,9).updatePiece(scout2);
+        board.getSquare(10,10).updatePiece(flag2);
+
+        board.getSquare(1,1).getPieceFromSquare().assignPlayer(board.getPlayer());
+        board.getSquare(1,2).getPieceFromSquare().assignPlayer(board.getPlayer());
+        board.getSquare(9,9).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+        board.getSquare(10,10).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+        
+        board.doMove(board.getSquare(1,1), board.getSquare(2,1));
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));  
+        board.doMove(board.getSquare(2,1), board.getSquare(1,1));  //1  
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //1 opponent
+        board.doMove(board.getSquare(1,1), board.getSquare(5,1)); //different move forwards
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));
+        board.doMove(board.getSquare(5,1), board.getSquare(1,1)); //same move backwards 
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //2 opponent
+        board.doMove(board.getSquare(1,1), board.getSquare(2,1));
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));
+        board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //1
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //3 opponent
+        board.doMove(board.getSquare(1,1), board.getSquare(2,1));
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));
+        board.doMove(board.getSquare(2,1), board.getSquare(3,1)); 
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //4 opponent
+        board.doMove(board.getSquare(3,1), board.getSquare(2,1)); 
+}
+
+@Test
+    public void testIfPlayerIsAllowedToDoTheSameMoveTwoTimesAndIfItsConsecutiveMovesIsReset() throws InvalidMoveException {
+        Scout scout = new Scout();
+        Scout scout2 = new Scout();
+        Flag flag = new Flag();
+        Flag flag2 = new Flag();
+        Board board = new Board();
+
+        initializeForTestingEmptyBoard(board);
+        board.getSquare(1,1).updatePiece(scout);
+        board.getSquare(1,2).updatePiece(flag);
+        board.getSquare(9,9).updatePiece(scout2);
+        board.getSquare(10,10).updatePiece(flag2);
+
+        board.getSquare(1,1).getPieceFromSquare().assignPlayer(board.getPlayer());
+        board.getSquare(1,2).getPieceFromSquare().assignPlayer(board.getPlayer());
+        board.getSquare(9,9).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+        board.getSquare(10,10).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+        
+        board.doMove(board.getSquare(1,1), board.getSquare(2,1));
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));  
+        board.doMove(board.getSquare(2,1), board.getSquare(1,1));  //1  
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //1 opponent
+        board.doMove(board.getSquare(1,1), board.getSquare(2,1)); 
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));
+        board.doMove(board.getSquare(2,1), board.getSquare(1,1)); //2
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //2 opponent
+        board.doMove(board.getSquare(1,1), board.getSquare(5,1));
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));
+        board.doMove(board.getSquare(5,1), board.getSquare(1,1)); //different move 1
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //3 opponent
+        board.doMove(board.getSquare(1,1), board.getSquare(6,1)); //different move 1
+        board.doMove(board.getSquare(9,9), board.getSquare(8,9));
+        board.doMove(board.getSquare(6,1), board.getSquare(7,1)); //different move 1
+        board.doMove(board.getSquare(8,9), board.getSquare(9,9)); //4 opponent
+        board.doMove(board.getSquare(7,1), board.getSquare(2,1)); //different move 1
+}
+
+    @Test
+    public void testIfInTheBeginningPlayerOneCanBeReturnedAsThePlayerThatHasTurn() {
+        Board board = new Board();
+        assertEquals(board.getPlayer(), board.getPlayerThatHasTurn());
+    }
+
+    @Test
+    public void testIfOpponentCanBeReturnedAsThePlayerThatHasTurnAfterMove() throws InvalidMoveException {
+        Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        
+        Square fromSquare = board.getSquare(1,7);
+        Square toSquare = board.getSquare(1,6);
+
+        assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
+        assertNull(toSquare.getPieceFromSquare());
+        
+        board.doMove(fromSquare, toSquare);
+
+        assertEquals(board.getOpponent(), board.getPlayerThatHasTurn());
+    }
+
+
+
 }
 
     
