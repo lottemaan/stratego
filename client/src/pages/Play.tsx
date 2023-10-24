@@ -17,8 +17,8 @@ export const Play = () => {
 
     const [isPlayer1PopupVisible, setPlayer1PopupVisible] = useState(false);
     const [isPlayer2PopupVisible, setPlayer2PopupVisible] = useState(false);
-    const [isEndOfTurnPlayer1PopupVisible, setEndOfTurnPlayer1PopupVisible] = useState(false);
-    const [isEndOfTurnPlayer2PopupVisible, setEndOfTurnPlayer2PopupVisible] = useState(false);
+    // const [isEndOfTurnPlayer1PopupVisible, setEndOfTurnPlayer1PopupVisible] = useState(false);
+    // const [isEndOfTurnPlayer2PopupVisible, setEndOfTurnPlayer2PopupVisible] = useState(false);
     const [gameIsOver, setGameIsOver] = useState(false);
     const [winner, setWinner] = useState<string | null>(null);
 
@@ -47,21 +47,21 @@ export const Play = () => {
         }
     }, [gameState]);
 
-    useEffect(() => {
-        if (gameState && gameState.players[0].hasTurn === false && !gameState.gameStatus.endOfGame) {
-            setEndOfTurnPlayer1PopupVisible(true);
-        } else {
-            setEndOfTurnPlayer1PopupVisible(false);
-        }
-    }, [gameState]);
+    // useEffect(() => {
+    //     if (gameState && gameState.players[0].hasTurn === false && !gameState.gameStatus.endOfGame) {
+    //         setEndOfTurnPlayer1PopupVisible(true);
+    //     } else {
+    //         setEndOfTurnPlayer1PopupVisible(false);
+    //     }
+    // }, [gameState]);
 
-    useEffect(() => {
-        if (gameState && gameState.players[1].hasTurn === false && gameState.gameStatus.gameBegun && !gameState.gameStatus.endOfGame) {
-            setEndOfTurnPlayer2PopupVisible(true);
-        } else {
-            setEndOfTurnPlayer2PopupVisible(false);
-        }
-    }, [gameState]);
+    // useEffect(() => {
+    //     if (gameState && gameState.players[1].hasTurn === false && gameState.gameStatus.gameBegun && !gameState.gameStatus.endOfGame) {
+    //         setEndOfTurnPlayer2PopupVisible(true);
+    //     } else {
+    //         setEndOfTurnPlayer2PopupVisible(false);
+    //     }
+    // }, [gameState]);
 
     async function playGame(xFromSquare: number, yFromSquare: number, xToSquare: number, yToSquare: number) {
         const response = await fetch("stratego/api/play", {
@@ -123,7 +123,7 @@ export const Play = () => {
                 </div>
             )}
 
-            {isEndOfTurnPlayer1PopupVisible && (
+            {/* {isEndOfTurnPlayer1PopupVisible && (
                 <div className="modal">
                     <div className="modal-content">
                         <h2>{gameState?.players[0].name}, geef je beurt door aan {gameState?.players[1].name}!</h2>
@@ -139,7 +139,7 @@ export const Play = () => {
                         <button onClick={() => setEndOfTurnPlayer2PopupVisible(false)}>Oké</button>
                     </div>
                 </div>
-            )}
+            )} */}
 
             <div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
                 <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto' }}>
