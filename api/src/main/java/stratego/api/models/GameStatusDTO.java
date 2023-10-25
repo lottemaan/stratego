@@ -8,10 +8,12 @@ public class GameStatusDTO {
     public boolean endOfGame;
     public Winner winner;
     public boolean gameBegun;
+    public String winnerName;
 
     public GameStatusDTO(Playable StrategoGame) {
         this.endOfGame = StrategoGame.isEndOfGame();
         this.winner = StrategoGame.getWinner();
+        this.winnerName = StrategoGame.getWinnerName();
         this.gameBegun = StrategoGame.hasGameBegun();
     }
 
@@ -25,5 +27,9 @@ public class GameStatusDTO {
 
     public boolean hasGameBegun() {
         return this.gameBegun;
+    }
+
+    public String getWinnerName() {
+        return this.winnerName;
     }
 }

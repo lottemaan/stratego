@@ -5,6 +5,7 @@ export type GameState = {
         endOfGame: boolean;
         winner: string;
         gameBegun: boolean;
+        winnerName: string;
     };
 }
 
