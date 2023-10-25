@@ -68,7 +68,7 @@ export const Start = () => {
                                 <h2 className="mb-4 text-4xl font-semibold text-white text-center">Welkom bij Stratego</h2>
                                 <h4 className="mb-6 text-xl font-semibold text-white text-center">Voer de namen van de spelers in om te beginnen</h4>
                                 <div className="inputfields">
-                                    <div className="flex flex-col items-center"> {/* Center text and button */}
+                                <div className="flex justify-center space-x-4"> {/* Center text and button with spacing */}
                                         <input
                                             type="text"
                                             value={input1}
@@ -83,15 +83,15 @@ export const Start = () => {
                                             placeholder="naam speler 2"
                                             className="text-black"
                                         />
-                                        <br />
-                                        </div>
-                                        <button
-                                            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
-                                            onClick={() => handlePlayClick()}
-                                        >
-                                            Speel
-                                        </button>
-                                    
+                               
+                                    <br />
+                                    <button
+                                        className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover-bg-blue-700"
+                                        onClick={() => handlePlayClick()}
+                                    >
+                                        Speel
+                                    </button>
+                                    </div>
                                 </div>
                                 <div className="mt-4"></div>
                                 <div className="mt-4"></div>
