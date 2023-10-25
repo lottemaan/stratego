@@ -12,7 +12,7 @@ public class WinnerDAO {
         Connection connection = null;
     
         try {
-            insertInMySQL dbConnector = new insertInMySQL();
+            InsertInMySQL dbConnector = new InsertInMySQL();
             connection = dbConnector.connect();
     
             String checkPlayerSql = "SELECT idPlayer, nrOfGamesWon FROM ranking WHERE playerName = ?";
@@ -82,3 +82,4 @@ public class WinnerDAO {
         }
     }
 }
+
