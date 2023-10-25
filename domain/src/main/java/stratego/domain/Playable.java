@@ -43,5 +43,7 @@ public interface Playable {
 	boolean hasGameBegun();
 
     boolean getPlayersTurnFromPiece(int xCoordinate, int yCoordinate);
+
+    String getWinnerName();
 }
   
