@@ -31,6 +31,11 @@ export type Player = {
     hasTurn: boolean;
 }
 
+export type RankingItem = {
+    playerName: string;
+    nrOfGamesWon: number;
+};
+
 export function isGameState(gameState: unknown): gameState is GameState {
     return (gameState as GameState).players !== undefined;
 }
