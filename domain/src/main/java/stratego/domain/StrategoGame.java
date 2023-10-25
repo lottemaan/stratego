@@ -130,4 +130,15 @@ public class StrategoGame implements Playable{
         return this.board.hasGameBegun();
     }
 
+    @Override
+    public String getWinnerName() {
+        Winner winner = getWinner();
+        if (winner == Winner.PLAYER_1) {
+            return playerOne; 
+        } else if (winner == Winner.PLAYER_2) {
+            return playerTwo;
+        } else {
+            return null;
+        }
+    }
 }

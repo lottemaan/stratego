@@ -22,14 +22,8 @@ export const Play = () => {
     const [gameIsOver, setGameIsOver] = useState(false);
     const [winner, setWinner] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (gameState && gameState.gameStatus.endOfGame) {
-            setGameIsOver(true);
-            setWinner(gameState.gameStatus.winner);
-        } else {
-            setGameIsOver(false);
-        }
-    }, [gameState]);
+
+
 
     useEffect(() => {
         if (gameState && gameState.players[0].hasTurn === true) {
@@ -103,6 +97,18 @@ export const Play = () => {
         }
     }, [gameIsOver, winner]);
 
+
+
+    useEffect(() => {
+        if (gameState && gameState?.gameStatus.endOfGame) {
+            setGameIsOver(true);
+            setWinner(gameState.gameStatus.winner);
+        } else {
+            setGameIsOver(false);
+        }
+    }, [gameState]);
+    
+
     return (
         <>
             {isPlayer1PopupVisible && (
@@ -155,5 +161,7 @@ export const Play = () => {
         </>
     );
 };
+
+
 
 
