@@ -72,6 +72,13 @@ class Scout extends DynamicPiece {
     }
 }
 
+class Miner extends DynamicPiece {
+    public Miner() {
+        this.name = "miner";
+        this.rank = 8;
+    }
+}
+
 class Flag extends StaticPiece {
 
     private boolean captured;
@@ -87,5 +94,13 @@ class Flag extends StaticPiece {
 
     public void beCaptured() {
         this.captured = true;
+    }
+}
+
+class Bomb extends StaticPiece {
+
+        public Bomb() {
+        this.name = "bomb";
+
     }
 }
