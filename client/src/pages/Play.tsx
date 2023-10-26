@@ -14,7 +14,8 @@ export const Play = () => {
         "spyThatHasTurn": "/spy.png",
         "scoutThatHasTurn": "/scout.png",
         "bombThatHasTurn": "/bomb.png",
-        "minerThatHasTurn": "/miner.png"
+        "minerThatHasTurn": "/miner.png",
+        "water": "/water.png"
     };
 
     const [isPlayer1PopupVisible, setPlayer1PopupVisible] = useState(true);

@@ -5,12 +5,14 @@ public class SquareDTO {
     private int xCoordinate;
     private int yCoordinate;
     public PieceDTO piece;
+    public boolean water;
 
 
-    public SquareDTO(int xCoordinate, int yCoordinate, String name, int playerId, boolean hasTurn) {
+    public SquareDTO(int xCoordinate, int yCoordinate, String name, int playerId, boolean hasTurn, boolean water) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.piece = new PieceDTO(name, playerId, hasTurn);
+        this.water = water;
     }
 
     public int getxCoordinate() {
@@ -28,6 +30,10 @@ public class SquareDTO {
 
     public void setyCoordinate(int yCoordinate) {
         this.yCoordinate = yCoordinate;
+    }
+
+    public boolean isWater() {
+        return this.water;
     }
 
 

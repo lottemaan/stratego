@@ -41,11 +41,6 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
   };
   
   
-  
-  
-  
-  
-
   useEffect(() => {
     // Toggle the flipBoard state when the players switch turns (after a move)
     if (gameState && gameState.players[0].hasTurn !== gameState.players[1].hasTurn) {
@@ -68,46 +63,52 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
           : gridRows[x][y];
 
         const pieceName = cell.piece.name;
+        const isWater = cell.water;
+
         let imageUrl;
 
-        if (gameState?.gameStatus.endOfGame) {
-          // Game has ended, ignore 'hasTurn'
-          if (pieceName === "marshal") {
-            imageUrl = imageMapping["marshalThatHasTurn"];
-          } else if (pieceName === "flag") {
-            imageUrl = imageMapping["flagThatHasTurn"];
-          } else if (pieceName === 'spy') {
-            imageUrl = imageMapping["spyThatHasTurn"];
-          } else if (pieceName === "scout") {
-            imageUrl = imageMapping["scoutThatHasTurn"];
-          } else if (pieceName === "miner") {
-            imageUrl = imageMapping["minerThatHasTurn"];
-          } else if (pieceName === "bomb") {
-            imageUrl = imageMapping["bombThatHasTurn"];
-          } else if (pieceName == null) {
-            imageUrl = imageMapping["noPiece"];
-          } else {
-            imageUrl = imageMapping["pieceWithoutTurn"];
-          }
+        if (isWater) {
+          imageUrl = imageMapping['water'];
         } else {
-          // Game is ongoing, consider 'hasTurn'
-          const hasTurn = cell.piece.hasTurn;
-          if (pieceName === "marshal" && hasTurn === true) {
-            imageUrl = imageMapping["marshalThatHasTurn"];
-          } else if (pieceName === "flag" && hasTurn === true) {
-            imageUrl = imageMapping["flagThatHasTurn"];
-          } else if (pieceName === 'spy' && hasTurn == true) {
-            imageUrl = imageMapping["spyThatHasTurn"];
-          } else if (pieceName === "scout" && hasTurn == true) {
-            imageUrl = imageMapping["scoutThatHasTurn"];
-          } else if (pieceName === "miner" && hasTurn == true) {
-            imageUrl = imageMapping["minerThatHasTurn"];
-          } else if (pieceName === "bomb" && hasTurn == true) {
-            imageUrl = imageMapping["bombThatHasTurn"];
-          } else if (pieceName == null) {
-            imageUrl = imageMapping["noPiece"];
-          } else if (pieceName != null && hasTurn === false) {
-            imageUrl = imageMapping["pieceWithoutTurn"];
+          if (gameState?.gameStatus.endOfGame) {
+            // Game has ended, ignore 'hasTurn'
+            if (pieceName === "marshal") {
+              imageUrl = imageMapping["marshalThatHasTurn"];
+            } else if (pieceName === "flag") {
+              imageUrl = imageMapping["flagThatHasTurn"];
+            } else if (pieceName === 'spy') {
+              imageUrl = imageMapping["spyThatHasTurn"];
+            } else if (pieceName === "scout") {
+              imageUrl = imageMapping["scoutThatHasTurn"];
+            } else if (pieceName === "miner") {
+              imageUrl = imageMapping["minerThatHasTurn"];
+            } else if (pieceName === "bomb") {
+              imageUrl = imageMapping["bombThatHasTurn"];
+            } else if (pieceName == null) {
+              imageUrl = imageMapping["noPiece"];
+            } else {
+              imageUrl = imageMapping["pieceWithoutTurn"];
+            }
+          } else {
+            // Game is ongoing, consider 'hasTurn'
+            const hasTurn = cell.piece.hasTurn;
+            if (pieceName === "marshal" && hasTurn === true) {
+              imageUrl = imageMapping["marshalThatHasTurn"];
+            } else if (pieceName === "flag" && hasTurn === true) {
+              imageUrl = imageMapping["flagThatHasTurn"];
+            } else if (pieceName === 'spy' && hasTurn == true) {
+              imageUrl = imageMapping["spyThatHasTurn"];
+            } else if (pieceName === "scout" && hasTurn == true) {
+              imageUrl = imageMapping["scoutThatHasTurn"];
+            } else if (pieceName === "miner" && hasTurn == true) {
+              imageUrl = imageMapping["minerThatHasTurn"];
+            } else if (pieceName === "bomb" && hasTurn == true) {
+              imageUrl = imageMapping["bombThatHasTurn"];
+            } else if (pieceName == null) {
+              imageUrl = imageMapping["noPiece"];
+            } else if (pieceName != null && hasTurn === false) {
+              imageUrl = imageMapping["pieceWithoutTurn"];
+            }
           }
         }
 

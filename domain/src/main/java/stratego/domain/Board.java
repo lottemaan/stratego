@@ -1,5 +1,4 @@
 package stratego.domain;
-import java.util.Random;
 
 public class Board {
     Square[][] squares;
@@ -7,105 +6,18 @@ public class Board {
     Player opponent = player.getOpponent();
     private boolean gameEnded = false;
     private boolean gameBegun = false;
+    BoardInitialization boardInitialization = new BoardInitialization();
 
     public Board() {
         this.squares = new Square[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                this.squares[i][j] = new Square(i + 1, j + 1); //because you want to start at coordinate 1,1
-            } 
-        }
-        this.initializeRandomly();
-    }
-
-    public void initializeRandomly() {
-        Random random = new Random();
-        int choice = random.nextInt(2);
-
-        if (choice == 0) {
-            initializeScript1();
-        } else {
-            initializeScript2();
-        }
-    }
-
-    private void initializeScript1() {
-        this.squares[0][0].updatePiece(new Flag());
-        this.squares[9][9].updatePiece(new Flag());
-        this.squares[4][1].updatePiece(new Marshal());
-        this.squares[7][9].updatePiece(new Marshal());
-        this.squares[2][3].updatePiece(new Spy());
-        this.squares[7][8].updatePiece(new Spy());
-
-        this.squares[0][1].updatePiece(new Bomb());
-        this.squares[1][1].updatePiece(new Bomb());
-        this.squares[1][0].updatePiece(new Bomb());
-        this.squares[3][3].updatePiece(new Bomb());
-        this.squares[4][3].updatePiece(new Bomb());
-        this.squares[5][3].updatePiece(new Bomb());
-
-        this.squares[8][9].updatePiece(new Bomb());
-        this.squares[8][8].updatePiece(new Bomb());
-        this.squares[9][8].updatePiece(new Bomb());
-        this.squares[6][6].updatePiece(new Bomb());
-        this.squares[7][6].updatePiece(new Bomb());
-        this.squares[1][6].updatePiece(new Bomb());
-
-        this.squares[6][2].updatePiece(new Miner());
-        this.squares[7][2].updatePiece(new Miner());
-        this.squares[8][2].updatePiece(new Miner());
-        this.squares[6][1].updatePiece(new Miner());
-        this.squares[7][1].updatePiece(new Miner());
-
-        this.squares[1][7].updatePiece(new Miner());
-        this.squares[3][7].updatePiece(new Miner());
-        this.squares[5][7].updatePiece(new Miner());
-        this.squares[8][7].updatePiece(new Miner());
-        this.squares[9][7].updatePiece(new Miner());
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (j < 4 || j > 5){
-                    if (this.squares[i][j].getPieceFromSquare() == null) {
-                        this.squares[i][j].updatePiece(new Scout());
-                    } 
-                
-                } 
+                this.squares[i][j] = new Square(i + 1, j + 1);
             }
         }
-        assignPlayersToPieces();
-    } 
-
-    private void initializeScript2() { 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if ((i == 2 && j == 2) || (i == 8 && j == 8)) {
-                    this.squares[i][j].updatePiece(new Flag()); 
-                } else if ((i == 3 && j == 3) || (i == 7 && j == 7)) {
-                    this.squares[i][j].updatePiece(new Spy());
-                } else if ((i == 1 && j == 3) || (i == 9 && j == 8)) {
-                    this.squares[i][j].updatePiece(new Marshal());
-                } else if (j > 3 && j < 6) {
-                    this.squares[i][j].updatePiece(null);
-                } else {this.squares[i][j].updatePiece(new Scout());}
-            } 
-        }
-        assignPlayersToPieces();
+        boardInitialization.initializeRandomly(this.squares, this.player, this.opponent);
     }
 
-    private void assignPlayersToPieces() {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (j < 4) {
-                    this.squares[i][j].getPieceFromSquare().assignPlayer(opponent);
-                }
-                if (j > 5) {
-                    this.squares[i][j].getPieceFromSquare().assignPlayer(player);
-                }
-            }
-        }
-    }
-        
     public Square getSquare(int xCoordinate, int yCoordinate) {
         return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
     }
@@ -187,9 +99,7 @@ public class Board {
         this.checkIfGameHasEnded();
         return this.gameEnded;
     }
-    
-    
-        
+     
     public void translocatePiece(Square fromSquare, Square toSquare) {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
             toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
@@ -242,7 +152,20 @@ public class Board {
             translocatePiece(fromSquare, toSquare);
         }
     }
-        
+   
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public Player getOpponent() {
+        return this.player.getOpponent();
+    }
+
+    public Player getPlayerThatHasTurn() {
+        if (this.player.hasTurn() == true) {
+            return this.player;
+        } else {return this.opponent;}
+    }
 
     public void isMoveLegal(Square fromSquare, Square toSquare) throws InvalidMoveException {
         if (fromSquare.getPieceFromSquare() instanceof StaticPiece) {
@@ -250,7 +173,7 @@ public class Board {
         } else if (correctMovingDistance(fromSquare, toSquare) == false) {
             throw new InvalidMoveException("the direction or distance the piece has to cover is not allowed");
         } else if (areInBetweenSquaresClear(fromSquare, toSquare) == false) {
-            throw new InvalidMoveException("a scout is not allowed to jump over pieces");
+            throw new InvalidMoveException("a scout is not allowed to jump over pieces or water");
         } else if (fromSquare.getPieceFromSquare() == null) {
             throw new InvalidMoveException("this square does not contain a piece");
         } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
@@ -259,6 +182,8 @@ public class Board {
             throw new InvalidMoveException("player attacks its own piece");
         } else if (sameMove5TimesInRow() == true) {
             throw new InvalidMoveException("it is not allowed to do the same move five times in a row");
+        } else if (toSquare.isWater()) {
+            throw new InvalidMoveException("the piece is not allowed to go in water");
         }
     }
 
@@ -267,7 +192,7 @@ public class Board {
             return true;
         } else {return false;}
     }
-        
+
     private void moveRecorder(Square fromSquare, Square toSquare) {
         if (fromSquare.equals(this.getPlayerThatHasTurn().getLastMoveToSquare()) && toSquare.equals(this.getPlayerThatHasTurn().getLastMoveFromSquare())) {
         } else {
@@ -279,7 +204,7 @@ public class Board {
             this.getPlayerThatHasTurn().setLastMoveFromSquare(fromSquare);
             this.getPlayerThatHasTurn().setLastMoveToSquare(toSquare);
         }
-    } 
+    }     
 
     public boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
         int x1 = fromSquare.getXCoordinate();
@@ -294,9 +219,18 @@ public class Board {
         y1 += yStep;
     
         while (x1 != x2 || y1 != y2) {
-            if (this.getSquare(x1, y1).getPieceFromSquare() != null) {
-                return false; 
+            Square currentSquare = this.getSquare(x1, y1);
+            
+            // Check if the current square contains water
+            if (currentSquare.isWater()) {
+                return false;
             }
+            
+            // Check if the current square contains a piece
+            if (currentSquare.getPieceFromSquare() != null) {
+                return false;
+            }
+            
             x1 += xStep;
             y1 += yStep;
         }
@@ -315,21 +249,6 @@ public class Board {
             return (xSteps == 1 && ySteps == 0) || (xSteps == 0 && ySteps == 1);
         }
     }
-
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    public Player getOpponent() {
-        return this.player.getOpponent();
-    }
-
-    public Player getPlayerThatHasTurn() {
-        if (this.player.hasTurn() == true) {
-            return this.player;
-        } else {return this.opponent;}
-    }
-
 }
 
 
