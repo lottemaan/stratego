@@ -1,0 +1,8 @@
+.centered-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Add space between grid and name */
+    font-size: 24px; /* Adjust font size as needed */
+    font-weight: bold; /* Make the font bold */
+}

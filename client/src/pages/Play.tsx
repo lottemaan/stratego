@@ -2,6 +2,7 @@ import { useMancalaGame } from "../contexts/StrategoGameContext";
 import GameGrid from '../components/GameGrid';
 import { useState, useEffect } from "react";
 import '../modal.css';
+import '../styles.css';
 
 export const Play = () => {
     const { gameState, setGameState } = useMancalaGame();
@@ -116,9 +117,10 @@ export const Play = () => {
 
 
 
-            <div>
-                Player 1: {gameState?.players[0].name}  Player 2: {gameState?.players[1].name}
+            <div className="centered-text">
+                het is jouw beurt { gameState!.players[0]!.hasTurn ? gameState!.players[0]!.name : gameState!.players[1]!.name }!
             </div>
         </>
     );
 };
+
