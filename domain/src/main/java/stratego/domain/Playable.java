@@ -45,5 +45,7 @@ public interface Playable {
     boolean getPlayersTurnFromPiece(int xCoordinate, int yCoordinate);
 
     String getWinnerName();
+
+    boolean isSquareWater(int xCoordinate, int yCoordinate);
 }
   

@@ -15,6 +15,7 @@ export type Board = {
 
 
 export type Square = {
+    water: boolean;
     xCoordinate: number;
     yCoordinate: number;
     piece: Piece;

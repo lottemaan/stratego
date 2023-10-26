@@ -4,6 +4,7 @@ public class Square {
     private int xCoordinate;
     private int yCoordinate;
     private Piece piece;
+    private boolean water = false;
 
     public Square(int xCoordinate, int yCoordinate) {
         this.xCoordinate = xCoordinate;
@@ -47,6 +48,14 @@ public class Square {
         if (piece != null && !piece.isActive()) {
             this.deletePiece();
         }
+    }
+
+    public boolean isWater(){
+        return this.water;
+    }
+
+    public void turnInWater(){
+        this.water = true;
     }
 
 

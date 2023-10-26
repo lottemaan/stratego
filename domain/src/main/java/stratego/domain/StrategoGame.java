@@ -141,4 +141,9 @@ public class StrategoGame implements Playable{
             return null;
         }
     }
+
+    @Override
+    public boolean isSquareWater(int xCoordinate, int yCoordinate) {
+        return this.board.getSquare(xCoordinate, yCoordinate).isWater();
+    }
 }

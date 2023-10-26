@@ -14,7 +14,8 @@ public class BoardDTO {
                     strategoGame.getYCoordinateFromSquare(i+1, j+1),
                     strategoGame.getNameFromPiece(i+1, j+1),
                     strategoGame.getPlayerIdFromPiece(i+1, j+1),
-                    strategoGame.getPlayersTurnFromPiece(i+1, j+1));
+                    strategoGame.getPlayersTurnFromPiece(i+1, j+1),
+                    strategoGame.isSquareWater(i+1, j+1));
 		    }
         }
     }
