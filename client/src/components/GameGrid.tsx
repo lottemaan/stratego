@@ -80,6 +80,10 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
             imageUrl = imageMapping["spyThatHasTurn"];
           } else if (pieceName === "scout") {
             imageUrl = imageMapping["scoutThatHasTurn"];
+          } else if (pieceName === "miner") {
+            imageUrl = imageMapping["minerThatHasTurn"];
+          } else if (pieceName === "bomb") {
+            imageUrl = imageMapping["bombThatHasTurn"];
           } else if (pieceName == null) {
             imageUrl = imageMapping["noPiece"];
           } else {
@@ -96,6 +100,10 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
             imageUrl = imageMapping["spyThatHasTurn"];
           } else if (pieceName === "scout" && hasTurn == true) {
             imageUrl = imageMapping["scoutThatHasTurn"];
+          } else if (pieceName === "miner" && hasTurn == true) {
+            imageUrl = imageMapping["minerThatHasTurn"];
+          } else if (pieceName === "bomb" && hasTurn == true) {
+            imageUrl = imageMapping["bombThatHasTurn"];
           } else if (pieceName == null) {
             imageUrl = imageMapping["noPiece"];
           } else if (pieceName != null && hasTurn === false) {
