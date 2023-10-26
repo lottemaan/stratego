@@ -36,7 +36,9 @@ public class Square {
     }
 
     protected void updatePiece(Piece piece) {
-        this.piece = piece;
+        if (!this.isWater()) {
+            this.piece = piece;
+        } 
     }
 
     public void deletePiece() {

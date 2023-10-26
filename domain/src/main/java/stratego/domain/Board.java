@@ -173,7 +173,7 @@ public class Board {
         } else if (correctMovingDistance(fromSquare, toSquare) == false) {
             throw new InvalidMoveException("the direction or distance the piece has to cover is not allowed");
         } else if (areInBetweenSquaresClear(fromSquare, toSquare) == false) {
-            throw new InvalidMoveException("a scout is not allowed to jump over pieces");
+            throw new InvalidMoveException("a scout is not allowed to jump over pieces or water");
         } else if (fromSquare.getPieceFromSquare() == null) {
             throw new InvalidMoveException("this square does not contain a piece");
         } else if (!fromSquare.getPieceFromSquare().getPlayer().hasTurn()) {
@@ -182,6 +182,8 @@ public class Board {
             throw new InvalidMoveException("player attacks its own piece");
         } else if (sameMove5TimesInRow() == true) {
             throw new InvalidMoveException("it is not allowed to do the same move five times in a row");
+        } else if (toSquare.isWater()) {
+            throw new InvalidMoveException("the piece is not allowed to go in water");
         }
     }
 
@@ -217,9 +219,18 @@ public class Board {
         y1 += yStep;
     
         while (x1 != x2 || y1 != y2) {
-            if (this.getSquare(x1, y1).getPieceFromSquare() != null) {
-                return false; 
+            Square currentSquare = this.getSquare(x1, y1);
+            
+            // Check if the current square contains water
+            if (currentSquare.isWater()) {
+                return false;
             }
+            
+            // Check if the current square contains a piece
+            if (currentSquare.getPieceFromSquare() != null) {
+                return false;
+            }
+            
             x1 += xStep;
             y1 += yStep;
         }

@@ -592,7 +592,7 @@ public class BoardAndSquaresTest {
             board.doMove(fromSquare, toSquare);
         });
 
-        Assertions.assertEquals("a scout is not allowed to jump over pieces", thrown.getMessage());
+        Assertions.assertEquals("a scout is not allowed to jump over pieces or water", thrown.getMessage());
     }
 
     @Test
@@ -856,6 +856,60 @@ public class BoardAndSquaresTest {
         assertEquals(true, board.getSquare(8, 6).isWater());
         assertEquals(false, board.getSquare(2, 2).isWater());
         assertEquals(false, board.getSquare(8, 8).isWater());
+    }
+
+    @Test
+    public void testIfScoutIsNotAllowedToJumpOverWater() throws InvalidMoveException {
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Scout scout = new Scout();
+            Flag flag = new Flag();
+            Flag flag2 = new Flag();
+            Board board = new Board();
+            Player player = new Player();
+
+            initializeForTestingBoardWithWater(board);
+            board.getSquare(3, 4).updatePiece(scout);
+            board.getSquare(1, 2).updatePiece(flag);
+            board.getSquare(10, 10).updatePiece(flag2);
+
+            board.getSquare(3, 4).getPieceFromSquare().assignPlayer(player);
+            board.getSquare(1, 2).getPieceFromSquare().assignPlayer(player);
+            board.getSquare(10, 10).getPieceFromSquare().assignPlayer(player.getOpponent());
+
+            Square fromSquare = board.getSquare(3, 4);
+            Square toSquare = board.getSquare(3, 7);
+
+            board.doMove(fromSquare, toSquare);
+        });
+
+        Assertions.assertEquals("a scout is not allowed to jump over pieces or water", thrown.getMessage());
+    }
+
+    @Test
+    public void testIfScoutIsNotAllowedToGoInWater() throws InvalidMoveException {
+        InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
+            Scout scout = new Scout();
+            Flag flag = new Flag();
+            Flag flag2 = new Flag();
+            Board board = new Board();
+            Player player = new Player();
+
+            initializeForTestingBoardWithWater(board);
+            board.getSquare(3, 4).updatePiece(scout);
+            board.getSquare(1, 2).updatePiece(flag);
+            board.getSquare(10, 10).updatePiece(flag2);
+
+            board.getSquare(3, 4).getPieceFromSquare().assignPlayer(player);
+            board.getSquare(1, 2).getPieceFromSquare().assignPlayer(player);
+            board.getSquare(10, 10).getPieceFromSquare().assignPlayer(player.getOpponent());
+
+            Square fromSquare = board.getSquare(3, 4);
+            Square toSquare = board.getSquare(3, 5);
+
+            board.doMove(fromSquare, toSquare);
+        });
+
+        Assertions.assertEquals("the piece is not allowed to go in water", thrown.getMessage());
     }
 
 }
