@@ -94,6 +94,38 @@ public class PieceTest {
         assertEquals(9, scout.getRank());
     }
 
+    @Test
+    public void testIfMinerHasRank() {
+        Miner miner = new Miner();
+        assertEquals(8, miner.getRank());
+    }
+
+    @Test
+    public void testIfMinerCanBeCreated() {
+        Miner miner = new Miner();
+        assertNotNull(miner);
+        assertInstanceOf(DynamicPiece.class, miner);
+        assertEquals(miner.getName(), "miner");
+    }
+
+    @Test
+    public void testIfBombCanBeCreated() {
+        Bomb bomb = new Bomb();
+        assertNotNull(bomb);
+        assertInstanceOf(StaticPiece.class, bomb);
+        assertEquals(bomb.getName(), "bomb");
+    }
+
+    @Test
+    public void testIfBombCanBeAssignedAPlayer() {
+        Bomb bomb = new Bomb();
+        Player player = new Player();
+        bomb.assignPlayer(player);
+        assertEquals(bomb.getPlayer(), player);
+    }
+
+
+
 
 
 

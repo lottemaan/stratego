@@ -30,18 +30,48 @@ public class Board {
     }
 
     private void initializeScript1() {
+        this.squares[0][0].updatePiece(new Flag());
+        this.squares[9][9].updatePiece(new Flag());
+        this.squares[4][1].updatePiece(new Marshal());
+        this.squares[7][9].updatePiece(new Marshal());
+        this.squares[2][3].updatePiece(new Spy());
+        this.squares[7][8].updatePiece(new Spy());
+
+        this.squares[0][1].updatePiece(new Bomb());
+        this.squares[1][1].updatePiece(new Bomb());
+        this.squares[1][0].updatePiece(new Bomb());
+        this.squares[3][3].updatePiece(new Bomb());
+        this.squares[4][3].updatePiece(new Bomb());
+        this.squares[5][3].updatePiece(new Bomb());
+
+        this.squares[8][9].updatePiece(new Bomb());
+        this.squares[8][8].updatePiece(new Bomb());
+        this.squares[9][8].updatePiece(new Bomb());
+        this.squares[6][6].updatePiece(new Bomb());
+        this.squares[7][6].updatePiece(new Bomb());
+        this.squares[1][6].updatePiece(new Bomb());
+
+        this.squares[6][2].updatePiece(new Miner());
+        this.squares[7][2].updatePiece(new Miner());
+        this.squares[8][2].updatePiece(new Miner());
+        this.squares[6][1].updatePiece(new Miner());
+        this.squares[7][1].updatePiece(new Miner());
+
+        this.squares[1][7].updatePiece(new Miner());
+        this.squares[3][7].updatePiece(new Miner());
+        this.squares[5][7].updatePiece(new Miner());
+        this.squares[8][7].updatePiece(new Miner());
+        this.squares[9][7].updatePiece(new Miner());
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if ((i == 1 && j == 3) || (i == 7 && j == 7)) {
-                    this.squares[i][j].updatePiece(new Flag()); 
-                } else if ((i == 2 && j == 3) || (i == 8 && j == 8)) {
-                    this.squares[i][j].updatePiece(new Spy());
-                } else if ((i == 3 && j == 3) || (i == 9 && j == 9)) {
-                    this.squares[i][j].updatePiece(new Marshal());
-                } else if (j > 3 && j < 6) {
-                    this.squares[i][j].updatePiece(null);
-                } else {this.squares[i][j].updatePiece(new Scout());}
-            } 
+                if (j < 4 || j > 5){
+                    if (this.squares[i][j].getPieceFromSquare() == null) {
+                        this.squares[i][j].updatePiece(new Scout());
+                    } 
+                
+                } 
+            }
         }
         assignPlayersToPieces();
     } 
@@ -171,10 +201,18 @@ public class Board {
         if (!(pieceToBeAttacked instanceof StaticPiece)) {
             battle(attackingPiece, pieceToBeAttacked);
         } else {
-            
-            attackingPiece.win();
-
-            ((Flag) pieceToBeAttacked).beCaptured();
+            if(pieceToBeAttacked instanceof Flag){
+                attackingPiece.win();
+                ((Flag) pieceToBeAttacked).beCaptured();
+            } else if (pieceToBeAttacked instanceof Bomb) {
+                if(attackingPiece instanceof Miner){
+                    attackingPiece.win();
+                    pieceToBeAttacked.fall();
+                } else {
+                    pieceToBeAttacked.win();
+                    attackingPiece.fall();
+                }
+            }
         }
     }
 
