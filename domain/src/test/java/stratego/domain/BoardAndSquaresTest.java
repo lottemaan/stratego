@@ -912,6 +912,39 @@ public class BoardAndSquaresTest {
         Assertions.assertEquals("the piece is not allowed to go in water", thrown.getMessage());
     }
 
+    @Test
+    public void testIfPieceReturnsBattleWonWhenItHasWon() throws InvalidMoveException {
+        Bomb bomb = new Bomb();
+        Marshal marshal = new Marshal();
+        Scout scout = new Scout();
+        Flag flag = new Flag();
+        Flag flag2 = new Flag();
+        Scout scout2 = new Scout();
+        Board board = new Board();
+
+        initializeForTestingEmptyBoard(board);
+        board.getSquare(1, 7).updatePiece(marshal);
+        board.getSquare(1, 6).updatePiece(flag);
+        board.getSquare(9,10).updatePiece(scout);
+        board.getSquare(1, 6).updatePiece(bomb);
+        board.getSquare(10, 10).updatePiece(flag2);
+        board.getSquare(8,10).updatePiece(scout2);
+
+        board.getSquare(1, 7).getPieceFromSquare().assignPlayer(board.getPlayer());
+        board.getSquare(1, 6).getPieceFromSquare().assignPlayer(board.getPlayer());
+        board.getSquare(9, 10).getPieceFromSquare().assignPlayer(board.getPlayer());
+        board.getSquare(1, 6).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+        board.getSquare(10, 10).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+        board.getSquare(8, 10).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+
+        assertEquals(false, board.getSquare(1, 6).getPieceFromSquare().hasBattleWon());
+        board.doMove(board.getSquare(1, 7), board.getSquare(1, 6));
+        assertEquals("bomb", board.getSquare(1, 6).getPieceFromSquare().getName());
+        assertEquals(true, board.getSquare(1, 6).getPieceFromSquare().hasBattleWon());
+        assertNull(board.getSquare(1, 7).getPieceFromSquare());
+        board.doMove(board.getSquare(8,10), board.getSquare(7,10));
+        assertEquals(false, board.getSquare(1, 6).getPieceFromSquare().hasBattleWon());
+    }
 }
 
     

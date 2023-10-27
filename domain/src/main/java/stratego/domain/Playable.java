@@ -49,5 +49,7 @@ public interface Playable {
     boolean isSquareWater(int xCoordinate, int yCoordinate);
 
     boolean isSquareLastMove(int xCoordinate, int yCoordinate);
+
+    boolean hasPieceWonBattle(int xCoordinate, int yCoordinate);
 }
   

@@ -6,6 +6,7 @@ import '../styles.css';
 
 export const Play = () => {
     const { gameState, setGameState } = useMancalaGame();
+    const [revealPiecePopupVisible, setRevealPiecePopupVisible] = useState(false);
 
     const imageMapping: Record<string, string> = {
         "marshalThatHasTurn": "/marshal.png",
@@ -63,12 +64,24 @@ export const Play = () => {
                 setPlayer2PopupVisible(true);
                 setPlayer1PopupVisible(false); // Ensure the other player's popup is hidden
             }
+            if (updatedGameState.players[0].hasTurn !== gameState?.players[0].hasTurn) {
+                // Show the popup for the attacking player
+                setPlayerAttackPopupVisible(true);
+        
+                // Check if an attack has been made
+                if (updatedGameState.players[0].hasTurn && xFromSquare !== xToSquare && yFromSquare !== yToSquare) {
+                    // An attack has been made; show the "reveal piece" popup
+                    setRevealPiecePopupVisible(true);
+                }
+            }
+        
         } else {
             return {
                 statusCode: response.status,
                 statusText: response.statusText
             };
         }
+
     }
 
     useEffect(() => {
@@ -105,6 +118,16 @@ export const Play = () => {
                     <div className="modal-content">
                         <h2>Game Over! The winner is: {gameState?.gameStatus.winnerName}</h2>
                         <button onClick={() => setEndOfGamePopupVisible(false)}>OK</button>
+                    </div>
+                </div>
+            )}
+
+            {revealPiecePopupVisible && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Reveal the identity of the opponent's piece:</h2>
+                        <p>The piece is: {gameState?.board.}</p>
+                        <button onClick={() => setRevealPiecePopupVisible(false)}>OK</button>
                     </div>
                 </div>
             )}

@@ -22,6 +22,7 @@ export type Square = {
 }
 
 export type Piece = {
+    battleWon: boolean;
     name: string;
     playerId: number;
     hasTurn: boolean;

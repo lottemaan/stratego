@@ -159,4 +159,11 @@ public class StrategoGame implements Playable{
             } else {return false;}
         }
     }
+
+    @Override
+    public boolean hasPieceWonBattle(int xCoordinate, int yCoordinate) {
+        if (this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare() != null && this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().hasBattleWon()){
+            return true;
+        } else {return false;}
+    }
 }

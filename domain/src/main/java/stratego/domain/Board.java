@@ -64,7 +64,15 @@ public class Board {
         if (!hasGameBegun()) {
             this.gameBegun = true;
         }
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (this.squares[i][j].getPieceFromSquare() != null && this.squares[i][j].getPieceFromSquare().hasBattleWon()) {
+                    this.squares[i][j].getPieceFromSquare().resetBattleWon();
+                }
+            }
+        }
     }
+    
 
     public void checkIfGameHasEnded() {
         boolean dynamicPieceFound = false;
@@ -117,9 +125,11 @@ public class Board {
             } else if (pieceToBeAttacked instanceof Bomb) {
                 if(attackingPiece instanceof Miner){
                     attackingPiece.win();
+                    attackingPiece.hasWonTheBattle();
                     pieceToBeAttacked.fall();
                 } else {
                     pieceToBeAttacked.win();
+                    pieceToBeAttacked.hasWonTheBattle();
                     attackingPiece.fall();
                 }
             }
@@ -128,18 +138,22 @@ public class Board {
 
     public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
         if (pieceToBeAttacked instanceof Spy && attackingPiece instanceof Marshal) {
-            attackingPiece.fall();
             pieceToBeAttacked.win();
+            pieceToBeAttacked.hasWonTheBattle();
+            attackingPiece.fall();
         } else if (pieceToBeAttacked instanceof Marshal && attackingPiece instanceof Spy) {
             attackingPiece.win();
+            attackingPiece.hasWonTheBattle();
             pieceToBeAttacked.fall();
         } else {
             if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
                 attackingPiece.win();
+                attackingPiece.hasWonTheBattle();
                 pieceToBeAttacked.fall();
             } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
-                attackingPiece.fall();
+                pieceToBeAttacked.hasWonTheBattle();
                 pieceToBeAttacked.win();
+                attackingPiece.fall();
             } else {
                 attackingPiece.fall();
                 pieceToBeAttacked.fall();
@@ -188,7 +202,7 @@ public class Board {
     }
 
     private boolean sameMove5TimesInRow() {
-        if (this.getPlayerThatHasTurn().getConsecutiveMoves() == 5) {
+        if (this.getPlayerThatHasTurn().getConsecutiveMoves() >= 5) {
             return true;
         } else {return false;}
     }

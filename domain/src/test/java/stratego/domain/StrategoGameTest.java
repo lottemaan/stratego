@@ -224,4 +224,11 @@ public class StrategoGameTest {
         assertEquals(true, strategoGame.isSquareLastMove(1,5));
     }
 
+    @Test
+    public void testIfPieceDoesNotReturnBattleWonWhenItHasMoved() throws InvalidMoveException {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        strategoGame.doMove(1,7,1,6);
+        strategoGame.doMove(1,4,1,5);
+        assertEquals(false, strategoGame.hasPieceWonBattle(1,5));
+    }
 }
