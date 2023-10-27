@@ -13,9 +13,9 @@ export type Board = {
     squares: Square[][];
 }
 
-
 export type Square = {
     water: boolean;
+    lastMove: boolean;
     xCoordinate: number;
     yCoordinate: number;
     piece: Piece;

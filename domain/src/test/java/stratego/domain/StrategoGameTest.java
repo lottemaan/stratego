@@ -207,4 +207,21 @@ public class StrategoGameTest {
         assertEquals(true, strategoGame.hasGameBegun());
     }
 
+    @Test
+    public void testIfLastMoveCanBeRetrievedFromPlayer() throws InvalidMoveException {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        strategoGame.doMove(1,7,1,6);
+        assertEquals(false, strategoGame.isSquareLastMove(3, 3));
+        assertEquals(true, strategoGame.isSquareLastMove(1,6));
+    }
+
+    @Test
+    public void testIfLastMoveCanBeRetrievedFromOpponent() throws InvalidMoveException {
+        Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        strategoGame.doMove(1,7,1,6);
+        strategoGame.doMove(1,4,1,5);
+        assertEquals(false, strategoGame.isSquareLastMove(1, 6));
+        assertEquals(true, strategoGame.isSquareLastMove(1,5));
+    }
+
 }

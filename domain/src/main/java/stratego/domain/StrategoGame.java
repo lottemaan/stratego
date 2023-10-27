@@ -146,4 +146,17 @@ public class StrategoGame implements Playable{
     public boolean isSquareWater(int xCoordinate, int yCoordinate) {
         return this.board.getSquare(xCoordinate, yCoordinate).isWater();
     }
+
+    @Override
+    public boolean isSquareLastMove(int xCoordinate, int yCoordinate) {
+        if (this.board.player.hasTurn()){
+            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getOpponent().getLastMoveToSquare()){
+                return true;
+            } else {return false;}
+        } else {
+                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getLastMoveToSquare()){
+                    return true;
+            } else {return false;}
+        }
+    }
 }
