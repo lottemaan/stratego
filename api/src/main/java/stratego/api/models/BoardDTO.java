@@ -5,6 +5,8 @@ import stratego.domain.Playable;
 public class BoardDTO {
     
     public SquareDTO[][] squares = new SquareDTO[10][10];
+    private String previousTurnLostPiece;
+    private String previousTurnWonPiece;
 
     public BoardDTO(Playable strategoGame) {
         for (int i = 0; i < 10; ++i) {
@@ -16,9 +18,23 @@ public class BoardDTO {
                     strategoGame.getPlayerIdFromPiece(i+1, j+1),
                     strategoGame.getPlayersTurnFromPiece(i+1, j+1),
                     strategoGame.isSquareWater(i+1, j+1),
-                    strategoGame.isSquareLastMove(i+1, j+1),
-                    strategoGame.hasPieceWonBattle(i+1, j+1));
+                    strategoGame.isSquareLastMove(i+1, j+1));
 		    }
         }
+
+        this.previousTurnLostPiece = strategoGame.getPreviousTurnLostPiece();
+
+        this.previousTurnWonPiece = strategoGame.getPreviousTurnWonPiece();
     }
+
+    public String getPreviousTurnLostPiece() {
+        return this.previousTurnLostPiece;
+    }
+
+    public String getPreviousTurnWonPiece() {
+        return this.previousTurnWonPiece;
+    }
+
+
+
 }

@@ -7,16 +7,14 @@ public class SquareDTO {
     public PieceDTO piece;
     public boolean water;
     public boolean lastMove;
-    public boolean battleWon;
 
 
-    public SquareDTO(int xCoordinate, int yCoordinate, String name, int playerId, boolean hasTurn, boolean water, boolean lastMove, boolean battleWon) {
+    public SquareDTO(int xCoordinate, int yCoordinate, String name, int playerId, boolean hasTurn, boolean water, boolean lastMove) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-        this.piece = new PieceDTO(name, playerId, hasTurn, battleWon);
+        this.piece = new PieceDTO(name, playerId, hasTurn);
         this.water = water;
         this.lastMove = lastMove;
-        this.battleWon = battleWon;
     }
 
     public int getxCoordinate() {

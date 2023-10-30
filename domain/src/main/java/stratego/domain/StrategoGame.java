@@ -166,4 +166,15 @@ public class StrategoGame implements Playable{
             return true;
         } else {return false;}
     }
+
+    @Override
+    public String getPreviousTurnWonPiece() {
+        return this.board.getPreviousTurnWonPiece();
+    }
+
+    @Override
+    public String getPreviousTurnLostPiece() {
+        return this.board.getPreviousTurnLostPiece();
+    }
+
 }

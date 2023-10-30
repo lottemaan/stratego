@@ -11,6 +11,8 @@ export type GameState = {
 
 export type Board = {
     squares: Square[][];
+    previousTurnLostPiece: string;
+    previousTurnWonPiece: string;
 }
 
 export type Square = {
@@ -22,7 +24,6 @@ export type Square = {
 }
 
 export type Piece = {
-    battleWon: boolean;
     name: string;
     playerId: number;
     hasTurn: boolean;

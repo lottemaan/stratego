@@ -65,7 +65,6 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
         const lastMove = cell.lastMove;
         const pieceName = cell.piece.name;
         const isWater = cell.water;
-        const battleWon = cell.piece.battleWon;
 
         let imageUrl;
 
@@ -73,16 +72,26 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
           imageUrl = imageMapping['water'];
         } else {
           if (gameState?.gameStatus.endOfGame) {
-            const endOfGamePieceImages = {
-              marshal: "marshalThatHasTurn",
-              flag: "flagThatHasTurn",
-              spy: "spyThatHasTurn",
-              scout: "scoutThatHasTurn",
-              miner: "minerThatHasTurn",
-              bomb: "bombThatHasTurn",
-            };
-            imageUrl = endOfGamePieceImages[pieceName as keyof typeof endOfGamePieceImages] || "pieceWithoutTurn";
+            // Game has ended, ignore 'hasTurn'
+            if (pieceName === "marshal") {
+              imageUrl = imageMapping["marshalThatHasTurn"];
+            } else if (pieceName === "flag") {
+              imageUrl = imageMapping["flagThatHasTurn"];
+            } else if (pieceName === 'spy') {
+              imageUrl = imageMapping["spyThatHasTurn"];
+            } else if (pieceName === "scout") {
+              imageUrl = imageMapping["scoutThatHasTurn"];
+            } else if (pieceName === "miner") {
+              imageUrl = imageMapping["minerThatHasTurn"];
+            } else if (pieceName === "bomb") {
+              imageUrl = imageMapping["bombThatHasTurn"];
+            } else if (pieceName == null) {
+              imageUrl = imageMapping["noPiece"];
+            } else {
+              imageUrl = imageMapping["pieceWithoutTurn"];
+            }
           } else {
+            // Game is ongoing, consider 'hasTurn'
             const hasTurn = cell.piece.hasTurn;
             if (pieceName === "marshal" && hasTurn === true) {
               imageUrl = imageMapping["marshalThatHasTurn"];
@@ -98,34 +107,16 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
               imageUrl = imageMapping["bombThatHasTurn"];
             } else if (pieceName == null) {
               imageUrl = imageMapping["noPiece"];
-            } else {
-              if (battleWon && !hasTurn) {
-                imageUrl = imageMapping[pieceName + "ThatHasTurn"];
-              } else if (pieceName != null && hasTurn === false) {
-                imageUrl = imageMapping["pieceWithoutTurn"];
-              }
+            } else if (pieceName != null && hasTurn === false) {
+              imageUrl = imageMapping["pieceWithoutTurn"];
             }
           }
         }
 
         const tdStyle = {
-          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'black' : 'transparent',
-          border: lastMove ? '10px solid yellow' : 'none', 
+          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'red' : 'transparent',
+          border: lastMove ? '2px solid yellow' : 'none', // Add border when lastMove is true
         };
-        
-        if (cell.piece.playerId === 1) {
-          if (lastMove) {
-            tdStyle.border = '5px solid red';
-          } else {
-            tdStyle.border = '1px solid red'; 
-          }
-        } else if (cell.piece.playerId === 2) {
-          if (lastMove) {
-            tdStyle.border = '5px solid blue'; 
-          } else {
-            tdStyle.border = '1px solid blue'; 
-          }
-        }
 
         colImages.push(
           <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>
@@ -133,6 +124,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
           </td>
         );
       }
+
       gridImages.push(
         <tr key={y}>
           {colImages}

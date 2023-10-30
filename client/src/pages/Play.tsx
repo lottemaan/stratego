@@ -90,17 +90,17 @@ export const Play = () => {
 
     return (
         <>
-            {showPreviousTurnPopup && isEndOfGamePopupVisible === false && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <PreviousTurnPopup
-                            previousTurnWonPiece = "test"
-                            previousTurnLostPiece={gameState?.gameStatus.previousTurnLostPiece}
-                            onClose={closePreviousTurnPopup}
-                        />
-                    </div>
-                </div>
-            )}
+{showPreviousTurnPopup && isEndOfGamePopupVisible === false && (
+  <div className="modal">
+    <div className="modal-content">
+      <PreviousTurnPopup
+        previousTurnWonPiece={gameState?.board?.previousTurnWonPiece || "Default Value"}
+        previousTurnLostPiece={gameState?.board?.previousTurnLostPiece || "Default Value"}
+        onClose={closePreviousTurnPopup}
+      />
+    </div>
+  </div>
+)}
 
             {isPlayer1PopupVisible && isEndOfGamePopupVisible === false && !showPreviousTurnPopup && (
                 <div className="modal">
