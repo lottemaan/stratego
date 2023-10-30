@@ -3,10 +3,10 @@ import GameGrid from '../components/GameGrid';
 import { useState, useEffect } from "react";
 import '../modal.css';
 import '../styles.css';
+import PreviousTurnPopup from "../components/PreviousTurnPopup";
 
 export const Play = () => {
     const { gameState, setGameState } = useMancalaGame();
-    const [revealPiecePopupVisible, setRevealPiecePopupVisible] = useState(false);
 
     const imageMapping: Record<string, string> = {
         "marshalThatHasTurn": "/marshal.png",
@@ -24,9 +24,13 @@ export const Play = () => {
     const [isPlayer2PopupVisible, setPlayer2PopupVisible] = useState(false);
     const [gameIsOver, setGameIsOver] = useState(false);
     const [isEndOfGamePopupVisible, setEndOfGamePopupVisible] = useState(false);
+    const [showPreviousTurnPopup, setShowPreviousTurnPopup] = useState(false);
+    const [previousTurnWonPiece, setPreviousTurnWonPiece] = useState(''); // Initialize with an empty string
+    const [previousTurnLostPiece, setPreviousTurnLostPiece] = useState(''); // Initialize with an empty string
 
-
-    
+    const closePreviousTurnPopup = () => {
+        setShowPreviousTurnPopup(false);
+    };
 
     async function playGame(xFromSquare: number, yFromSquare: number, xToSquare: number, yToSquare: number) {
         // Check which player has the turn
@@ -37,7 +41,7 @@ export const Play = () => {
             xToSquare = 11 - xToSquare;
             yToSquare = 11 - yToSquare;
         }
-    
+
         const response = await fetch("stratego/api/play", {
             method: "POST",
             headers: {
@@ -51,37 +55,28 @@ export const Play = () => {
                 yToSquare: yToSquare,
             }),
         });
-    
+
         if (response.ok) {
             const updatedGameState = await response.json();
             setGameState(updatedGameState); // Update the game state only if the response is successful
-    
+
+
             // Update the popups based on the updated game state
             if (updatedGameState.players[0].hasTurn) {
+                setShowPreviousTurnPopup(true);
                 setPlayer1PopupVisible(true);
                 setPlayer2PopupVisible(false); // Ensure the other player's popup is hidden
             } else if (updatedGameState.players[1].hasTurn) {
+                setShowPreviousTurnPopup(true);
                 setPlayer2PopupVisible(true);
                 setPlayer1PopupVisible(false); // Ensure the other player's popup is hidden
             }
-            if (updatedGameState.players[0].hasTurn !== gameState?.players[0].hasTurn) {
-                // Show the popup for the attacking player
-                setPlayerAttackPopupVisible(true);
-        
-                // Check if an attack has been made
-                if (updatedGameState.players[0].hasTurn && xFromSquare !== xToSquare && yFromSquare !== yToSquare) {
-                    // An attack has been made; show the "reveal piece" popup
-                    setRevealPiecePopupVisible(true);
-                }
-            }
-        
         } else {
             return {
                 statusCode: response.status,
                 statusText: response.statusText
             };
         }
-
     }
 
     useEffect(() => {
@@ -95,20 +90,38 @@ export const Play = () => {
 
     return (
         <>
-            {isPlayer1PopupVisible && isEndOfGamePopupVisible == false && (
+            {showPreviousTurnPopup && isEndOfGamePopupVisible === false && (
                 <div className="modal">
                     <div className="modal-content">
-                        <h2>{gameState?.players[0].name} ben je klaar voor je beurt?</h2>
-                        <button onClick={() => setPlayer1PopupVisible(false)}>Ja!</button>
+                        <PreviousTurnPopup
+                            previousTurnWonPiece = "test"
+                            previousTurnLostPiece={gameState?.gameStatus.previousTurnLostPiece}
+                            onClose={closePreviousTurnPopup}
+                        />
                     </div>
                 </div>
             )}
 
-            {isPlayer2PopupVisible && isEndOfGamePopupVisible == false && (
+            {isPlayer1PopupVisible && isEndOfGamePopupVisible === false && !showPreviousTurnPopup && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>{gameState?.players[0].name} ben je klaar voor je beurt?</h2>
+                        <button onClick={() => {
+                            setPlayer1PopupVisible(false);
+                            setShowPreviousTurnPopup(true);
+                        }}>Ja!</button>
+                    </div>
+                </div>
+            )}
+
+            {isPlayer2PopupVisible && isEndOfGamePopupVisible === false && !showPreviousTurnPopup && (
                 <div className="modal">
                     <div className="modal-content">
                         <h2>{gameState?.players[1].name} ben je klaar voor je beurt?</h2>
-                        <button onClick={() => setPlayer2PopupVisible(false)}>Ja!</button>
+                        <button onClick={() => {
+                            setPlayer2PopupVisible(false);
+                            setShowPreviousTurnPopup(true);
+                        }}>Ja!</button>
                     </div>
                 </div>
             )}
@@ -122,28 +135,21 @@ export const Play = () => {
                 </div>
             )}
 
-            {revealPiecePopupVisible && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h2>Reveal the identity of the opponent's piece:</h2>
-                        <p>The piece is: {gameState?.board.}</p>
-                        <button onClick={() => setRevealPiecePopupVisible(false)}>OK</button>
-                    </div>
-                </div>
-            )}
-
             <div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
                 <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto' }}>
-                    <GameGrid gameState={gameState} imageMapping={imageMapping} onImageClick={(x1, y1, x2, y2) => playGame(x1+1, y1+1, x2+1, y2+1)} />
+                    <GameGrid gameState={gameState} imageMapping={imageMapping} onImageClick={(x1, y1, x2, y2) => playGame(x1 + 1, y1 + 1, x2 + 1, y2 + 1)} />
                 </div>
             </div>
 
-
-
             <div className="centered-text">
-                het is jouw beurt { gameState!.players[0]!.hasTurn ? gameState!.players[0]!.name : gameState!.players[1]!.name }!
+                het is jouw beurt {gameState!.players[0]!.hasTurn ? gameState!.players[0]!.name : gameState!.players[1]!.name}!
             </div>
         </>
     );
 };
+
+
+
+
+
 
