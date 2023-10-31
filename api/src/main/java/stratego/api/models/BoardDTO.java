@@ -18,7 +18,8 @@ public class BoardDTO {
                     strategoGame.getPlayerIdFromPiece(i+1, j+1),
                     strategoGame.getPlayersTurnFromPiece(i+1, j+1),
                     strategoGame.isSquareWater(i+1, j+1),
-                    strategoGame.isSquareLastMove(i+1, j+1));
+                    strategoGame.isSquareLastMove(i+1, j+1),
+                    strategoGame.isSquareLastMoveFrom(i+1, j+1));
 		    }
         }
 

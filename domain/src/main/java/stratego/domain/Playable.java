@@ -50,6 +50,8 @@ public interface Playable {
 
     boolean isSquareLastMove(int xCoordinate, int yCoordinate);
 
+    boolean isSquareLastMoveFrom(int xCoordinate, int yCoordinate);
+
     boolean hasPieceWonBattle(int xCoordinate, int yCoordinate);
 
     String getPreviousTurnWonPiece();

@@ -177,4 +177,16 @@ public class StrategoGame implements Playable{
         return this.board.getPreviousTurnLostPiece();
     }
 
+    @Override
+    public boolean isSquareLastMoveFrom(int xCoordinate, int yCoordinate) {
+        if (this.board.player.hasTurn()){
+            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getOpponent().getLastMoveFromSquare()){
+                return true;
+            } else {return false;}
+        } else {
+                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getLastMoveFromSquare()){
+                    return true;
+            } else {return false;}
+        }
+    }
 }

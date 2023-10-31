@@ -115,16 +115,26 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
         }
 
         const tdStyle = {
-          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'red' : 'transparent',
-          border: lastMove ? '2px solid yellow' : 'none', // Add border when lastMove is true
-          borderTwo: lastMoveFrom ? '2px solid yellow' : 'none',
+          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'black' : 'transparent',
+          border: '1px solid black', // Default border for all cells
         };
+        
+        if (lastMoveFrom || lastMove) {
+          // Determine the color of the border based on the player who made the last move
+          tdStyle.border = gameState.players[0].hasTurn ? '5px solid blue': '5px solid red';
+        } else {
+          if (cell.piece.playerId === 1) {
+            tdStyle.border = '2px solid red';
+          } else if (cell.piece.playerId === 2) {
+            tdStyle.border = '2px solid blue';
+          }
+        }
 
-        colImages.push(
-          <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>
-            <img src={imageUrl} alt={`Square ${y}-${x}`} />
-          </td>
-        );
+colImages.push(
+  <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>
+    <img src={imageUrl} alt={`Square ${y}-${x}`} />
+  </td>
+);
       }
 
       gridImages.push(

@@ -135,15 +135,26 @@ export const Play = () => {
                 </div>
             )}
 
-            <div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
-                <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto' }}>
-                    <GameGrid gameState={gameState} imageMapping={imageMapping} onImageClick={(x1, y1, x2, y2) => playGame(x1 + 1, y1 + 1, x2 + 1, y2 + 1)} />
-                </div>
-            </div>
-
-            <div className="centered-text">
+<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+  <div style={{ flex: 1 }}>
+    {/* geslagen stukken */}
+  </div>
+  <div style={{ flex: 2 }}>
+    <div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
+      <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto', border: '5px solid black', marginTop: '30px' }}>
+        <GameGrid gameState={gameState} imageMapping={imageMapping} onImageClick={(x1, y1, x2, y2) => playGame(x1 + 1, y1 + 1, x2 + 1, y2 + 1)} />
+      </div>
+      <div className="centered-text">
                 het is jouw beurt {gameState!.players[0]!.hasTurn ? gameState!.players[0]!.name : gameState!.players[1]!.name}!
             </div>
+    </div>
+  </div>
+  <div style={{ flex: 1 }}>
+    {/* geslagen stukken */}
+  </div>
+</div>
+
+
         </>
     );
 };
