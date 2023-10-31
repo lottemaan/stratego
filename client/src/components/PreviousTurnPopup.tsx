@@ -13,9 +13,9 @@ const PreviousTurnPopup: React.FC<PreviousTurnPopupProps> = ({
 }) => {
   return (
     <div className="previous-turn-popup">
-      <h2>Previous Turn Info</h2>
-      <p>Won Piece: {previousTurnWonPiece}</p>
-      <p>Lost Piece: {previousTurnLostPiece}</p>
+      <h2>Er heeft een gevecht plaatsgevonden!</h2>
+      <p>Stuk dat gewonnen heeft: {previousTurnWonPiece}</p>
+      <p>Gesneuveld(e) stuk(ken): {previousTurnLostPiece}</p>
       <button onClick={onClose}>Close</button>
     </div>
   );

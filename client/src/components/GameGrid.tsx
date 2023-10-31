@@ -62,6 +62,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
           ? gridRows[numRows - x - 1][numCols - y - 1] // Reverse both rows and columns when board is flipped
           : gridRows[x][y];
 
+        const lastMoveFrom = cell.lastMoveFrom;
         const lastMove = cell.lastMove;
         const pieceName = cell.piece.name;
         const isWater = cell.water;
@@ -116,6 +117,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
         const tdStyle = {
           backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'red' : 'transparent',
           border: lastMove ? '2px solid yellow' : 'none', // Add border when lastMove is true
+          borderTwo: lastMoveFrom ? '2px solid yellow' : 'none',
         };
 
         colImages.push(
