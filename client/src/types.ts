@@ -11,11 +11,14 @@ export type GameState = {
 
 export type Board = {
     squares: Square[][];
+    previousTurnLostPiece: string;
+    previousTurnWonPiece: string;
 }
-
 
 export type Square = {
     water: boolean;
+    lastMove: boolean;
+    lastMoveFrom: boolean;
     xCoordinate: number;
     yCoordinate: number;
     piece: Piece;

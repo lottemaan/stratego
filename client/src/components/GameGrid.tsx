@@ -62,6 +62,8 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
           ? gridRows[numRows - x - 1][numCols - y - 1] // Reverse both rows and columns when board is flipped
           : gridRows[x][y];
 
+        const lastMoveFrom = cell.lastMoveFrom;
+        const lastMove = cell.lastMove;
         const pieceName = cell.piece.name;
         const isWater = cell.water;
 
@@ -113,14 +115,26 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
         }
 
         const tdStyle = {
-          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'red' : 'transparent', // Set background color to red for the selected cell
+          backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'black' : 'transparent',
+          border: '1px solid black', // Default border for all cells
         };
+        
+        if (lastMoveFrom || lastMove) {
+          // Determine the color of the border based on the player who made the last move
+          tdStyle.border = gameState.players[0].hasTurn ? '5px solid blue': '5px solid red';
+        } else {
+          if (cell.piece.playerId === 1) {
+            tdStyle.border = '2px solid red';
+          } else if (cell.piece.playerId === 2) {
+            tdStyle.border = '2px solid blue';
+          }
+        }
 
-        colImages.push(
-          <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>
-            <img src={imageUrl} alt={`Square ${y}-${x}`} />
-          </td>
-        );
+colImages.push(
+  <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>
+    <img src={imageUrl} alt={`Square ${y}-${x}`} />
+  </td>
+);
       }
 
       gridImages.push(

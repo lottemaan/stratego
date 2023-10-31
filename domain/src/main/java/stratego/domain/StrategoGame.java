@@ -146,4 +146,47 @@ public class StrategoGame implements Playable{
     public boolean isSquareWater(int xCoordinate, int yCoordinate) {
         return this.board.getSquare(xCoordinate, yCoordinate).isWater();
     }
+
+    @Override
+    public boolean isSquareLastMove(int xCoordinate, int yCoordinate) {
+        if (this.board.player.hasTurn()){
+            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getOpponent().getLastMoveToSquare()){
+                return true;
+            } else {return false;}
+        } else {
+                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getLastMoveToSquare()){
+                    return true;
+            } else {return false;}
+        }
+    }
+
+    @Override
+    public boolean hasPieceWonBattle(int xCoordinate, int yCoordinate) {
+        if (this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare() != null && this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().hasBattleWon()){
+            return true;
+        } else {return false;}
+    }
+
+    @Override
+    public String getPreviousTurnWonPiece() {
+        return this.board.getPreviousTurnWonPiece();
+    }
+
+    @Override
+    public String getPreviousTurnLostPiece() {
+        return this.board.getPreviousTurnLostPiece();
+    }
+
+    @Override
+    public boolean isSquareLastMoveFrom(int xCoordinate, int yCoordinate) {
+        if (this.board.player.hasTurn()){
+            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getOpponent().getLastMoveFromSquare()){
+                return true;
+            } else {return false;}
+        } else {
+                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getLastMoveFromSquare()){
+                    return true;
+            } else {return false;}
+        }
+    }
 }

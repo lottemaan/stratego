@@ -5,6 +5,9 @@ public class Square {
     private int yCoordinate;
     private Piece piece;
     private boolean water = false;
+    private Piece lostBattlePiece;
+    private Piece wonBattlePiece;
+
 
     public Square(int xCoordinate, int yCoordinate) {
         this.xCoordinate = xCoordinate;
@@ -61,4 +64,23 @@ public class Square {
     }
 
 
+    public String getLostBattlePiece() {
+        if (this.piece != null && this.piece.hasBattleLost()){
+            return this.piece.getName();
+        } else {return null;}
+    }
+
+    public String getWonBattlePiece() {
+        if (this.piece != null && this.piece.hasBattleWon()) {
+            return this.piece.getName();
+        } else {return null;}
+    }
+
+
+
+
 }
+
+
+
+

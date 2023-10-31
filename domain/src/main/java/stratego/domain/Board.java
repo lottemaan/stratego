@@ -7,6 +7,10 @@ public class Board {
     private boolean gameEnded = false;
     private boolean gameBegun = false;
     BoardInitialization boardInitialization = new BoardInitialization();
+    public String currentTurnWonPiece;
+    public String currentTurnLostPiece;
+    public String previousTurnWonPiece;
+    public String previousTurnLostPiece;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -32,15 +36,34 @@ public class Board {
 
     public void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
         theGameHasBegun();
+
+        this.previousTurnLostPiece = null;
+        this.previousTurnWonPiece = null;
+
         this.moveRecorder(fromSquare, toSquare);
 
         isMoveLegal(fromSquare, toSquare);
+
         if (toSquare.getPieceFromSquare() == null) {
             this.translocatePiece(fromSquare, toSquare);
             
         } else {
             meet(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
             translocatePiecesAfterAttack(fromSquare, toSquare);
+            
+            if (fromSquare.getLostBattlePiece() != null) {
+                this.previousTurnLostPiece = fromSquare.getLostBattlePiece();
+            }
+            if (fromSquare.getWonBattlePiece() != null) {
+                this.previousTurnWonPiece = fromSquare.getWonBattlePiece();
+            }
+            if (toSquare.getWonBattlePiece() != null) {
+                this.previousTurnWonPiece = toSquare.getWonBattlePiece();
+            }
+            if (toSquare.getLostBattlePiece() != null) {
+                this.previousTurnLostPiece = toSquare.getLostBattlePiece();
+            }
+            
             fromSquare.clearFallenPiece();
             toSquare.clearFallenPiece();
             
@@ -49,6 +72,9 @@ public class Board {
         if(this.hasGameEnded()) {
             this.gameEnds();
         } else {
+
+
+
             this.player.switchTurns();}
     }
         
@@ -64,7 +90,15 @@ public class Board {
         if (!hasGameBegun()) {
             this.gameBegun = true;
         }
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (this.squares[i][j].getPieceFromSquare() != null && this.squares[i][j].getPieceFromSquare().hasBattleWon()) {
+                    this.squares[i][j].getPieceFromSquare().resetBattleWon();
+                }
+            }
+        }
     }
+    
 
     public void checkIfGameHasEnded() {
         boolean dynamicPieceFound = false;
@@ -118,6 +152,7 @@ public class Board {
                 if(attackingPiece instanceof Miner){
                     attackingPiece.win();
                     pieceToBeAttacked.fall();
+                    
                 } else {
                     pieceToBeAttacked.win();
                     attackingPiece.fall();
@@ -128,8 +163,8 @@ public class Board {
 
     public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
         if (pieceToBeAttacked instanceof Spy && attackingPiece instanceof Marshal) {
-            attackingPiece.fall();
             pieceToBeAttacked.win();
+            attackingPiece.fall();
         } else if (pieceToBeAttacked instanceof Marshal && attackingPiece instanceof Spy) {
             attackingPiece.win();
             pieceToBeAttacked.fall();
@@ -138,8 +173,8 @@ public class Board {
                 attackingPiece.win();
                 pieceToBeAttacked.fall();
             } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
-                attackingPiece.fall();
                 pieceToBeAttacked.win();
+                attackingPiece.fall();
             } else {
                 attackingPiece.fall();
                 pieceToBeAttacked.fall();
@@ -188,7 +223,7 @@ public class Board {
     }
 
     private boolean sameMove5TimesInRow() {
-        if (this.getPlayerThatHasTurn().getConsecutiveMoves() == 5) {
+        if (this.getPlayerThatHasTurn().getConsecutiveMoves() >= 5) {
             return true;
         } else {return false;}
     }
@@ -249,6 +284,16 @@ public class Board {
             return (xSteps == 1 && ySteps == 0) || (xSteps == 0 && ySteps == 1);
         }
     }
+
+    public String getPreviousTurnWonPiece(){
+        return this.previousTurnWonPiece;
+    }
+
+    public String getPreviousTurnLostPiece(){
+        return this.previousTurnLostPiece;
+    }
+
+
 }
 
 

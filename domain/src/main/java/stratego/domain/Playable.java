@@ -47,5 +47,17 @@ public interface Playable {
     String getWinnerName();
 
     boolean isSquareWater(int xCoordinate, int yCoordinate);
+
+    boolean isSquareLastMove(int xCoordinate, int yCoordinate);
+
+    boolean isSquareLastMoveFrom(int xCoordinate, int yCoordinate);
+
+    boolean hasPieceWonBattle(int xCoordinate, int yCoordinate);
+
+    String getPreviousTurnWonPiece();
+
+    String getPreviousTurnLostPiece();
+
+
 }
   

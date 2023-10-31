@@ -5,6 +5,8 @@ abstract class Piece {
     protected boolean active = true;
     protected int rank;
     protected Player player;
+    private boolean battleWon = false;
+    private boolean battleLost = false;
 
     public String getName() {
         return this.name;
@@ -20,10 +22,12 @@ abstract class Piece {
 
     public void fall() {
         this.active = false;
+        this.hasLostTheBattle();
     }
 
     public void win() {
         this.active = true;
+        this.hasWonTheBattle();
     }
 
     public int getRank() {
@@ -36,6 +40,30 @@ abstract class Piece {
 
     public void assignPlayer(Player player) {
         this.player = player;
+    }
+
+    public boolean hasBattleWon() {
+        return this.battleWon;
+    }
+
+    public void hasWonTheBattle() {
+        this.battleWon = true;
+    }
+
+    public void resetBattleWon() {
+        this.battleWon = false;
+    }
+
+    public boolean hasBattleLost() {
+        return this.battleLost;
+    }
+
+    public void hasLostTheBattle() {
+        this.battleLost = true;
+    }
+
+    public void resetBattleLost() {
+        this.battleLost = false;
     }
 
 }
