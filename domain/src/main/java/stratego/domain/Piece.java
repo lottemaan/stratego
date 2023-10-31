@@ -107,6 +107,48 @@ class Miner extends DynamicPiece {
     }
 }
 
+class Sergeant extends DynamicPiece{
+    public Sergeant() {
+        this.name = "sergeant";
+        this.rank = 7;
+    }
+}
+
+class Lieutenant extends DynamicPiece{
+    public Lieutenant() {
+        this.name = "lieutenant";
+        this.rank = 6;
+    }
+}
+
+class Captain extends DynamicPiece{
+    public Captain() {
+        this.name = "captain";
+        this.rank = 5;
+    }
+}
+
+class Major extends DynamicPiece{
+    public Major() {
+        this.name = "major";
+        this.rank = 4;
+    }
+}
+
+class Colonel extends DynamicPiece{
+    public Colonel() {
+        this.name = "colonel";
+        this.rank = 3;
+    }
+}
+
+class General extends DynamicPiece{
+    public General() {
+        this.name = "general";
+        this.rank = 2;
+    }
+}
+
 class Flag extends StaticPiece {
 
     private boolean captured;

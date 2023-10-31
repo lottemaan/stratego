@@ -15,38 +15,79 @@ public class BoardInitialization {
     }
 
     private void initializeScript1(Square[][] squares, Player player, Player opponent) {
-        squares[0][0].updatePiece(new Flag());
-        squares[9][9].updatePiece(new Flag());
+        squares[3][0].updatePiece(new Flag());
+        squares[0][9].updatePiece(new Flag());
         squares[4][1].updatePiece(new Marshal());
         squares[7][9].updatePiece(new Marshal());
-        squares[2][3].updatePiece(new Spy());
+        squares[2][2].updatePiece(new Spy());
         squares[7][8].updatePiece(new Spy());
+        squares[2][2].updatePiece(new General());
+        squares[7][7].updatePiece(new General());
+
+        squares[0][2].updatePiece(new Colonel());
+        squares[5][1].updatePiece(new Colonel());
+        squares[1][8].updatePiece(new Colonel());
+        squares[5][8].updatePiece(new Colonel());
+
+        squares[2][1].updatePiece(new Major());
+        squares[4][0].updatePiece(new Major());
+        squares[6][1].updatePiece(new Major());
+        squares[0][8].updatePiece(new Major());
+        squares[2][8].updatePiece(new Major());
+        squares[6][8].updatePiece(new Major());
+
+        squares[7][1].updatePiece(new Captain());
+        squares[3][1].updatePiece(new Captain());
+        squares[8][1].updatePiece(new Captain());
+        squares[9][0].updatePiece(new Captain());
+        squares[3][8].updatePiece(new Captain());
+        squares[9][7].updatePiece(new Captain());
+        squares[6][7].updatePiece(new Captain());
+        squares[4][7].updatePiece(new Captain());
+
+        squares[1][2].updatePiece(new Lieutenant());
+        squares[4][2].updatePiece(new Lieutenant());
+        squares[6][2].updatePiece(new Lieutenant());
+        squares[8][2].updatePiece(new Lieutenant());
+        squares[2][7].updatePiece(new Lieutenant());
+        squares[5][7].updatePiece(new Lieutenant());
+        squares[8][7].updatePiece(new Lieutenant());
+        squares[0][7].updatePiece(new Lieutenant());
+
+        squares[3][2].updatePiece(new Sergeant());
+        squares[5][2].updatePiece(new Sergeant());
+        squares[7][2].updatePiece(new Sergeant());
+        squares[9][1].updatePiece(new Sergeant());
+        squares[3][7].updatePiece(new Sergeant());
+        squares[3][6].updatePiece(new Sergeant());
+        squares[6][6].updatePiece(new Sergeant());
+        squares[7][6].updatePiece(new Sergeant());
 
         squares[0][1].updatePiece(new Bomb());
         squares[1][1].updatePiece(new Bomb());
         squares[1][0].updatePiece(new Bomb());
         squares[3][3].updatePiece(new Bomb());
         squares[4][3].updatePiece(new Bomb());
-        squares[5][3].updatePiece(new Bomb());
+        squares[8][0].updatePiece(new Bomb());
 
         squares[8][9].updatePiece(new Bomb());
         squares[8][8].updatePiece(new Bomb());
         squares[9][8].updatePiece(new Bomb());
-        squares[6][6].updatePiece(new Bomb());
-        squares[7][6].updatePiece(new Bomb());
-        squares[1][6].updatePiece(new Bomb());
+        squares[4][9].updatePiece(new Bomb());
+        squares[4][8].updatePiece(new Bomb());
+        squares[2][9].updatePiece(new Bomb());
 
-        squares[6][2].updatePiece(new Miner());
-        squares[7][2].updatePiece(new Miner());
-        squares[8][2].updatePiece(new Miner());
-        squares[6][1].updatePiece(new Miner());
-        squares[7][1].updatePiece(new Miner());
+        squares[6][0].updatePiece(new Miner());
+        squares[7][0].updatePiece(new Miner());
+        squares[0][3].updatePiece(new Miner());
+        squares[2][0].updatePiece(new Miner());
+        squares[5][0].updatePiece(new Miner());
 
         squares[1][7].updatePiece(new Miner());
-        squares[3][7].updatePiece(new Miner());
-        squares[5][7].updatePiece(new Miner());
-        squares[8][7].updatePiece(new Miner());
-        squares[9][7].updatePiece(new Miner());
+        squares[1][9].updatePiece(new Miner());
+        squares[3][9].updatePiece(new Miner());
+        squares[5][9].updatePiece(new Miner());
+        squares[6][9].updatePiece(new Miner());
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
