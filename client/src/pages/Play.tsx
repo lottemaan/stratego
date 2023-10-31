@@ -10,13 +10,21 @@ export const Play = () => {
 
     const imageMapping: Record<string, string> = {
         "marshalThatHasTurn": "/marshal.png",
-        "pieceWithoutTurn": "/tower.png",
-        "noPiece": "/grass.png",
+
+        "sergeantThatHasTurn": "/sergeant.png",
+        "lieutenantThatHasTurn": "/lieutenant.png",
+        "captainThatHasTurn": "/captain.png",
+        "majorThatHasTurn": "/major.png",
+        "colonelThatHasTurn": "/colonel.png",
+        "generalThatHasTurn": "/general.png",    
+
         "flagThatHasTurn": "/flag.png",
         "spyThatHasTurn": "/spy.png",
         "scoutThatHasTurn": "/scout.png",
         "bombThatHasTurn": "/bomb.png",
         "minerThatHasTurn": "/miner.png",
+        "pieceWithoutTurn": "/vraagteken.png",
+        "noPiece": "/grass.png",
         "water": "/water.png"
     };
 

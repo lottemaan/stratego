@@ -86,6 +86,21 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
               imageUrl = imageMapping["minerThatHasTurn"];
             } else if (pieceName === "bomb") {
               imageUrl = imageMapping["bombThatHasTurn"];
+
+            } else if (pieceName === "sergeant") {
+              imageUrl = imageMapping["sergeantThatHasTurn"];
+            } else if (pieceName === "lieutenant") {
+              imageUrl = imageMapping["lieutenantThatHasTurn"];
+            } else if (pieceName === "captain") {
+              imageUrl = imageMapping["captainThatHasTurn"];
+            } else if (pieceName === "major") {
+              imageUrl = imageMapping["majorThatHasTurn"];
+            } else if (pieceName === "colonel") {
+              imageUrl = imageMapping["colonelThatHasTurn"];
+            } else if (pieceName === "general") {
+              imageUrl = imageMapping["generalThatHasTurn"];
+
+
             } else if (pieceName == null) {
               imageUrl = imageMapping["noPiece"];
             } else {
@@ -106,6 +121,21 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
               imageUrl = imageMapping["minerThatHasTurn"];
             } else if (pieceName === "bomb" && hasTurn == true) {
               imageUrl = imageMapping["bombThatHasTurn"];
+
+            } else if (pieceName === "sergeant" && hasTurn == true) {
+              imageUrl = imageMapping["sergeantThatHasTurn"];
+            } else if (pieceName === "lieutenant" && hasTurn == true) {
+              imageUrl = imageMapping["lieutenantThatHasTurn"];
+            } else if (pieceName === "captain" && hasTurn == true) {
+              imageUrl = imageMapping["captainThatHasTurn"];
+            } else if (pieceName === "major" && hasTurn == true) {
+              imageUrl = imageMapping["majorThatHasTurn"];
+            } else if (pieceName === "colonel" && hasTurn == true) {
+              imageUrl = imageMapping["colonelThatHasTurn"];
+            } else if (pieceName === "general" && hasTurn == true) {
+              imageUrl = imageMapping["generalThatHasTurn"];
+
+
             } else if (pieceName == null) {
               imageUrl = imageMapping["noPiece"];
             } else if (pieceName != null && hasTurn === false) {
@@ -129,10 +159,15 @@ const GameGrid: React.FC<GameGridProps> = ({ gameState, imageMapping, onImageCli
             tdStyle.border = '2px solid blue';
           }
         }
+        const imgStyle = {
+          backgroundColor: cell.piece.playerId === 1 ? 'red' : 'lightblue', // Set the background color based on the player's ID
+        };
+
+
 
 colImages.push(
   <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>
-    <img src={imageUrl} alt={`Square ${y}-${x}`} />
+    <img src={imageUrl} alt={`Square ${y}-${x}`} style={imgStyle} />
   </td>
 );
       }
