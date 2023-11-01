@@ -48,7 +48,7 @@ public class Board {
             this.translocatePiece(fromSquare, toSquare);
             
         } else {
-            meet(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
+            discoverOtherPiece(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
             translocatePiecesAfterAttack(fromSquare, toSquare);
             
             if (fromSquare.getLostBattlePiece() != null) {
@@ -76,6 +76,25 @@ public class Board {
 
 
             this.player.switchTurns();}
+    }
+
+    public void discoverOtherPiece(Piece attackingPiece, Piece pieceToBeAttacked) {
+        if (pieceToBeAttacked instanceof DynamicPiece) {
+            battle(attackingPiece, pieceToBeAttacked);
+        } else if (pieceToBeAttacked instanceof StaticPiece) {
+            discover(attackingPiece, pieceToBeAttacked);
+        }
+    }
+
+    public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
+        BattleStrategy battleStrategy = determineBattleStrategy(attackingPiece, pieceToBeAttacked);
+        battleStrategy.execute(attackingPiece, pieceToBeAttacked);
+    }
+
+    
+    public void discover(Piece attackingPiece, Piece pieceToBeAttacked) {
+        DiscoverStrategy discoverStrategy = determineDiscoverStrategy(attackingPiece, pieceToBeAttacked);
+        discoverStrategy.execute(attackingPiece, pieceToBeAttacked);
     }
         
     public void gameEnds() {
@@ -141,46 +160,30 @@ public class Board {
         }
     }
 
-    public void meet(Piece attackingPiece, Piece pieceToBeAttacked) {
-        if (!(pieceToBeAttacked instanceof StaticPiece)) {
-            battle(attackingPiece, pieceToBeAttacked);
-        } else {
-            if(pieceToBeAttacked instanceof Flag){
-                attackingPiece.win();
-                ((Flag) pieceToBeAttacked).beCaptured();
-            } else if (pieceToBeAttacked instanceof Bomb) {
-                if(attackingPiece instanceof Miner){
-                    attackingPiece.win();
-                    pieceToBeAttacked.fall();
-                    
-                } else {
-                    pieceToBeAttacked.win();
-                    attackingPiece.fall();
-                }
-            }
-        }
+
+
+
+    private DiscoverStrategy determineDiscoverStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
+        
+        if (attackingPiece instanceof Miner && pieceToBeAttacked instanceof Bomb) {
+            return new DismantelTheBomb();
+        } else if (!(attackingPiece instanceof Miner) && pieceToBeAttacked instanceof Bomb) {
+            return new Boom();
+        } else if (pieceToBeAttacked instanceof Flag) {
+            return new CaptureTheFlag();
+        } else {return null;}
     }
 
-    public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
-        if (pieceToBeAttacked instanceof Spy && attackingPiece instanceof Marshal) {
-            pieceToBeAttacked.win();
-            attackingPiece.fall();
-        } else if (pieceToBeAttacked instanceof Marshal && attackingPiece instanceof Spy) {
-            attackingPiece.win();
-            pieceToBeAttacked.fall();
-        } else {
-            if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
-                attackingPiece.win();
-                pieceToBeAttacked.fall();
-            } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
-                pieceToBeAttacked.win();
-                attackingPiece.fall();
-            } else {
-                attackingPiece.fall();
-                pieceToBeAttacked.fall();
-            }
-        }
+
+
+
+    private BattleStrategy determineBattleStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
+        if (attackingPiece instanceof Spy && pieceToBeAttacked instanceof Marshal || 
+                    attackingPiece instanceof Marshal && pieceToBeAttacked instanceof Spy) {
+            return new SpyingBattleStrategy();
+        } else {return new RankBattleStrategy();}
     }
+
 
     public void translocatePiecesAfterAttack(Square fromSquare, Square toSquare) {
         if (!toSquare.getPieceFromSquare().isActive()){
