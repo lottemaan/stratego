@@ -189,7 +189,7 @@ public class BoardAndSquaresTest {
         initializeForTesting(board);
         Marshal marshal1 = new Marshal();
         Marshal marshal2 = new Marshal();
-        board.meet(marshal1, marshal2);
+        board.discoverOtherPiece(marshal1, marshal2);
         assertEquals(false, marshal2.isActive());
         assertEquals(false, marshal1.isActive());
     }
@@ -201,7 +201,7 @@ public class BoardAndSquaresTest {
 
         Marshal marshal1 = new Marshal();
         Flag flag1 = new Flag();
-        board.meet(marshal1, flag1);
+        board.discoverOtherPiece(marshal1, flag1);
         assertEquals(true, flag1.isCaptured());
         assertEquals(true, marshal1.isActive());
     }
