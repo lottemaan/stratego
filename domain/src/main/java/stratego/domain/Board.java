@@ -1,16 +1,14 @@
 package stratego.domain;
 
 public class Board {
-    Square[][] squares;
-    Player player = new Player();
-    Player opponent = player.getOpponent();
+    private Square[][] squares;
+    private Player player = new Player();
+    private Player opponent = player.getOpponent();
     private boolean gameEnded = false;
     private boolean gameBegun = false;
-    BoardInitialization boardInitialization = new BoardInitialization();
-    public String currentTurnWonPiece;
-    public String currentTurnLostPiece;
-    public String previousTurnWonPiece;
-    public String previousTurnLostPiece;
+    private BoardInitialization boardInitialization = new BoardInitialization();
+    private String previousTurnWonPiece;
+    private String previousTurnLostPiece;
 
     public Board() {
         this.squares = new Square[10][10];
@@ -22,19 +20,19 @@ public class Board {
         boardInitialization.initializeRandomly(this.squares, this.player, this.opponent);
     }
 
-    public Square getSquare(int xCoordinate, int yCoordinate) {
+    protected Square getSquare(int xCoordinate, int yCoordinate) {
         return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
     }
 
-    public Square[] getRows() {
+    protected Square[] getRows() {
         return this.squares[0];
     }
 
-    public Square[] getColumns() {
+    protected Square[] getColumns() {
         return this.squares[1];
     }
 
-    public void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
+    protected void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
         theGameHasBegun();
 
         this.previousTurnLostPiece = null;
@@ -78,7 +76,7 @@ public class Board {
             this.player.switchTurns();}
     }
 
-    public void discoverOtherPiece(Piece attackingPiece, Piece pieceToBeAttacked) {
+    protected void discoverOtherPiece(Piece attackingPiece, Piece pieceToBeAttacked) {
         if (pieceToBeAttacked instanceof DynamicPiece) {
             battle(attackingPiece, pieceToBeAttacked);
         } else if (pieceToBeAttacked instanceof StaticPiece) {
@@ -86,26 +84,26 @@ public class Board {
         }
     }
 
-    public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
+    protected void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
         BattleStrategy battleStrategy = determineBattleStrategy(attackingPiece, pieceToBeAttacked);
         battleStrategy.execute(attackingPiece, pieceToBeAttacked);
     }
 
     
-    public void discover(Piece attackingPiece, Piece pieceToBeAttacked) {
+    protected void discover(Piece attackingPiece, Piece pieceToBeAttacked) {
         DiscoverStrategy discoverStrategy = determineDiscoverStrategy(attackingPiece, pieceToBeAttacked);
         discoverStrategy.execute(attackingPiece, pieceToBeAttacked);
     }
         
-    public void gameEnds() {
+    protected void gameEnds() {
         this.player.gameOver();
     }
 
-    public boolean hasGameBegun() {
+    protected boolean hasGameBegun() {
         return this.gameBegun;
     }
 
-    public void theGameHasBegun() {
+    protected void theGameHasBegun() {
         if (!hasGameBegun()) {
             this.gameBegun = true;
         }
@@ -119,7 +117,7 @@ public class Board {
     }
     
 
-    public void checkIfGameHasEnded() {
+    protected void checkIfGameHasEnded() {
         boolean dynamicPieceFound = false;
         boolean flagCaptured = false;
     
@@ -138,7 +136,7 @@ public class Board {
         }
     }
 
-    public Square getSquareWithFlag(Player player) {
+    protected Square getSquareWithFlag(Player player) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (this.squares[i][j].getPieceFromSquare() instanceof Flag && this.squares[i][j].getPieceFromSquare().getPlayer() == player) {
@@ -148,12 +146,12 @@ public class Board {
         } return null;
     }
 
-    public boolean hasGameEnded() {
+    protected boolean hasGameEnded() {
         this.checkIfGameHasEnded();
         return this.gameEnded;
     }
      
-    public void translocatePiece(Square fromSquare, Square toSquare) {
+    protected void translocatePiece(Square fromSquare, Square toSquare) {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
             toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
             fromSquare.deletePiece();
@@ -163,7 +161,7 @@ public class Board {
 
 
 
-    private DiscoverStrategy determineDiscoverStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
+    protected DiscoverStrategy determineDiscoverStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
         
         if (attackingPiece instanceof Miner && pieceToBeAttacked instanceof Bomb) {
             return new DismantelTheBomb();
@@ -177,7 +175,7 @@ public class Board {
 
 
 
-    private BattleStrategy determineBattleStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
+    protected BattleStrategy determineBattleStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
         if (attackingPiece instanceof Spy && pieceToBeAttacked instanceof Marshal || 
                     attackingPiece instanceof Marshal && pieceToBeAttacked instanceof Spy) {
             return new SpyingBattleStrategy();
@@ -185,27 +183,27 @@ public class Board {
     }
 
 
-    public void translocatePiecesAfterAttack(Square fromSquare, Square toSquare) {
+    protected void translocatePiecesAfterAttack(Square fromSquare, Square toSquare) {
         if (!toSquare.getPieceFromSquare().isActive()){
             translocatePiece(fromSquare, toSquare);
         }
     }
    
-    public Player getPlayer() {
+    protected Player getPlayer() {
         return this.player;
     }
 
-    public Player getOpponent() {
+    protected Player getOpponent() {
         return this.player.getOpponent();
     }
 
-    public Player getPlayerThatHasTurn() {
+    protected Player getPlayerThatHasTurn() {
         if (this.player.hasTurn() == true) {
             return this.player;
         } else {return this.opponent;}
     }
 
-    public void isMoveLegal(Square fromSquare, Square toSquare) throws InvalidMoveException {
+    protected void isMoveLegal(Square fromSquare, Square toSquare) throws InvalidMoveException {
         if (fromSquare.getPieceFromSquare() instanceof StaticPiece) {
             throw new InvalidMoveException("this piece is not allowed to move");
         } else if (correctMovingDistance(fromSquare, toSquare) == false) {
@@ -244,7 +242,7 @@ public class Board {
         }
     }     
 
-    public boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
+    private boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
         int x1 = fromSquare.getXCoordinate();
         int y1 = fromSquare.getYCoordinate();
         int x2 = toSquare.getXCoordinate();
@@ -277,7 +275,7 @@ public class Board {
     }
     
 
-    public boolean correctMovingDistance(Square fromSquare, Square toSquare) {
+    private boolean correctMovingDistance(Square fromSquare, Square toSquare) {
         int xSteps = Math.abs(toSquare.getXCoordinate() - fromSquare.getXCoordinate());
         int ySteps = Math.abs(toSquare.getYCoordinate() - fromSquare.getYCoordinate());
     
@@ -288,13 +286,16 @@ public class Board {
         }
     }
 
-    public String getPreviousTurnWonPiece(){
+    protected String getPreviousTurnWonPiece(){
         return this.previousTurnWonPiece;
     }
 
-    public String getPreviousTurnLostPiece(){
+    protected String getPreviousTurnLostPiece(){
         return this.previousTurnLostPiece;
     }
+
+
+    
 
 
 }

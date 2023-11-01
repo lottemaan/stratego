@@ -13,26 +13,29 @@ import stratego.domain.Playable.Winner;
 public class StrategoGameTest {
 
     private void assignPlayersToPieces(Board board) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (j < 4) {
-                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player.getOpponent());
-                } if (j > 5) {
-                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player);
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+                if (j < 5) {
+                    board.getSquare(i, j).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+                }
+                if (j > 6) {
+                    board.getSquare(i, j).getPieceFromSquare().assignPlayer(board.getPlayer());
                 }
             }
         }
     }
 
     public void initializeForTesting(Board board) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if ((i == 0 && j == 0) || (i == 9 && j == 9)) {
-                    board.squares[i][j].updatePiece(new Flag()); 
-                } else if (j > 3 && j < 6) {
-                    board.squares[i][j].updatePiece(null);
-                } else {board.squares[i][j].updatePiece(new Marshal());}
-            } 
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+                if ((i == 1 && j == 1) || (i == 10 && j == 10)) {
+                    board.getSquare(i, j).updatePiece(new Flag());
+                } else if (j > 4 && j < 7) {
+                    board.getSquare(i, j).updatePiece(null);
+                } else {
+                    board.getSquare(i, j).updatePiece(new Marshal());
+                }
+            }
         }
         assignPlayersToPieces(board);
     }

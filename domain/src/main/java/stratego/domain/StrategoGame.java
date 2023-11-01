@@ -149,12 +149,12 @@ public class StrategoGame implements Playable{
 
     @Override
     public boolean isSquareLastMove(int xCoordinate, int yCoordinate) {
-        if (this.board.player.hasTurn()){
-            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getOpponent().getLastMoveToSquare()){
+        if (this.board.getPlayer().hasTurn()){
+            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.getPlayer().getOpponent().getLastMoveToSquare()){
                 return true;
             } else {return false;}
         } else {
-                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getLastMoveToSquare()){
+                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.getPlayer().getLastMoveToSquare()){
                     return true;
             } else {return false;}
         }
@@ -179,12 +179,12 @@ public class StrategoGame implements Playable{
 
     @Override
     public boolean isSquareLastMoveFrom(int xCoordinate, int yCoordinate) {
-        if (this.board.player.hasTurn()){
-            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getOpponent().getLastMoveFromSquare()){
+        if (this.board.getPlayer().hasTurn()){
+            if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.getPlayer().getOpponent().getLastMoveFromSquare()){
                 return true;
             } else {return false;}
         } else {
-                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.player.getLastMoveFromSquare()){
+                if (this.board.getSquare(xCoordinate, yCoordinate) == this.board.getPlayer().getLastMoveFromSquare()){
                     return true;
             } else {return false;}
         }
