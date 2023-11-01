@@ -1,6 +1,6 @@
 package stratego.domain;
 
-public class DismantelTheBomb implements DiscoverStrategy {
+final class DismantelTheBomb implements DiscoverStrategy {
 
     @Override
     public void execute(Piece attackingPiece, Piece pieceToBeAttacked) {

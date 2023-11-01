@@ -1,7 +1,5 @@
 package stratego.domain;
 
-import java.util.Optional;
-
 public class StrategoGame implements Playable{
     private Board board;
     public String playerOne;
@@ -40,10 +38,9 @@ public class StrategoGame implements Playable{
         this.board.doMove(fromSquare, toSquare); 
     }
 
-
     @Override
     public String getPieceNameForSquare(int xCoordinate, int yCoordinate) {
-        return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getName();
+        return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getNamePiece();
     }
 
     public boolean isEndOfGame() {
@@ -97,7 +94,7 @@ public class StrategoGame implements Playable{
     public String getNameFromPiece(int xCoordinate, int yCoordinate){
         Piece piece = getPieceFromSquare(xCoordinate, yCoordinate);
         if (piece != null) {
-            return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getName();
+            return this.board.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().getNamePiece();
         } else {return null;}
     }
 

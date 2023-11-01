@@ -1,5 +1,5 @@
 package stratego.domain;
 
-public interface DiscoverStrategy {
+interface DiscoverStrategy {
     void execute(Piece attackingPiece, Piece pieceToBeAttacked);
 }

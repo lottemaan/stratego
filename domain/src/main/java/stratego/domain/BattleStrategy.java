@@ -1,7 +1,6 @@
 package stratego.domain;
 
-
-public interface BattleStrategy {
+interface BattleStrategy {
     void execute(Piece attackingPiece, Piece pieceToBeAttacked);
 }
 

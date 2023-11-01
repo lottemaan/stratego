@@ -2,8 +2,9 @@ package stratego.domain;
 
 import java.util.Random;
 
-public class BoardInitialization {
-    public void initializeRandomly(Square[][] squares, Player player, Player opponent) {
+final class BoardInitialization {
+    
+    protected void initializeRandomly(Square[][] squares, Player player, Player opponent) {
         Random random = new Random();
         int choice = random.nextInt(2);
 

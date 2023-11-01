@@ -70,16 +70,6 @@ public class BoardAndSquaresTest {
     }
 
     @Test
-    public void aBoardShouldHaveAMatrixOf10By10Squares() {
-        Board board = new Board();
-        initializeForTesting(board);
-        int rowCount = board.getRows().length;
-        int columnCount = board.getColumns().length;
-        assertEquals(10, rowCount);
-        assertEquals(10, columnCount);
-    }
-
-    @Test
     public void aBoardShouldBeAbleToReturnTheSquareWithCoordinates3By3() {
         Board board = new Board();
         initializeForTesting(board);
@@ -114,7 +104,7 @@ public class BoardAndSquaresTest {
         Board board = new Board();
         initializeForTesting(board);
         Square squareWithCoordinates9by9 = board.getSquare(9, 9);
-        assertEquals(squareWithCoordinates9by9.getPieceFromSquare().getName(), "marshal");
+        assertEquals(squareWithCoordinates9by9.getPieceFromSquare().getNamePiece(), "marshal");
     }
 
     @Test
@@ -131,7 +121,7 @@ public class BoardAndSquaresTest {
         initializeForTesting(board);
         Square squareWithCoordinates5by5 = board.getSquare(5, 5);
         squareWithCoordinates5by5.updatePiece(new Marshal());
-        assertEquals(squareWithCoordinates5by5.getPieceFromSquare().getName(), "marshal");
+        assertEquals(squareWithCoordinates5by5.getPieceFromSquare().getNamePiece(), "marshal");
     }
 
     @Test
@@ -139,7 +129,7 @@ public class BoardAndSquaresTest {
         Board board = new Board();
         initializeForTesting(board);
         Square squareWithCoordinates10by10 = board.getSquare(10, 10);
-        assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getName(), "flag");
+        assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getNamePiece(), "flag");
     }
 
     @Test
@@ -151,12 +141,12 @@ public class BoardAndSquaresTest {
         Square fromSquare = board.getSquare(1, 7);
         Square toSquare = board.getSquare(1, 6);
 
-        assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
+        assertEquals(fromSquare.getPieceFromSquare().getNamePiece(), "marshal");
         assertNull(toSquare.getPieceFromSquare());
 
         board.doMove(fromSquare, toSquare);
         assertNull(fromSquare.getPieceFromSquare());
-        assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
+        assertEquals(toSquare.getPieceFromSquare().getNamePiece(), "marshal");
     }
 
     @Test
@@ -164,7 +154,7 @@ public class BoardAndSquaresTest {
         Board board = new Board();
         initializeForTesting(board);
         Square square1By1 = board.getSquare(1, 1);
-        assertEquals("flag", square1By1.getPieceFromSquare().getName());
+        assertEquals("flag", square1By1.getPieceFromSquare().getNamePiece());
     }
 
     @Test
@@ -172,7 +162,7 @@ public class BoardAndSquaresTest {
         Board board = new Board();
         initializeForTesting(board);
         Square square5By1 = board.getSquare(5, 1);
-        assertEquals("marshal", square5By1.getPieceFromSquare().getName());
+        assertEquals("marshal", square5By1.getPieceFromSquare().getNamePiece());
     }
 
     @Test
@@ -181,29 +171,6 @@ public class BoardAndSquaresTest {
         initializeForTesting(board);
         Square square1By5 = board.getSquare(1, 5);
         assertNull(square1By5.getPieceFromSquare());
-    }
-
-    @Test
-    public void TestIfMarshalCanAttackOtherMarshalAndIfTheyBothGetInactiveAfter() {
-        Board board = new Board();
-        initializeForTesting(board);
-        Marshal marshal1 = new Marshal();
-        Marshal marshal2 = new Marshal();
-        board.discoverOtherPiece(marshal1, marshal2);
-        assertEquals(false, marshal2.isActive());
-        assertEquals(false, marshal1.isActive());
-    }
-
-    @Test
-    public void TestIfMarshalWinsAfterCapturingTheFlag() {
-        Board board = new Board();
-        initializeForTesting(board);
-
-        Marshal marshal1 = new Marshal();
-        Flag flag1 = new Flag();
-        board.discoverOtherPiece(marshal1, flag1);
-        assertEquals(true, flag1.isCaptured());
-        assertEquals(true, marshal1.isActive());
     }
 
     @Test
@@ -400,26 +367,6 @@ public class BoardAndSquaresTest {
     }
 
     @Test
-    public void testIfBothPlayersAreInactiveAfterGameEnds() {
-        Board board = new Board();
-        initializeForTesting(board);
-        assignPlayersToPieces(board);
-
-        for (int i = 1; i < 11; i++) {
-            for (int j = 1; j < 11; j++) {
-                if (board.getSquare(i, j).getPieceFromSquare() instanceof Flag) {
-                } else {
-                    board.getSquare(i, j).deletePiece();
-                }
-            }
-        }
-        board.gameEnds();
-        assertEquals(true, board.hasGameEnded());
-        assertEquals(false, board.getPlayer().hasTurn());
-        assertEquals(false, board.getOpponent().hasTurn());
-    }
-
-    @Test
     public void testIfGameHasBegunAfterFirstMove() throws InvalidMoveException {
         Board board = new Board();
         initializeForTesting(board);
@@ -541,6 +488,27 @@ public class BoardAndSquaresTest {
         assertNull(board.getSquare(5, 6).getPieceFromSquare());
         assertInstanceOf(Marshal.class, board.getSquare(5, 5).getPieceFromSquare());
         assertEquals(true, board.getSquare(5, 5).getPieceFromSquare().isActive());
+    }
+
+    @Test
+    public void TestIfMarshalCanAttackOtherMarshalAndIfTheyBothGetInactiveAfter() throws InvalidMoveException {
+        Marshal marshal2 = new Marshal();
+        Marshal marshal = new Marshal();
+        Board board = new Board();
+        Player player = new Player();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
+        board.getSquare(5, 6).updatePiece(marshal);
+        board.getSquare(5, 5).updatePiece(marshal2);
+        Square fromSquare = board.getSquare(5, 6);
+        fromSquare.getPieceFromSquare().assignPlayer(player);
+        Square toSquare = board.getSquare(5, 5);
+        toSquare.getPieceFromSquare().assignPlayer(player.getOpponent());
+        board.doMove(fromSquare, toSquare);
+        assertNull(board.getSquare(5, 6).getPieceFromSquare());
+        assertNull(board.getSquare(5,5).getPieceFromSquare());
+        assertEquals(false, marshal2.isActive());
+        assertEquals(false, marshal.isActive());
     }
 
     @Test
@@ -778,7 +746,7 @@ public class BoardAndSquaresTest {
         Square fromSquare = board.getSquare(1, 7);
         Square toSquare = board.getSquare(1, 6);
 
-        assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
+        assertEquals(fromSquare.getPieceFromSquare().getNamePiece(), "marshal");
         assertNull(toSquare.getPieceFromSquare());
 
         board.doMove(fromSquare, toSquare);
@@ -806,7 +774,7 @@ public class BoardAndSquaresTest {
         board.getSquare(10, 10).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
 
         board.doMove(board.getSquare(1, 7), board.getSquare(1, 6));
-        assertEquals("bomb", board.getSquare(1, 6).getPieceFromSquare().getName());
+        assertEquals("bomb", board.getSquare(1, 6).getPieceFromSquare().getNamePiece());
         assertNull(board.getSquare(1, 7).getPieceFromSquare());
     }
 
@@ -830,7 +798,7 @@ public class BoardAndSquaresTest {
         board.getSquare(10, 10).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
 
         board.doMove(board.getSquare(1, 7), board.getSquare(1, 6));
-        assertEquals("miner", board.getSquare(1, 6).getPieceFromSquare().getName());
+        assertEquals("miner", board.getSquare(1, 6).getPieceFromSquare().getNamePiece());
         assertNull(board.getSquare(1, 7).getPieceFromSquare());
     }
 

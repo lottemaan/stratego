@@ -2,7 +2,6 @@ package stratego.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -113,13 +112,13 @@ public class StrategoGameTest {
         Square fromSquare = strategoGame.getSquare(1, 7);
         Square toSquare = strategoGame.getSquare(1,6);
 
-        assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
+        assertEquals(fromSquare.getPieceFromSquare().getNamePiece(), "marshal");
         assertNull(toSquare.getPieceFromSquare());
 
         strategoGame.doMove(1,7,1,6); 
         
         assertNull(fromSquare.getPieceFromSquare());
-        assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
+        assertEquals(toSquare.getPieceFromSquare().getNamePiece(), "marshal");
     }
 
     @Test

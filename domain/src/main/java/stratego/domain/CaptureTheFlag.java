@@ -1,6 +1,6 @@
 package stratego.domain;
 
-public class CaptureTheFlag implements DiscoverStrategy {
+final class CaptureTheFlag implements DiscoverStrategy {
 
     @Override
     public void execute(Piece attackingPiece, Piece pieceToBeAttacked) {

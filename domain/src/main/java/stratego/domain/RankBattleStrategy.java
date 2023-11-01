@@ -4,8 +4,8 @@ public class RankBattleStrategy implements BattleStrategy {
 
     @Override
     public void execute(Piece attackingPiece, Piece pieceToBeAttacked) {
-        int attackingPieceRank = attackingPiece.getRank();
-        int pieceToBeAttackedRank = pieceToBeAttacked.getRank();
+        int attackingPieceRank = ((DynamicPiece) attackingPiece).getRank();
+        int pieceToBeAttackedRank = ((DynamicPiece) pieceToBeAttacked).getRank();
 
         if (pieceToBeAttackedRank > attackingPieceRank) {
             attackingPiece.win();

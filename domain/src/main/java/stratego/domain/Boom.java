@@ -1,6 +1,6 @@
 package stratego.domain;
 
-public class Boom implements DiscoverStrategy {
+final class Boom implements DiscoverStrategy {
 
     @Override
     public void execute(Piece attackingPiece, Piece pieceToBeAttacked) {
