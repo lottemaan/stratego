@@ -1,4 +1,5 @@
 package stratego.domain;
+import java.util.Arrays;
 
 public class Board {
     private Square[][] squares;
@@ -108,24 +109,22 @@ public class Board {
         }
     }
     
+    private boolean isFlagOpponentCaptured() {
+        boolean flagCaptured = Arrays.stream(this.squares)
+            .flatMap(Arrays::stream)
+            .anyMatch(Square::hasCapturedFlag);
+        return flagCaptured;
+    }
+    
+    private boolean hasOpponentDynamicPieces() {
+        boolean dynamicPieceFound = Arrays.stream(this.squares)
+            .flatMap(Arrays::stream)
+            .anyMatch(Square::hasDynamicPiece);
+        return dynamicPieceFound;
+    }
 
     private void checkIfGameHasEnded() {
-        boolean dynamicPieceFound = false;
-        boolean flagCaptured = false;
-    
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (this.squares[i][j].hasCapturedFlag()) {
-                    flagCaptured = true;
-                } else if (this.squares[i][j].hasDynamicPiece()) {
-                    dynamicPieceFound = true;
-                }
-            }
-        }
-    
-        if (flagCaptured || !dynamicPieceFound) {
-            this.gameEnded = true;
-        }
+        this.gameEnded = isFlagOpponentCaptured() || !hasOpponentDynamicPieces();
     }
 
     protected Square getSquareWithFlag(Player player) {
@@ -161,16 +160,12 @@ public class Board {
         } else {return null;}
     }
 
-
-
-
     private BattleStrategy determineBattleStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
         if (attackingPiece instanceof Spy && pieceToBeAttacked instanceof Marshal || 
                     attackingPiece instanceof Marshal && pieceToBeAttacked instanceof Spy) {
             return new SpyingBattleStrategy();
         } else {return new RankBattleStrategy();}
     }
-
 
     private void translocatePiecesAfterAttack(Square fromSquare, Square toSquare) {
         if (!toSquare.getPieceFromSquare().isActive()){
@@ -219,17 +214,28 @@ public class Board {
     }
 
     private void moveRecorder(Square fromSquare, Square toSquare) {
-        if (fromSquare.equals(this.getPlayerThatHasTurn().getLastMoveToSquare()) && toSquare.equals(this.getPlayerThatHasTurn().getLastMoveFromSquare())) {
-        } else {
-            if (toSquare.equals(this.getPlayerThatHasTurn().getLastMoveToSquare())) {
-                this.getPlayerThatHasTurn().addConsecutiveMove();
-            } else {
-                this.getPlayerThatHasTurn().resetConsecutiveMove();
-            }
-            this.getPlayerThatHasTurn().setLastMoveFromSquare(fromSquare);
-            this.getPlayerThatHasTurn().setLastMoveToSquare(toSquare);
+        Player currentPlayer = this.getPlayerThatHasTurn();
+
+        if (isReverseMove(fromSquare, toSquare, currentPlayer)) {
+            return;
         }
-    }     
+
+        if (isConsecutiveMove(toSquare, currentPlayer)) {
+                currentPlayer.addConsecutiveMove();
+        } else {currentPlayer.resetConsecutiveMove();}
+
+        currentPlayer.setLastMoveFromSquare(fromSquare);
+        currentPlayer.setLastMoveToSquare(toSquare);
+    }
+     
+
+    private boolean isReverseMove(Square fromSquare, Square toSquare, Player currentPlayer) {
+        return fromSquare.equals(currentPlayer.getLastMoveToSquare()) && toSquare.equals(currentPlayer.getLastMoveFromSquare());
+    }
+
+    private boolean isConsecutiveMove(Square toSquare, Player currentPlayer) {
+        return toSquare.equals(currentPlayer.getLastMoveToSquare());
+    }
 
     private boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
         int x1 = fromSquare.getXCoordinate();
@@ -237,27 +243,15 @@ public class Board {
         int x2 = toSquare.getXCoordinate();
         int y2 = toSquare.getYCoordinate();
     
-        int xStep = (x2 > x1) ? 1 : (x2 < x1) ? -1 : 0;
-        int yStep = (y2 > y1) ? 1 : (y2 < y1) ? -1 : 0;
+        int xStep = Integer.compare(x2, x1);
+        int yStep = Integer.compare(y2, y1);
+
+        for (int x = x1 + xStep, y = y1 + yStep; x != x2 || y != y2; x += xStep, y += yStep) {
+            Square currentSquare = this.getSquare(x, y);
     
-        x1 += xStep;
-        y1 += yStep;
-    
-        while (x1 != x2 || y1 != y2) {
-            Square currentSquare = this.getSquare(x1, y1);
-            
-            // Check if the current square contains water
-            if (currentSquare.isWater()) {
+            if (currentSquare.isWater() || currentSquare.getPieceFromSquare() != null) {
                 return false;
             }
-            
-            // Check if the current square contains a piece
-            if (currentSquare.getPieceFromSquare() != null) {
-                return false;
-            }
-            
-            x1 += xStep;
-            y1 += yStep;
         }
     
         return true;
@@ -282,10 +276,6 @@ public class Board {
     protected String getPreviousTurnLostPiece(){
         return this.previousTurnLostPiece;
     }
-
-
-    
-
 
 }
 
