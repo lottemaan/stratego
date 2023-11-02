@@ -1,8 +1,8 @@
 package stratego.domain;
 
-public class Player {
+final class Player {
     
-    private final Player opponent;
+    private Player opponent;
     private boolean hasTurn;
     private String name;
     private int playerId;
@@ -10,7 +10,7 @@ public class Player {
     private Square lastMoveToSquare;
     private Square lastMoveFromSquare;
 
-    public Player() {
+    protected Player() {
         this.hasTurn = true;
         this.name = "one";
         this.playerId = 1;
@@ -24,19 +24,19 @@ public class Player {
         this.opponent = opponent;
     }
 
-    public String getNamePlayer() {
+    protected String getNamePlayer() {
         return this.name;
     }
 
-    public boolean hasTurn() {
+    protected boolean hasTurn() {
         return this.hasTurn;
     }
 
-    public Player getOpponent() {
+    protected Player getOpponent() {
         return this.opponent;
     }
 
-    public void switchTurns() {
+    protected void switchTurns() {
         this.switchTurn();          
         this.opponent.switchTurn();  
     }
@@ -45,44 +45,44 @@ public class Player {
         this.hasTurn = !this.hasTurn;
     }
 
-    public void gameOver() {
+    protected void gameOver() {
         this.setToInactive();
         this.opponent.setToInactive();
     }
 
-    public void setToInactive() {
+    private void setToInactive() {
         this.hasTurn = false;
     }
 
-    public int getId() {
+    protected int getId() {
         return this.playerId;
     }
 
-    public int getConsecutiveMoves() {
+    protected int getConsecutiveMoves() {
         return this.consecutiveMoves;
     }
 
-    public void addConsecutiveMove() {
+    protected void addConsecutiveMove() {
         this.consecutiveMoves++;
     }
 
-    public void resetConsecutiveMove() {
+    protected void resetConsecutiveMove() {
         this.consecutiveMoves = 1;
     }
 
-    public Square getLastMoveToSquare() {
+    protected Square getLastMoveToSquare() {
         return lastMoveToSquare;
     }
 
-    public void setLastMoveToSquare(Square lastMoveToSquare) {
+    protected void setLastMoveToSquare(Square lastMoveToSquare) {
         this.lastMoveToSquare = lastMoveToSquare;
     }
 
-    public Square getLastMoveFromSquare() {
+    protected Square getLastMoveFromSquare() {
         return lastMoveFromSquare;
     }
 
-    public void setLastMoveFromSquare(Square lastMoveFromSquare) {
+    protected void setLastMoveFromSquare(Square lastMoveFromSquare) {
         this.lastMoveFromSquare = lastMoveFromSquare;
     }
 }

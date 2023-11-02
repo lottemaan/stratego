@@ -1,38 +1,35 @@
 package stratego.domain;
 
-public class Square {
+final class Square {
     private int xCoordinate;
     private int yCoordinate;
     private Piece piece;
     private boolean water = false;
-    private Piece lostBattlePiece;
-    private Piece wonBattlePiece;
 
-
-    public Square(int xCoordinate, int yCoordinate) {
+    protected Square(int xCoordinate, int yCoordinate) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
     
-    public int getXCoordinate() {
+    protected int getXCoordinate() {
         return this.xCoordinate;
     }
 
-    public int getYCoordinate() {
+    protected int getYCoordinate() {
         return this.yCoordinate;
     }
 
-    public Piece getPieceFromSquare() {
+    protected Piece getPieceFromSquare() {
         return this.piece;
     }
 
-    public boolean hasDynamicPiece() {
+    protected boolean hasDynamicPiece() {
         if (this.piece != null && !this.piece.getPlayer().hasTurn() && this.piece instanceof DynamicPiece) {
             return true;
         } else {return false;}
     }
 
-    public boolean hasCapturedFlag() {
+    protected boolean hasCapturedFlag() {
         if (this.piece != null && !this.piece.getPlayer().hasTurn() && this.piece instanceof Flag && ((Flag)this.piece).isCaptured()) {
             return true;
         } else {return false;}
@@ -44,41 +41,36 @@ public class Square {
         } 
     }
 
-    public void deletePiece() {
+    protected void deletePiece() {
         this.piece = null;
     }
 
-    public void clearFallenPiece() {
+    protected void clearFallenPiece() {
         Piece piece = this.getPieceFromSquare();
         if (piece != null && !piece.isActive()) {
             this.deletePiece();
         }
     }
 
-    public boolean isWater(){
+    protected boolean isWater(){
         return this.water;
     }
 
-    public void turnInWater(){
+    protected void turnInWater(){
         this.water = true;
     }
 
-
-    public String getLostBattlePiece() {
+    protected String getLostBattlePiece() {
         if (this.piece != null && this.piece.hasBattleLost()){
-            return this.piece.getName();
+            return this.piece.getNamePiece();
         } else {return null;}
     }
 
-    public String getWonBattlePiece() {
+    protected String getWonBattlePiece() {
         if (this.piece != null && this.piece.hasBattleWon()) {
-            return this.piece.getName();
+            return this.piece.getNamePiece();
         } else {return null;}
     }
-
-
-
-
 }
 
 

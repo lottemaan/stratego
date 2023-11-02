@@ -3,14 +3,12 @@ package stratego.api.models;
 import stratego.domain.Playable;
 import stratego.domain.Playable.Winner;
 
-public class GameStatusDTO<Piece> {
+public class GameStatusDTO {
 
     public boolean endOfGame;
     public Winner winner;
     public boolean gameBegun;
     public String winnerName;
-
-    
 
     public GameStatusDTO(Playable StrategoGame) {
         this.endOfGame = StrategoGame.isEndOfGame();

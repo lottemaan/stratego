@@ -1,176 +1,172 @@
 package stratego.domain;
 
 abstract class Piece {
-    protected String name;
-    protected boolean active = true;
-    protected int rank;
-    protected Player player;
+    private String namePiece;
+    private Player player;
+    private boolean active = true;
     private boolean battleWon = false;
     private boolean battleLost = false;
 
-    public String getName() {
-        return this.name;
+    protected String getNamePiece() {
+        return this.namePiece;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    protected void setNamePiece(String name) {
+        this.namePiece = name;
     }
 
-    public boolean isActive() {
+    protected boolean isActive() {
         return this.active;
     }
 
-    public void fall() {
+    protected void fall() {
         this.active = false;
         this.hasLostTheBattle();
     }
 
-    public void win() {
+    protected void win() {
         this.active = true;
         this.hasWonTheBattle();
     }
 
-    public int getRank() {
-        return this.rank;
-    }
-
-    public Player getPlayer() {
+    protected Player getPlayer() {
         return this.player;
     }
 
-    public void assignPlayer(Player player) {
+    protected void assignPlayer(Player player) {
         this.player = player;
     }
 
-    public boolean hasBattleWon() {
+    protected boolean hasBattleWon() {
         return this.battleWon;
     }
 
-    public void hasWonTheBattle() {
+    protected void hasWonTheBattle() {
         this.battleWon = true;
     }
 
-    public void resetBattleWon() {
+    protected void resetBattleWon() {
         this.battleWon = false;
     }
 
-    public boolean hasBattleLost() {
+    protected boolean hasBattleLost() {
         return this.battleLost;
     }
 
-    public void hasLostTheBattle() {
+    protected void hasLostTheBattle() {
         this.battleLost = true;
     }
 
-    public void resetBattleLost() {
+    protected void resetBattleLost() {
         this.battleLost = false;
     }
-
 }
 
 abstract class DynamicPiece extends Piece {
+    protected int rank;
 
-
+    protected int getRank() {
+        return this.rank;
+    }
 }
 
 abstract class StaticPiece extends Piece {
 
 }
 
-class Marshal extends DynamicPiece {
+final class Marshal extends DynamicPiece {
 
-    public Marshal() {
-        this.name = "marshal";
+    protected Marshal() {
+        this.setNamePiece("marshal");
         this.rank = 1;
     }
 }
 
-class Spy extends DynamicPiece {
+final class Spy extends DynamicPiece {
 
-    public Spy() {
-        this.name = "spy";
+    protected Spy() {
+        this.setNamePiece("spy");
         this.rank = 10;
     }
 }
 
-class Scout extends DynamicPiece {
-    public Scout() {
-        this.name = "scout";
+final class Scout extends DynamicPiece {
+    protected Scout() {
+        this.setNamePiece("scout");
         this.rank = 9;
     }
 }
 
-class Miner extends DynamicPiece {
-    public Miner() {
-        this.name = "miner";
+final class Miner extends DynamicPiece {
+    protected Miner() {
+        this.setNamePiece("miner");
         this.rank = 8;
     }
 }
 
-class Sergeant extends DynamicPiece{
-    public Sergeant() {
-        this.name = "sergeant";
+final class Sergeant extends DynamicPiece{
+    protected Sergeant() {
+        this.setNamePiece("sergeant");
         this.rank = 7;
     }
 }
 
-class Lieutenant extends DynamicPiece{
-    public Lieutenant() {
-        this.name = "lieutenant";
+final class Lieutenant extends DynamicPiece{
+    protected Lieutenant() {
+        this.setNamePiece("lieutenant");
         this.rank = 6;
     }
 }
 
-class Captain extends DynamicPiece{
-    public Captain() {
-        this.name = "captain";
+final class Captain extends DynamicPiece{
+    protected Captain() {
+        this.setNamePiece("captain");
         this.rank = 5;
     }
 }
 
-class Major extends DynamicPiece{
-    public Major() {
-        this.name = "major";
+final class Major extends DynamicPiece{
+    protected Major() {
+        this.setNamePiece("major");
         this.rank = 4;
     }
 }
 
-class Colonel extends DynamicPiece{
-    public Colonel() {
-        this.name = "colonel";
+final class Colonel extends DynamicPiece{
+    protected Colonel() {
+        this.setNamePiece("colonel");
         this.rank = 3;
     }
 }
 
-class General extends DynamicPiece{
-    public General() {
-        this.name = "general";
+final class General extends DynamicPiece{
+    protected General() {
+        this.setNamePiece("general");
         this.rank = 2;
     }
 }
 
-class Flag extends StaticPiece {
+final class Flag extends StaticPiece {
 
     private boolean captured;
 
-    public Flag() {
-        this.name = "flag";
+    protected Flag() {
+        this.setNamePiece("flag");
         this.captured = false;
     }
 
-    public boolean isCaptured() {
+    protected boolean isCaptured() {
         return this.captured;
     }
 
-    public void beCaptured() {
+    protected void beCaptured() {
         this.captured = true;
     }
 }
 
-class Bomb extends StaticPiece {
+final class Bomb extends StaticPiece {
 
-        public Bomb() {
-        this.name = "bomb";
-
+    protected Bomb() {
+        this.setNamePiece("bomb");
     }
 }

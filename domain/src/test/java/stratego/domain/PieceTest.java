@@ -17,14 +17,14 @@ public class PieceTest {
     @Test
     public void TestIfAMarshalCanBeCreatedWithNameMarshal() {
         Marshal marshal = new Marshal();
-        assertEquals(marshal.getName(), "marshal");
+        assertEquals(marshal.getNamePiece(), "marshal");
     }
 
     @Test
     public void TestIfAMarshalItsNameCanBeSetToScout() {
         Marshal marshal = new Marshal();
-        marshal.setName("scout");
-        assertEquals(marshal.getName(), "scout");
+        marshal.setNamePiece("scout");
+        assertEquals(marshal.getNamePiece(), "scout");
     }
 
     @Test
@@ -51,7 +51,7 @@ public class PieceTest {
     public void TestIfAFlagCanBeCreated() {
         Flag flag = new Flag();
         assertNotNull(flag);
-        assertEquals(flag.getName(), "flag");
+        assertEquals(flag.getNamePiece(), "flag");
     }
 
     @Test
@@ -72,7 +72,7 @@ public class PieceTest {
     public void testIfSpyCanBeCreated() {
         Spy spy = new Spy();
         assertNotNull(spy);
-        assertEquals("spy", spy.getName());
+        assertEquals("spy", spy.getNamePiece());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class PieceTest {
     public void testIfScoutCanBeCreated() {
         Scout scout = new Scout();
         assertNotNull(scout);
-        assertEquals("scout", scout.getName());
+        assertEquals("scout", scout.getNamePiece());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class PieceTest {
         Miner miner = new Miner();
         assertNotNull(miner);
         assertInstanceOf(DynamicPiece.class, miner);
-        assertEquals(miner.getName(), "miner");
+        assertEquals(miner.getNamePiece(), "miner");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class PieceTest {
         Bomb bomb = new Bomb();
         assertNotNull(bomb);
         assertInstanceOf(StaticPiece.class, bomb);
-        assertEquals(bomb.getName(), "bomb");
+        assertEquals(bomb.getNamePiece(), "bomb");
     }
 
     @Test

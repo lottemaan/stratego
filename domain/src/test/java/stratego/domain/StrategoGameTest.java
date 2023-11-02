@@ -2,7 +2,6 @@ package stratego.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -13,26 +12,29 @@ import stratego.domain.Playable.Winner;
 public class StrategoGameTest {
 
     private void assignPlayersToPieces(Board board) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (j < 4) {
-                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player.getOpponent());
-                } if (j > 5) {
-                    board.squares[i][j].getPieceFromSquare().assignPlayer(board.player);
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+                if (j < 5) {
+                    board.getSquare(i, j).getPieceFromSquare().assignPlayer(board.getPlayer().getOpponent());
+                }
+                if (j > 6) {
+                    board.getSquare(i, j).getPieceFromSquare().assignPlayer(board.getPlayer());
                 }
             }
         }
     }
 
     public void initializeForTesting(Board board) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if ((i == 0 && j == 0) || (i == 9 && j == 9)) {
-                    board.squares[i][j].updatePiece(new Flag()); 
-                } else if (j > 3 && j < 6) {
-                    board.squares[i][j].updatePiece(null);
-                } else {board.squares[i][j].updatePiece(new Marshal());}
-            } 
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+                if ((i == 1 && j == 1) || (i == 10 && j == 10)) {
+                    board.getSquare(i, j).updatePiece(new Flag());
+                } else if (j > 4 && j < 7) {
+                    board.getSquare(i, j).updatePiece(null);
+                } else {
+                    board.getSquare(i, j).updatePiece(new Marshal());
+                }
+            }
         }
         assignPlayersToPieces(board);
     }
@@ -110,13 +112,13 @@ public class StrategoGameTest {
         Square fromSquare = strategoGame.getSquare(1, 7);
         Square toSquare = strategoGame.getSquare(1,6);
 
-        assertEquals(fromSquare.getPieceFromSquare().getName(), "marshal");
+        assertEquals(fromSquare.getPieceFromSquare().getNamePiece(), "marshal");
         assertNull(toSquare.getPieceFromSquare());
 
         strategoGame.doMove(1,7,1,6); 
         
         assertNull(fromSquare.getPieceFromSquare());
-        assertEquals(toSquare.getPieceFromSquare().getName(), "marshal");
+        assertEquals(toSquare.getPieceFromSquare().getNamePiece(), "marshal");
     }
 
     @Test

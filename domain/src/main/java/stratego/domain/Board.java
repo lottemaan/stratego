@@ -1,18 +1,17 @@
 package stratego.domain;
+import java.util.Arrays;
 
 public class Board {
-    Square[][] squares;
-    Player player = new Player();
-    Player opponent = player.getOpponent();
+    private Square[][] squares;
+    private Player player = new Player();
+    private Player opponent = player.getOpponent();
     private boolean gameEnded = false;
     private boolean gameBegun = false;
-    BoardInitialization boardInitialization = new BoardInitialization();
-    public String currentTurnWonPiece;
-    public String currentTurnLostPiece;
-    public String previousTurnWonPiece;
-    public String previousTurnLostPiece;
+    private BoardInitialization boardInitialization = new BoardInitialization();
+    private String previousTurnWonPiece;
+    private String previousTurnLostPiece;
 
-    public Board() {
+    protected Board() {
         this.squares = new Square[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -22,104 +21,113 @@ public class Board {
         boardInitialization.initializeRandomly(this.squares, this.player, this.opponent);
     }
 
-    public Square getSquare(int xCoordinate, int yCoordinate) {
+    protected Square getSquare(int xCoordinate, int yCoordinate) {
         return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
     }
 
-    public Square[] getRows() {
-        return this.squares[0];
-    }
-
-    public Square[] getColumns() {
-        return this.squares[1];
-    }
-
-    public void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
-        theGameHasBegun();
-
-        this.previousTurnLostPiece = null;
-        this.previousTurnWonPiece = null;
-
-        this.moveRecorder(fromSquare, toSquare);
-
-        isMoveLegal(fromSquare, toSquare);
+    protected void doMove(Square fromSquare, Square toSquare) throws InvalidMoveException {
+        this.startMove(fromSquare, toSquare);
 
         if (toSquare.getPieceFromSquare() == null) {
             this.translocatePiece(fromSquare, toSquare);
-            
         } else {
-            meet(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
-            translocatePiecesAfterAttack(fromSquare, toSquare);
-            
-            if (fromSquare.getLostBattlePiece() != null) {
-                this.previousTurnLostPiece = fromSquare.getLostBattlePiece();
-            }
-            if (fromSquare.getWonBattlePiece() != null) {
-                this.previousTurnWonPiece = fromSquare.getWonBattlePiece();
-            }
-            if (toSquare.getWonBattlePiece() != null) {
-                this.previousTurnWonPiece = toSquare.getWonBattlePiece();
-            }
-            if (toSquare.getLostBattlePiece() != null) {
-                this.previousTurnLostPiece = toSquare.getLostBattlePiece();
-            }
-            
-            fromSquare.clearFallenPiece();
-            toSquare.clearFallenPiece();
-            
+            this.handlePieceCrossing(fromSquare, toSquare);
         }
         
-        if(this.hasGameEnded()) {
+        this.endMove();
+    }
+
+    private void startMove(Square fromSquare, Square toSquare) throws InvalidMoveException{
+        if (!this.hasGameBegun()) {
+            this.theGameHasBegun();
+        }
+        this.previousTurnLostPiece = null;
+        this.previousTurnWonPiece = null;
+        this.moveRecorder(fromSquare, toSquare);
+        this.isMoveLegal(fromSquare, toSquare);
+    }
+
+    private void endMove() {
+        if (this.hasGameEnded()) {
             this.gameEnds();
-        } else {
+        } else {this.player.switchTurns();}
+    }
 
+    private void handlePieceCrossing(Square fromSquare, Square toSquare){
+        discoverOtherPiece(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
+        translocatePiecesAfterAttack(fromSquare, toSquare);
+        saveBattlePieces(fromSquare, toSquare);
+        fromSquare.clearFallenPiece();
+        toSquare.clearFallenPiece();
+    }
 
+    private void saveBattlePieces(Square fromSquare, Square toSquare) {
+        if (fromSquare.getLostBattlePiece() != null) {
+            this.previousTurnLostPiece = fromSquare.getLostBattlePiece();
+        }
+        if (fromSquare.getWonBattlePiece() != null) {
+            this.previousTurnWonPiece = fromSquare.getWonBattlePiece();
+        }
+        if (toSquare.getWonBattlePiece() != null) {
+            this.previousTurnWonPiece = toSquare.getWonBattlePiece();
+        }
+        if (toSquare.getLostBattlePiece() != null) {
+            this.previousTurnLostPiece = toSquare.getLostBattlePiece();
+        }
+    }
 
-            this.player.switchTurns();}
+    private void discoverOtherPiece(Piece attackingPiece, Piece pieceToBeAttacked) {
+        if (pieceToBeAttacked instanceof DynamicPiece) {
+            battle(attackingPiece, pieceToBeAttacked);
+        } else if (pieceToBeAttacked instanceof StaticPiece) {
+            discover(attackingPiece, pieceToBeAttacked);
+        }
+    }
+
+    private void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
+        BattleStrategy battleStrategy = determineBattleStrategy(attackingPiece, pieceToBeAttacked);
+        battleStrategy.execute(attackingPiece, pieceToBeAttacked);
+    }
+
+    
+    private void discover(Piece attackingPiece, Piece pieceToBeAttacked) {
+        DiscoverStrategy discoverStrategy = determineDiscoverStrategy(attackingPiece, pieceToBeAttacked);
+        discoverStrategy.execute(attackingPiece, pieceToBeAttacked);
     }
         
-    public void gameEnds() {
+    private void gameEnds() {
         this.player.gameOver();
     }
 
-    public boolean hasGameBegun() {
+    protected boolean hasGameBegun() {
         return this.gameBegun;
     }
 
-    public void theGameHasBegun() {
+    private void theGameHasBegun() {
         if (!hasGameBegun()) {
             this.gameBegun = true;
         }
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (this.squares[i][j].getPieceFromSquare() != null && this.squares[i][j].getPieceFromSquare().hasBattleWon()) {
-                    this.squares[i][j].getPieceFromSquare().resetBattleWon();
-                }
-            }
-        }
     }
     
-
-    public void checkIfGameHasEnded() {
-        boolean dynamicPieceFound = false;
-        boolean flagCaptured = false;
+    private boolean isFlagOpponentCaptured() {
+        boolean flagCaptured = Arrays.stream(this.squares)
+            .flatMap(Arrays::stream)
+            .anyMatch(Square::hasCapturedFlag);
+        return flagCaptured;
+    }
     
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (this.squares[i][j].hasCapturedFlag()) {
-                    flagCaptured = true;
-                } else if (this.squares[i][j].hasDynamicPiece()) {
-                    dynamicPieceFound = true;
-                }
-            }
-        }
-    
-        if (flagCaptured || !dynamicPieceFound) {
-            this.gameEnded = true;
-        }
+    private boolean hasOpponentDynamicPieces() {
+        boolean dynamicPieceFound = Arrays.stream(this.squares)
+            .flatMap(Arrays::stream)
+            .anyMatch(Square::hasDynamicPiece);
+        return dynamicPieceFound;
     }
 
-    public Square getSquareWithFlag(Player player) {
+    private void checkIfGameHasEnded() {
+        this.gameEnded = isFlagOpponentCaptured() || !hasOpponentDynamicPieces();
+    }
+
+    protected Square getSquareWithFlag(Player player) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (this.squares[i][j].getPieceFromSquare() instanceof Flag && this.squares[i][j].getPieceFromSquare().getPlayer() == player) {
@@ -129,80 +137,57 @@ public class Board {
         } return null;
     }
 
-    public boolean hasGameEnded() {
+    protected boolean hasGameEnded() {
         this.checkIfGameHasEnded();
         return this.gameEnded;
     }
      
-    public void translocatePiece(Square fromSquare, Square toSquare) {
+    private void translocatePiece(Square fromSquare, Square toSquare) {
         if (fromSquare.getPieceFromSquare() instanceof DynamicPiece) {
             toSquare.updatePiece(fromSquare.getPieceFromSquare()); 
             fromSquare.deletePiece();
         }
     }
 
-    public void meet(Piece attackingPiece, Piece pieceToBeAttacked) {
-        if (!(pieceToBeAttacked instanceof StaticPiece)) {
-            battle(attackingPiece, pieceToBeAttacked);
-        } else {
-            if(pieceToBeAttacked instanceof Flag){
-                attackingPiece.win();
-                ((Flag) pieceToBeAttacked).beCaptured();
-            } else if (pieceToBeAttacked instanceof Bomb) {
-                if(attackingPiece instanceof Miner){
-                    attackingPiece.win();
-                    pieceToBeAttacked.fall();
-                    
-                } else {
-                    pieceToBeAttacked.win();
-                    attackingPiece.fall();
-                }
-            }
-        }
+    private DiscoverStrategy determineDiscoverStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
+        
+        if (attackingPiece instanceof Miner && pieceToBeAttacked instanceof Bomb) {
+            return new DismantelTheBomb();
+        } else if (!(attackingPiece instanceof Miner) && pieceToBeAttacked instanceof Bomb) {
+            return new Boom();
+        } else if (pieceToBeAttacked instanceof Flag) {
+            return new CaptureTheFlag();
+        } else {return null;}
     }
 
-    public void battle(Piece attackingPiece, Piece pieceToBeAttacked) {
-        if (pieceToBeAttacked instanceof Spy && attackingPiece instanceof Marshal) {
-            pieceToBeAttacked.win();
-            attackingPiece.fall();
-        } else if (pieceToBeAttacked instanceof Marshal && attackingPiece instanceof Spy) {
-            attackingPiece.win();
-            pieceToBeAttacked.fall();
-        } else {
-            if (pieceToBeAttacked.getRank() > attackingPiece.getRank()) {
-                attackingPiece.win();
-                pieceToBeAttacked.fall();
-            } else if (pieceToBeAttacked.getRank() < attackingPiece.getRank()) {
-                pieceToBeAttacked.win();
-                attackingPiece.fall();
-            } else {
-                attackingPiece.fall();
-                pieceToBeAttacked.fall();
-            }
-        }
+    private BattleStrategy determineBattleStrategy(Piece attackingPiece, Piece pieceToBeAttacked) {
+        if (attackingPiece instanceof Spy && pieceToBeAttacked instanceof Marshal || 
+                    attackingPiece instanceof Marshal && pieceToBeAttacked instanceof Spy) {
+            return new SpyingBattleStrategy();
+        } else {return new RankBattleStrategy();}
     }
 
-    public void translocatePiecesAfterAttack(Square fromSquare, Square toSquare) {
+    private void translocatePiecesAfterAttack(Square fromSquare, Square toSquare) {
         if (!toSquare.getPieceFromSquare().isActive()){
             translocatePiece(fromSquare, toSquare);
         }
     }
    
-    public Player getPlayer() {
+    protected Player getPlayer() {
         return this.player;
     }
 
-    public Player getOpponent() {
+    protected Player getOpponent() {
         return this.player.getOpponent();
     }
 
-    public Player getPlayerThatHasTurn() {
+    protected Player getPlayerThatHasTurn() {
         if (this.player.hasTurn() == true) {
             return this.player;
         } else {return this.opponent;}
     }
 
-    public void isMoveLegal(Square fromSquare, Square toSquare) throws InvalidMoveException {
+    private void isMoveLegal(Square fromSquare, Square toSquare) throws InvalidMoveException {
         if (fromSquare.getPieceFromSquare() instanceof StaticPiece) {
             throw new InvalidMoveException("this piece is not allowed to move");
         } else if (correctMovingDistance(fromSquare, toSquare) == false) {
@@ -229,52 +214,51 @@ public class Board {
     }
 
     private void moveRecorder(Square fromSquare, Square toSquare) {
-        if (fromSquare.equals(this.getPlayerThatHasTurn().getLastMoveToSquare()) && toSquare.equals(this.getPlayerThatHasTurn().getLastMoveFromSquare())) {
-        } else {
-            if (toSquare.equals(this.getPlayerThatHasTurn().getLastMoveToSquare())) {
-                this.getPlayerThatHasTurn().addConsecutiveMove();
-            } else {
-                this.getPlayerThatHasTurn().resetConsecutiveMove();
-            }
-            this.getPlayerThatHasTurn().setLastMoveFromSquare(fromSquare);
-            this.getPlayerThatHasTurn().setLastMoveToSquare(toSquare);
-        }
-    }     
+        Player currentPlayer = this.getPlayerThatHasTurn();
 
-    public boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
+        if (isReverseMove(fromSquare, toSquare, currentPlayer)) {
+            return;
+        }
+
+        if (isConsecutiveMove(toSquare, currentPlayer)) {
+                currentPlayer.addConsecutiveMove();
+        } else {currentPlayer.resetConsecutiveMove();}
+
+        currentPlayer.setLastMoveFromSquare(fromSquare);
+        currentPlayer.setLastMoveToSquare(toSquare);
+    }
+     
+
+    private boolean isReverseMove(Square fromSquare, Square toSquare, Player currentPlayer) {
+        return fromSquare.equals(currentPlayer.getLastMoveToSquare()) && toSquare.equals(currentPlayer.getLastMoveFromSquare());
+    }
+
+    private boolean isConsecutiveMove(Square toSquare, Player currentPlayer) {
+        return toSquare.equals(currentPlayer.getLastMoveToSquare());
+    }
+
+    private boolean areInBetweenSquaresClear(Square fromSquare, Square toSquare) {
         int x1 = fromSquare.getXCoordinate();
         int y1 = fromSquare.getYCoordinate();
         int x2 = toSquare.getXCoordinate();
         int y2 = toSquare.getYCoordinate();
     
-        int xStep = (x2 > x1) ? 1 : (x2 < x1) ? -1 : 0;
-        int yStep = (y2 > y1) ? 1 : (y2 < y1) ? -1 : 0;
+        int xStep = Integer.compare(x2, x1);
+        int yStep = Integer.compare(y2, y1);
+
+        for (int x = x1 + xStep, y = y1 + yStep; x != x2 || y != y2; x += xStep, y += yStep) {
+            Square currentSquare = this.getSquare(x, y);
     
-        x1 += xStep;
-        y1 += yStep;
-    
-        while (x1 != x2 || y1 != y2) {
-            Square currentSquare = this.getSquare(x1, y1);
-            
-            // Check if the current square contains water
-            if (currentSquare.isWater()) {
+            if (currentSquare.isWater() || currentSquare.getPieceFromSquare() != null) {
                 return false;
             }
-            
-            // Check if the current square contains a piece
-            if (currentSquare.getPieceFromSquare() != null) {
-                return false;
-            }
-            
-            x1 += xStep;
-            y1 += yStep;
         }
     
         return true;
     }
     
 
-    public boolean correctMovingDistance(Square fromSquare, Square toSquare) {
+    private boolean correctMovingDistance(Square fromSquare, Square toSquare) {
         int xSteps = Math.abs(toSquare.getXCoordinate() - fromSquare.getXCoordinate());
         int ySteps = Math.abs(toSquare.getYCoordinate() - fromSquare.getYCoordinate());
     
@@ -285,14 +269,13 @@ public class Board {
         }
     }
 
-    public String getPreviousTurnWonPiece(){
+    protected String getPreviousTurnWonPiece(){
         return this.previousTurnWonPiece;
     }
 
-    public String getPreviousTurnLostPiece(){
+    protected String getPreviousTurnLostPiece(){
         return this.previousTurnLostPiece;
     }
-
 
 }
 
