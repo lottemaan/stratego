@@ -256,6 +256,21 @@ public class Board {
     
         return true;
     }
+
+    // kijken of dit op dezelfde manier kan als bij checkIfGameHasEnded()
+    // private boolean isWaterOnTheWay() {
+    //     boolean isWater = Arrays.stream(this.squares)
+    //         .flatMap(Arrays::stream)
+    //         .anyMatch(Square::isWater);
+    //     return isWater;
+    // }
+
+    // private boolean isAnotherPieceOnTheWay() {
+    //     boolean isPiece = Arrays.stream(this.squares)
+    //         .flatMap(Arrays::stream)
+    //         .anyMatch(Square::isPieceOnSquare);
+    //     return isPiece;
+    // }
     
 
     private boolean correctMovingDistance(Square fromSquare, Square toSquare) {

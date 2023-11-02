@@ -45,6 +45,12 @@ final class Square {
         this.piece = null;
     }
 
+    protected boolean isPieceOnSquare() {
+        if (this.piece != null) {
+            return true;
+        } else {return false;}
+    }
+
     protected void clearFallenPiece() {
         Piece piece = this.getPieceFromSquare();
         if (piece != null && !piece.isActive()) {
