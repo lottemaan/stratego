@@ -13,7 +13,10 @@ export type Board = {
     squares: Square[][];
     previousTurnLostPiece: string;
     previousTurnWonPiece: string;
+    previousTurnLostPiecePlayer1: string;
+    previousTurnLostPiecePlayer2: string;
 }
+
 
 export type Square = {
     water: boolean;
