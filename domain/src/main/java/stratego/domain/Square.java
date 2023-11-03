@@ -66,17 +66,30 @@ final class Square {
         this.water = true;
     }
 
-    protected String getLostBattlePiece() {
+    protected Piece getLostBattlePiece() {
         if (this.piece != null && this.piece.hasBattleLost()){
-            return this.piece.getNamePiece();
+            return this.piece;
         } else {return null;}
     }
 
-    protected String getWonBattlePiece() {
+    protected Piece getWonBattlePiece() {
         if (this.piece != null && this.piece.hasBattleWon()) {
-            return this.piece.getNamePiece();
+            return this.piece;
         } else {return null;}
     }
+
+    protected Piece getLostBattlePiecePlayerOne() {
+        if (this.piece != null && this.piece.hasBattleLost() && this.piece.getPlayer().getId() == 1){
+            return this.piece;
+        } else {return null;}
+    }
+
+    protected Piece getLostBattlePiecePlayerTwo() {
+        if (this.piece != null && this.piece.hasBattleLost() && this.piece.getPlayer().getId() == 2){
+            return this.piece;
+        } else {return null;}
+    }
+
 }
 
 

@@ -8,8 +8,10 @@ public class Board {
     private boolean gameEnded = false;
     private boolean gameBegun = false;
     private BoardInitialization boardInitialization = new BoardInitialization();
-    private String previousTurnWonPiece;
+    private Piece previousTurnWonPiece;
     private String previousTurnLostPiece;
+    private Piece previousTurnLostPiecePlayer;
+    private Piece previousTurnLostPieceOpponent;
 
     protected Board() {
         this.squares = new Square[10][10];
@@ -42,7 +44,12 @@ public class Board {
             this.theGameHasBegun();
         }
         this.previousTurnLostPiece = null;
+        if (this.previousTurnWonPiece != null) {
+            this.previousTurnWonPiece.resetBattleWon();
+        }
         this.previousTurnWonPiece = null;
+        this.previousTurnLostPiecePlayer = null;
+        this.previousTurnLostPieceOpponent = null;
         this.moveRecorder(fromSquare, toSquare);
         this.isMoveLegal(fromSquare, toSquare);
     }
@@ -55,25 +62,39 @@ public class Board {
 
     private void handlePieceCrossing(Square fromSquare, Square toSquare){
         discoverOtherPiece(fromSquare.getPieceFromSquare(), toSquare.getPieceFromSquare());
-        translocatePiecesAfterAttack(fromSquare, toSquare);
         saveBattlePieces(fromSquare, toSquare);
+        translocatePiecesAfterAttack(fromSquare, toSquare);
         fromSquare.clearFallenPiece();
         toSquare.clearFallenPiece();
     }
 
     private void saveBattlePieces(Square fromSquare, Square toSquare) {
-        if (fromSquare.getLostBattlePiece() != null) {
-            this.previousTurnLostPiece = fromSquare.getLostBattlePiece();
-        }
+        if (fromSquare.getLostBattlePiece() != null && fromSquare.getLostBattlePiece().getPlayer().getId() == 1 && this.previousTurnLostPiecePlayer == null) {
+            this.previousTurnLostPiecePlayer = fromSquare.getLostBattlePiecePlayerOne();
+        } else if (fromSquare.getLostBattlePiece() != null && fromSquare.getLostBattlePiece().getPlayer().getId() == 2 && this.previousTurnLostPieceOpponent == null) {
+            this.previousTurnLostPieceOpponent = fromSquare.getLostBattlePiecePlayerTwo();
+        }                
+
         if (fromSquare.getWonBattlePiece() != null) {
             this.previousTurnWonPiece = fromSquare.getWonBattlePiece();
         }
         if (toSquare.getWonBattlePiece() != null) {
             this.previousTurnWonPiece = toSquare.getWonBattlePiece();
         }
-        if (toSquare.getLostBattlePiece() != null) {
-            this.previousTurnLostPiece = toSquare.getLostBattlePiece();
+        if (fromSquare.getLostBattlePiece() != null) {
+            this.previousTurnLostPiece = fromSquare.getLostBattlePiece().getNamePiece();
         }
+        if (toSquare.getLostBattlePiece() != null) {
+            this.previousTurnLostPiece = toSquare.getLostBattlePiece().getNamePiece();
+        }
+
+        if (toSquare.getLostBattlePiece() != null && toSquare.getLostBattlePiece().getPlayer().getId() == 1 && this.previousTurnLostPiecePlayer == null) {
+            this.previousTurnLostPiecePlayer = toSquare.getLostBattlePiecePlayerOne();
+        } else if (toSquare.getLostBattlePiece() != null && toSquare.getLostBattlePiece().getPlayer().getId() == 2 && this.previousTurnLostPieceOpponent == null) {
+            this.previousTurnLostPieceOpponent = toSquare.getLostBattlePiecePlayerTwo();
+        }  
+
+
     }
 
     private void discoverOtherPiece(Piece attackingPiece, Piece pieceToBeAttacked) {
@@ -284,12 +305,28 @@ public class Board {
         }
     }
 
-    protected String getPreviousTurnWonPiece(){
-        return this.previousTurnWonPiece;
+    protected Piece getPreviousTurnWonPiece(){
+        if (this.previousTurnWonPiece != null) {
+            return this.previousTurnWonPiece;
+        } else {return null;}
     }
 
     protected String getPreviousTurnLostPiece(){
-        return this.previousTurnLostPiece;
+        if (this.previousTurnLostPiece != null) {
+            return this.previousTurnLostPiece;
+        } else {return null;}
+    }
+
+    protected Piece getPreviousTurnLostPiecePlayer() {
+        if (this.previousTurnLostPiecePlayer != null) {
+            return this.previousTurnLostPiecePlayer;
+        } else {return null;}
+    }
+
+    protected Piece getPreviousTurnLostPieceOpponent() {
+        if (this.previousTurnLostPieceOpponent != null) {
+            return this.previousTurnLostPieceOpponent;
+        } else {return null;}
     }
 
 }

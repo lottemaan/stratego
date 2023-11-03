@@ -58,6 +58,10 @@ public interface Playable {
 
     String getPreviousTurnLostPiece();
 
+    String getPreviousTurnLostPiecePlayer2();
+
+    String getPreviousTurnLostPiecePlayer1();
+
 
 }
   

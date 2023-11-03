@@ -56,10 +56,6 @@ abstract class Piece {
     protected void hasLostTheBattle() {
         this.battleLost = true;
     }
-
-    protected void resetBattleLost() {
-        this.battleLost = false;
-    }
 }
 
 abstract class DynamicPiece extends Piece {

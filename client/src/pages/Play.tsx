@@ -81,13 +81,17 @@ export const Play = () => {
             }
 
             // Update the captured pieces
-            const lostPiece = updatedGameState.board.previousTurnLostPiece;
-            if (lostPiece) {
-                if (updatedGameState.players[0].hasTurn) {
-                    setCapturedPiecesPlayer2(new Map(capturedPiecesPlayer2).set(lostPiece, (capturedPiecesPlayer2.get(lostPiece) || 0) + 1));
-                } else if (updatedGameState.players[1].hasTurn) {
-                    setCapturedPiecesPlayer1(new Map(capturedPiecesPlayer1).set(lostPiece, (capturedPiecesPlayer1.get(lostPiece) || 0) + 1));
-                }
+            const lostPiecePlayer1 = updatedGameState.board.previousTurnLostPiecePlayer1;
+            const lostPiecePlayer2 = updatedGameState.board.previousTurnLostPiecePlayer2;
+            
+            if (lostPiecePlayer1) {
+                const pieceType = lostPiecePlayer1;
+                setCapturedPiecesPlayer1(new Map(capturedPiecesPlayer1).set(pieceType, (capturedPiecesPlayer1.get(pieceType) || 0) + 1));
+            }
+            
+            if (lostPiecePlayer2) {
+                const pieceType = lostPiecePlayer2;
+                setCapturedPiecesPlayer2(new Map(capturedPiecesPlayer2).set(pieceType, (capturedPiecesPlayer2.get(pieceType) || 0) + 1));
             }
 
         } else {
@@ -109,17 +113,24 @@ export const Play = () => {
 
     return (
         <>
-            {showPreviousTurnPopup && isEndOfGamePopupVisible === false && gameState?.gameStatus.gameBegun && (gameState?.board?.previousTurnWonPiece !== null || gameState?.board?.previousTurnLostPiece !== null) && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <PreviousTurnPopup
-                            previousTurnWonPiece={gameState?.board?.previousTurnWonPiece || "geen"}
-                            previousTurnLostPiece={gameState?.board?.previousTurnLostPiece || " "}
-                            onClose={closePreviousTurnPopup}
-                        />
-                    </div>
+{showPreviousTurnPopup && isEndOfGamePopupVisible === false && gameState?.gameStatus.gameBegun && (
+    <div className="modal">
+        <div className="modal-content">
+            {gameState?.board?.previousTurnWonPiece !== null || gameState?.board?.previousTurnLostPiece !== null ? (
+                <PreviousTurnPopup
+                    previousTurnWonPiece={gameState?.board?.previousTurnWonPiece || "geen"}
+                    previousTurnLostPiece={gameState?.board?.previousTurnLostPiece || " "}
+                    onClose={closePreviousTurnPopup}
+                />
+            ) : (
+                <div>
+                    <h2>Er heeft geen gevecht plaatsgevonden.</h2>
+                    <button onClick={closePreviousTurnPopup}>Oké</button>
                 </div>
             )}
+        </div>
+    </div>
+)}
 
             {isPlayer1PopupVisible && isEndOfGamePopupVisible === false && !showPreviousTurnPopup && (
                 <div className="modal">
@@ -201,13 +212,13 @@ export const Play = () => {
                         <h1 style={{ color: 'white' }}>geslagen stukken</h1>
                     </div>
                     <ul style={{ marginTop: '20px', marginLeft: '5px' }}>
-                        {gameState?.players[0].hasTurn && Array.from(capturedPiecesPlayer1.entries()).map(([pieceType, count]) => (
+                        {gameState?.players[0].hasTurn && Array.from(capturedPiecesPlayer2.entries()).map(([pieceType, count]) => (
                             <li key={pieceType} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                                 <img src={`/${pieceType}.png`} alt={pieceType} style={{ width: '50px', height: '50px' }} />
                                 <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{pieceType} ({count})</span>
                             </li>
                         ))}
-                        {gameState?.players[1].hasTurn && Array.from(capturedPiecesPlayer2.entries()).map(([pieceType, count]) => (
+                        {gameState?.players[1].hasTurn && Array.from(capturedPiecesPlayer1.entries()).map(([pieceType, count]) => (
                             <li key={pieceType} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                                 <img src={`/${pieceType}.png`} alt={pieceType} style={{ width: '50px', height: '50px' }} />
                                 <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{pieceType} ({count})</span>

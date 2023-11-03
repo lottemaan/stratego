@@ -166,7 +166,9 @@ public class StrategoGame implements Playable{
 
     @Override
     public String getPreviousTurnWonPiece() {
-        return this.board.getPreviousTurnWonPiece();
+        if (this.board.getPreviousTurnWonPiece() != null) {
+            return this.board.getPreviousTurnWonPiece().getNamePiece();
+        } else {return null;}
     }
 
     @Override
@@ -185,5 +187,19 @@ public class StrategoGame implements Playable{
                     return true;
             } else {return false;}
         }
+    }
+
+    @Override
+    public String getPreviousTurnLostPiecePlayer2() {
+        if (this.board.getPreviousTurnLostPieceOpponent() != null) {
+            return this.board.getPreviousTurnLostPieceOpponent().getNamePiece();
+        } else {return null;}
+    }
+
+    @Override
+    public String getPreviousTurnLostPiecePlayer1() {
+        if (this.board.getPreviousTurnLostPiecePlayer() != null) {
+            return this.board.getPreviousTurnLostPiecePlayer().getNamePiece();
+        } else {return null;}
     }
 }

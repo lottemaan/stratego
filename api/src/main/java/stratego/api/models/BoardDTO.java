@@ -8,6 +8,9 @@ public class BoardDTO {
     private String previousTurnLostPiece;
     private String previousTurnWonPiece;
 
+    private String previousTurnLostPiecePlayer1;
+    private String previousTurnLostPiecePlayer2;
+
     public BoardDTO(Playable strategoGame) {
         for (int i = 0; i < 10; ++i) {
             for (int j = 0; j < 10; j++) {
@@ -24,8 +27,9 @@ public class BoardDTO {
         }
 
         this.previousTurnLostPiece = strategoGame.getPreviousTurnLostPiece();
-
         this.previousTurnWonPiece = strategoGame.getPreviousTurnWonPiece();
+        this.previousTurnLostPiecePlayer1 = strategoGame.getPreviousTurnLostPiecePlayer1();
+        this.previousTurnLostPiecePlayer2 = strategoGame.getPreviousTurnLostPiecePlayer2();
     }
 
     public String getPreviousTurnLostPiece() {
@@ -36,6 +40,13 @@ public class BoardDTO {
         return this.previousTurnWonPiece;
     }
 
+    public String getPreviousTurnLostPiecePlayer1() {
+        return this.previousTurnLostPiecePlayer1;
+    }
+
+    public String getPreviousTurnLostPiecePlayer2() {
+        return this.previousTurnLostPiecePlayer2;
+    }
 
 
 }
