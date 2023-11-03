@@ -119,7 +119,10 @@ export const Play = () => {
             {gameState?.board?.previousTurnWonPiece !== null || gameState?.board?.previousTurnLostPiece !== null ? (
                 <PreviousTurnPopup
                     previousTurnWonPiece={gameState?.board?.previousTurnWonPiece || "geen"}
-                    previousTurnLostPiece={gameState?.board?.previousTurnLostPiece || " "}
+                    previousTurnLostPiecePlayer1={gameState?.board?.previousTurnLostPiecePlayer1 || null}
+                    previousTurnLostPiecePlayer2={gameState?.board?.previousTurnLostPiecePlayer2 || null}
+                    namePlayerOne={gameState.players[0].name}
+                    namePlayerTwo={gameState.players[1].name}
                     onClose={closePreviousTurnPopup}
                 />
             ) : (
