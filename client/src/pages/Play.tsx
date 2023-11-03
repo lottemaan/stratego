@@ -33,28 +33,13 @@ export const Play = () => {
     const [gameIsOver, setGameIsOver] = useState(false);
     const [isEndOfGamePopupVisible, setEndOfGamePopupVisible] = useState(false);
     const [showPreviousTurnPopup, setShowPreviousTurnPopup] = useState(false);
-
+    const [capturedPiecesPlayer1, setCapturedPiecesPlayer1] = useState(new Map<string, number>());
+    const [capturedPiecesPlayer2, setCapturedPiecesPlayer2] = useState(new Map<string, number>());
 
 
     const closePreviousTurnPopup = () => {
         setShowPreviousTurnPopup(false);
     };
-
-    const capturedPiecesFromBackend = [
-        ['scout', 1],
-        ['marshal', 2],
-        // ... other pairs
-      ];
-
-    // Create an empty Map
-    const capturedPiecesMap = new Map();
-
-    // Iterate over the array and add each pair to the map
-    capturedPiecesFromBackend.forEach(([pieceType, count]) => {
-    capturedPiecesMap.set(pieceType, count);
-    });
-
-      
 
     async function playGame(xFromSquare: number, yFromSquare: number, xToSquare: number, yToSquare: number) {
         // Check which player has the turn
@@ -84,7 +69,6 @@ export const Play = () => {
             const updatedGameState = await response.json();
             setGameState(updatedGameState); // Update the game state only if the response is successful
 
-
             // Update the popups based on the updated game state
             if (updatedGameState.players[0].hasTurn) {
                 setShowPreviousTurnPopup(true);
@@ -95,6 +79,17 @@ export const Play = () => {
                 setPlayer2PopupVisible(true);
                 setPlayer1PopupVisible(false); // Ensure the other player's popup is hidden
             }
+
+            // Update the captured pieces
+            const lostPiece = updatedGameState.board.previousTurnLostPiece;
+            if (lostPiece) {
+                if (updatedGameState.players[0].hasTurn) {
+                    setCapturedPiecesPlayer2(new Map(capturedPiecesPlayer2).set(lostPiece, (capturedPiecesPlayer2.get(lostPiece) || 0) + 1));
+                } else if (updatedGameState.players[1].hasTurn) {
+                    setCapturedPiecesPlayer1(new Map(capturedPiecesPlayer1).set(lostPiece, (capturedPiecesPlayer1.get(lostPiece) || 0) + 1));
+                }
+            }
+
         } else {
             return {
                 statusCode: response.status,
@@ -159,7 +154,6 @@ export const Play = () => {
                 </div>
             )}
 
-
             <div style={{ backgroundColor: 'lightgrey', padding: '5px', textAlign: 'center', borderBottom: '3px solid black', borderTop: '3px solid black' }}>
                 <h1 style={{ fontSize: '3em', fontWeight: 'bold' }}>S  &emsp; &emsp; T &emsp; &emsp;  R  &emsp; &emsp; A &emsp; &emsp;  T &emsp; &emsp;  E &emsp; &emsp;  G  &emsp; &emsp; O</h1>
             </div>
@@ -207,7 +201,13 @@ export const Play = () => {
                         <h1 style={{ color: 'white' }}>geslagen stukken</h1>
                     </div>
                     <ul style={{ marginTop: '20px', marginLeft: '5px' }}>
-                    {Array.from(capturedPiecesMap.entries()).map(([pieceType, count]) => (
+                        {gameState?.players[0].hasTurn && Array.from(capturedPiecesPlayer1.entries()).map(([pieceType, count]) => (
+                            <li key={pieceType} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                                <img src={`/${pieceType}.png`} alt={pieceType} style={{ width: '50px', height: '50px' }} />
+                                <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{pieceType} ({count})</span>
+                            </li>
+                        ))}
+                        {gameState?.players[1].hasTurn && Array.from(capturedPiecesPlayer2.entries()).map(([pieceType, count]) => (
                             <li key={pieceType} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                                 <img src={`/${pieceType}.png`} alt={pieceType} style={{ width: '50px', height: '50px' }} />
                                 <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{pieceType} ({count})</span>
@@ -216,9 +216,6 @@ export const Play = () => {
                     </ul>
                 </div>
             </div>
-
-
-
         </>
     );
 };
