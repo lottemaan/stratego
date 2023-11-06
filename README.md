@@ -1,4 +1,3 @@
-
 [![pipeline status](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/pipeline.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main)
 
 [![coverage report](https://git.sogyo.nl/lmanenschijn/ip-stratego/badges/main/coverage.svg)](https://git.sogyo.nl/lmanenschijn/ip-stratego/-/commits/main)
@@ -33,9 +32,9 @@ rang heeft dan sneuvelt jouw stuk en blijft je tegenstanders stuk staan.
     - De vlag kan veroverd worden door elk beweegbaar stuk.
     - Als je de vlag hebt veroverd of de tegenstander kan geen zet meer doen dan heb je gewonnen.
     - Je mag niet vaker dan 5x ononderbroken heen en weer schuiven met één stuk.
-    - Op de startpagina een ranking laten zien van spelers die ooit gewonnen hebben en hoevaak (database).
 
 **Should**
+- Op de startpagina een ranking laten zien van spelers die ooit gewonnen hebben en hoevaak (database).
 - Meren toevoegen in bord. Stukken mogen niet in of over de meren springen, maar moeten er langsheen.
 - Een samengesteld team zoals bij het originele stratego, inclusief alle tot nu toe ontbrekende stukken: 1x vlag, 6x bom, 1x maarschalk (rang 1), 1x generaal (rang 2), 2x kolonel (rang 3), 3x majoor (rang 4), 4x kapitein (rang 5), 4x luitenant (rang 6), 4x sergeant (rang 7), 5x mineur (rang 8), 8x verkenner (rang 9), 1x spion (rang 10).
 - Uitzondering: de bom is een onbeweegbaar stuk. De bom wint van iedereen, behalve de mineur.
