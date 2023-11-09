@@ -4,7 +4,7 @@ export default {
     theme: {
       extend: {
         backgroundImage: {
-            'stratego': "url(/ai_generated_stratego_game3.png)"
+            'stratego': "url(/ai_generated_stratego_game4.jpg)"
         },
       },
     },

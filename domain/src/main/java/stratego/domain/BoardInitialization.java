@@ -5,14 +5,14 @@ import java.util.Random;
 final class BoardInitialization {
     
     protected void initializeRandomly(Square[][] squares, Player player, Player opponent) {
-        Random random = new Random();
-        int choice = random.nextInt(2);
-
-        if (choice == 0) {
-            initializeScript1(squares, player, opponent);
-        } else {
-            initializeScript2(squares, player, opponent);
-        }
+        // Random random = new Random();
+        // int choice = random.nextInt(2);
+        initializeScript1(squares, player, opponent);
+        // if (choice == 0) {
+        //     initializeScript1(squares, player, opponent);
+        // } else {
+        //     initializeScript2(squares, player, opponent);
+        // }
     }
 
     private void initializeScript1(Square[][] squares, Player player, Player opponent) {
