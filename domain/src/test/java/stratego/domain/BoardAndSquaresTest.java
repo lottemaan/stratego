@@ -128,6 +128,7 @@ public class BoardAndSquaresTest {
     public void aSquareShouldBeAbleToReturnAPieceWithNameFlag() {
         Board board = new Board();
         initializeForTesting(board);
+        assignPlayersToPieces(board);
         Square squareWithCoordinates10by10 = board.getSquare(10, 10);
         assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getNamePiece(), "flag");
     }
@@ -247,6 +248,8 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfPieceIsAssignedByRightPlayerDuringInitialization() {
         Board board = new Board();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
         Player otherPlayer = board.getSquare(7, 7).getPieceFromSquare().getPlayer();
         Player player = board.getSquare(1, 1).getPieceFromSquare().getPlayer();
         assertEquals(player.getNamePlayer(), "two");
@@ -271,6 +274,8 @@ public class BoardAndSquaresTest {
     public void testIfMoveCannotBeDoneIfPlayerHasNotTurn() throws InvalidMoveException {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
             Board board = new Board();
+            initializeForTesting(board);
+            assignPlayersToPieces(board);
             Square fromSquare = board.getSquare(1, 4); // square that contains a piece from opponent
             Square toSquare = board.getSquare(1, 5);
 
@@ -285,6 +290,8 @@ public class BoardAndSquaresTest {
     public void testIfPieceCannotAttackPieceFromSamePlayer() throws InvalidMoveException {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
             Board board = new Board();
+            initializeForTesting(board);
+            assignPlayersToPieces(board);
             Square fromSquare = board.getSquare(1, 8);
             Square toSquare = board.getSquare(1, 7);
 
@@ -878,6 +885,14 @@ public class BoardAndSquaresTest {
         });
 
         Assertions.assertEquals("the piece is not allowed to go in water", thrown.getMessage());
+    }
+
+    @Test
+    public void testIfAPieceCanBePlaced() throws InvalidPlacementException {
+        Board board = new Board();
+        board.placePiece("Scout", 1, 1, 2);
+        assertEquals(board.getSquare(1,1).getPieceFromSquare().getNamePiece(), "scout");
+        assertEquals(board.getSquare(1,1).getPieceFromSquare().getPlayer().getId(), 2);
     }
 
     // @Test
