@@ -7,6 +7,7 @@ public class StrategoGame implements Playable{
 
     public StrategoGame(String playerOne, String playerTwo) {
         this.board = new Board();
+
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
@@ -201,5 +202,15 @@ public class StrategoGame implements Playable{
         if (this.board.getPreviousTurnLostPiecePlayer() != null) {
             return this.board.getPreviousTurnLostPiecePlayer().getNamePiece();
         } else {return null;}
+    }
+
+    @Override
+    public void placePiece(String piece, int xFromSquare, int yFromSquare, int playerId) throws InvalidPlacementException {
+        this.board.placePiece(piece, xFromSquare, yFromSquare, playerId);
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return this.board.isInitialized();
     }
 }

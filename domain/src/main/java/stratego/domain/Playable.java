@@ -62,6 +62,10 @@ public interface Playable {
 
     String getPreviousTurnLostPiecePlayer1();
 
+    void placePiece(String piece, int xFromSquare, int yFromSquare, int playerId) throws InvalidPlacementException;
+
+    boolean isInitialized();
+
 
 }
   
