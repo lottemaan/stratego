@@ -14,6 +14,7 @@ public class Board {
     private Piece previousTurnLostPiecePlayer;
     private Piece previousTurnLostPieceOpponent;
     private boolean fullyInitialized = false;
+    private PieceCounts pieceCounts = new PieceCounts();
 
 
     protected Board() {
@@ -31,7 +32,7 @@ public class Board {
     }
 
     protected void placePiece(String piece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
-        isValidPlacement(xCoordinate, yCoordinate, playerId);
+        isValidPlacement(piece, xCoordinate, yCoordinate, playerId);
         
         this.getSquare(xCoordinate, yCoordinate).updatePiece(createPieceByName(piece));  
         if (playerId == 1) {
@@ -40,10 +41,16 @@ public class Board {
             this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getOpponent());
         }
 
-        this.setInitialized();
+        checkIfFullyInitialized();
     }
 
-    private void isValidPlacement(int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
+    private void checkIfFullyInitialized() {
+        if (isBoardFullyFilledPlayerOne() && isBoardFullyFilledPlayerTwo()) {
+            this.setInitialized();
+        }
+    }
+
+    private void isValidPlacement(String newPiece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
         
         if (this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare() != null) {
             throw new InvalidPlacementException("on this square there is already a piece");
@@ -51,6 +58,8 @@ public class Board {
             throw new InvalidPlacementException("you are not allowed to place a piece on this square");
         } else if (yCoordinate > 4 && playerId == 2) {
             throw new InvalidPlacementException("You are not allowed to place a piece on this square");
+        } else if (!pieceCounts.isValidPieceCount(newPiece, playerId)) {
+            throw new InvalidPlacementException("Exceeded maximum allowed count for " + newPiece);
         }
     }
 
