@@ -64,7 +64,9 @@ public interface Playable {
 
     void placePiece(String piece, int xFromSquare, int yFromSquare, int playerId) throws InvalidPlacementException;
 
-    boolean isInitialized();
+    boolean isPlayerTwoReady();
+
+    boolean isPlayerOneReady();
 
 
 }

@@ -210,7 +210,14 @@ public class StrategoGame implements Playable{
     }
 
     @Override
-    public boolean isInitialized() {
-        return this.board.isInitialized();
+    public boolean isPlayerOneReady() {
+        return this.board.isPlayerOneReady();
     }
+
+    @Override
+    public boolean isPlayerTwoReady() {
+        return this.board.isPlayerTwoReady();
+    }
+
+
 }

@@ -13,7 +13,8 @@ public class Board {
     private String previousTurnLostPiece;
     private Piece previousTurnLostPiecePlayer;
     private Piece previousTurnLostPieceOpponent;
-    private boolean fullyInitialized = false;
+    private boolean boardInitializedPlayerOne = false;
+    private boolean boardInitializedPlayerTwo = false;
     private PieceCounts pieceCounts = new PieceCounts();
 
 
@@ -41,13 +42,17 @@ public class Board {
             this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getOpponent());
         }
 
-        checkIfFullyInitialized();
+        checkIfInitialized();
     }
 
-    private void checkIfFullyInitialized() {
-        if (isBoardFullyFilledPlayerOne() && isBoardFullyFilledPlayerTwo()) {
-            this.setInitialized();
-        }
+    private boolean checkIfInitialized() {
+        if (isBoardFullyFilledPlayerOne() && !isBoardFullyFilledPlayerTwo()) {
+            this.playerOneIsReady();
+            return false;
+        } else if (isBoardFullyFilledPlayerOne() && isBoardFullyFilledPlayerTwo()) {
+            this.playerTwoIsReady();
+            return true;
+        } else {return false;}
     }
 
     private void isValidPlacement(String newPiece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
@@ -95,13 +100,23 @@ public class Board {
     }
 
 
-    protected void setInitialized() {
-        this.fullyInitialized = true;
+    protected void playerOneIsReady() {
+        this.boardInitializedPlayerOne = true;
     }
 
-    protected boolean isInitialized() {
-        return this.fullyInitialized;
+    protected void playerTwoIsReady() {
+        this.boardInitializedPlayerTwo = true;
     }
+
+    protected boolean isPlayerOneReady() {
+        return this.boardInitializedPlayerOne;
+    }
+
+    protected boolean isPlayerTwoReady() {
+        return this.boardInitializedPlayerTwo;
+    }
+
+
 
     protected Square getSquare(int xCoordinate, int yCoordinate) {
         return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
