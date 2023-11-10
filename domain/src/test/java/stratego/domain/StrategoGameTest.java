@@ -137,6 +137,7 @@ public class StrategoGameTest {
     @Test
     public void testIfPlayersSwitchTurnAfterMove() throws InvalidMoveException {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         String namePlayerOne = strategoGame.getNameOfPlayerOne();
         String namePlayerTwo = strategoGame.getNameOfPlayerTwo();
         boolean isItJantjesTurn = strategoGame.isPlayersTurn("Jantje");
@@ -165,24 +166,28 @@ public class StrategoGameTest {
     @Test
     public void testIfGameCanReturnTheRightPlayerFromAPiece() {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(strategoGame.getBoard().getPlayer().getOpponent(), strategoGame.getPlayerFromPiece(1, 1));
     }
 
     @Test
     public void testIfGameCanReturnTheRightPlayerFromAPieceTwo() {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(strategoGame.getBoard().getPlayer(), strategoGame.getPlayerFromPiece(10, 10));
     }
 
     @Test
     public void testIfGameReturnsPlayerIdOneFromPieceThatBelongsToPlayerOne() {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(1, strategoGame.getPlayerIdFromPiece(10, 10));
     }
 
     @Test
     public void testIfGameReturnsPlayerIdTwoFromPieceThatBelongsToPlayerTwo() {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(2, strategoGame.getPlayerIdFromPiece(1, 1));
     }
 
@@ -204,6 +209,7 @@ public class StrategoGameTest {
     @Test
     public void testIfGameHasBegunAfterFirstMove() throws InvalidMoveException {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         assertEquals(false, strategoGame.hasGameBegun());
         strategoGame.doMove(1,7,1,6); 
         assertEquals(true, strategoGame.hasGameBegun());
@@ -212,6 +218,7 @@ public class StrategoGameTest {
     @Test
     public void testIfLastMoveCanBeRetrievedFromPlayer() throws InvalidMoveException {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         strategoGame.doMove(1,7,1,6);
         assertEquals(false, strategoGame.isSquareLastMove(3, 3));
         assertEquals(true, strategoGame.isSquareLastMove(1,6));
@@ -220,6 +227,7 @@ public class StrategoGameTest {
     @Test
     public void testIfLastMoveCanBeRetrievedFromOpponent() throws InvalidMoveException {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         strategoGame.doMove(1,7,1,6);
         strategoGame.doMove(1,4,1,5);
         assertEquals(false, strategoGame.isSquareLastMove(1, 6));
@@ -229,6 +237,7 @@ public class StrategoGameTest {
     @Test
     public void testIfPieceDoesNotReturnBattleWonWhenItHasMoved() throws InvalidMoveException {
         Playable strategoGame = new StrategoGame("Jantje", "Jip");
+        initializeForTesting(strategoGame.getBoard());
         strategoGame.doMove(1,7,1,6);
         strategoGame.doMove(1,4,1,5);
         assertEquals(false, strategoGame.hasPieceWonBattle(1,5));
