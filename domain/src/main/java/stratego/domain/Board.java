@@ -1,4 +1,5 @@
 package stratego.domain;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 public class Board {
@@ -12,15 +13,85 @@ public class Board {
     private String previousTurnLostPiece;
     private Piece previousTurnLostPiecePlayer;
     private Piece previousTurnLostPieceOpponent;
+    private boolean fullyInitialized = false;
+
 
     protected Board() {
         this.squares = new Square[10][10];
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 this.squares[i][j] = new Square(i + 1, j + 1);
+    
+                if ((i == 2 || i == 3 || i == 6 || i == 7) && (j == 4 || j == 5)) {
+                    squares[i][j].turnInWater();
+                }
             }
         }
-        boardInitialization.initializeRandomly(this.squares, this.player, this.opponent);
+    }
+
+    protected void placePiece(String piece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
+        isValidPlacement(xCoordinate, yCoordinate, playerId);
+        
+        this.getSquare(xCoordinate, yCoordinate).updatePiece(createPieceByName(piece));  
+        if (playerId == 1) {
+            this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getPlayer());
+        } else if (playerId == 2) {
+            this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getOpponent());
+        }
+
+        this.setInitialized();
+    }
+
+    private void isValidPlacement(int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
+        
+        if (this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare() != null) {
+            throw new InvalidPlacementException("on this square there is already a piece");
+        } else if (yCoordinate < 7 && playerId == 1) {
+            throw new InvalidPlacementException("you are not allowed to place a piece on this square");
+        } else if (yCoordinate > 4 && playerId == 2) {
+            throw new InvalidPlacementException("You are not allowed to place a piece on this square");
+        }
+    }
+
+    private boolean isBoardFullyFilledPlayerOne() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 6; j < 10; j++) {
+                if (this.getSquare(i + 1, j+1).getPieceFromSquare() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean isBoardFullyFilledPlayerTwo() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (this.getSquare(i+1, j+1).getPieceFromSquare() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private Piece createPieceByName(String pieceName) {
+        try {
+            Class<?> pieceClass = Class.forName("stratego.domain." + pieceName);
+            return (Piece) pieceClass.getDeclaredConstructor().newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            throw new IllegalArgumentException("Error creating piece for name: " + pieceName);
+        }
+    }
+
+
+    protected void setInitialized() {
+        this.fullyInitialized = true;
+    }
+
+    protected boolean isInitialized() {
+        return this.fullyInitialized;
     }
 
     protected Square getSquare(int xCoordinate, int yCoordinate) {
@@ -328,6 +399,7 @@ public class Board {
             return this.previousTurnLostPieceOpponent;
         } else {return null;}
     }
+
 
 }
 
