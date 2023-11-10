@@ -10,6 +10,7 @@ public class BoardDTO {
 
     private String previousTurnLostPiecePlayer1;
     private String previousTurnLostPiecePlayer2;
+    private boolean fullyInitialized;
 
     public BoardDTO(Playable strategoGame) {
         for (int i = 0; i < 10; ++i) {
@@ -30,6 +31,7 @@ public class BoardDTO {
         this.previousTurnWonPiece = strategoGame.getPreviousTurnWonPiece();
         this.previousTurnLostPiecePlayer1 = strategoGame.getPreviousTurnLostPiecePlayer1();
         this.previousTurnLostPiecePlayer2 = strategoGame.getPreviousTurnLostPiecePlayer2();
+        this.fullyInitialized = strategoGame.isInitialized();
     }
 
     public String getPreviousTurnLostPiece() {
@@ -46,6 +48,10 @@ public class BoardDTO {
 
     public String getPreviousTurnLostPiecePlayer2() {
         return this.previousTurnLostPiecePlayer2;
+    }
+
+    public boolean isFullyInitialized() {
+        return this.fullyInitialized;
     }
 
 
