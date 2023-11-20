@@ -1,10 +1,11 @@
 package stratego.domain;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 public class Board {
     private Square[][] squares;
-    private Player player = new Player();
-    private Player opponent = player.getOpponent();
+    private Player player;
+    private Player opponent;
     private boolean gameEnded = false;
     private boolean gameBegun = false;
     private BoardInitialization boardInitialization = new BoardInitialization();
@@ -12,16 +13,102 @@ public class Board {
     private String previousTurnLostPiece;
     private Piece previousTurnLostPiecePlayer;
     private Piece previousTurnLostPieceOpponent;
+    private boolean boardInitializedPlayerOne = false;
+    private boolean boardInitializedPlayerTwo = false;
+    private PieceCounts pieceCounts = new PieceCounts();
 
-    protected Board() {
-        this.squares = new Square[10][10];
+
+    protected Board(Square[][] squares, Player player, Player opponent) {
+        this.squares = squares;
+        this.player = player;
+        this.opponent = opponent;
+    }
+
+    protected void placePiece(String piece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
+        isValidPlacement(piece, xCoordinate, yCoordinate, playerId);
+        
+        this.getSquare(xCoordinate, yCoordinate).updatePiece(createPieceByName(piece));  
+        if (playerId == 1) {
+            this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getPlayer());
+        } else if (playerId == 2) {
+            this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getOpponent());
+        }
+
+        checkIfInitialized();
+    }
+
+    protected boolean checkIfInitialized() {
+        if (isBoardFullyFilledPlayerOne() && !isBoardFullyFilledPlayerTwo()) {
+            this.playerOneIsReady();
+            return false;
+        } else if (isBoardFullyFilledPlayerOne() && isBoardFullyFilledPlayerTwo()) {
+            this.playerTwoIsReady();
+            return true;
+        } else {return false;}
+    }
+
+    private void isValidPlacement(String newPiece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
+        
+        if (this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare() != null) {
+            throw new InvalidPlacementException("on this square there is already a piece");
+        } else if (yCoordinate < 7 && playerId == 1) {
+            throw new InvalidPlacementException("you are not allowed to place a piece on this square");
+        } else if (yCoordinate > 4 && playerId == 2) {
+            throw new InvalidPlacementException("You are not allowed to place a piece on this square");
+        } else if (!pieceCounts.isValidPieceCount(newPiece, playerId)) {
+            throw new InvalidPlacementException("Exceeded maximum allowed count for " + newPiece);
+        }
+    }
+
+    private boolean isBoardFullyFilledPlayerOne() {
         for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                this.squares[i][j] = new Square(i + 1, j + 1);
+            for (int j = 6; j < 10; j++) {
+                if (this.getSquare(i + 1, j+1).getPieceFromSquare() == null) {
+                    return false;
+                }
             }
         }
-        boardInitialization.initializeRandomly(this.squares, this.player, this.opponent);
+        return true;
     }
+
+    private boolean isBoardFullyFilledPlayerTwo() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (this.getSquare(i+1, j+1).getPieceFromSquare() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private Piece createPieceByName(String pieceName) {
+        try {
+            Class<?> pieceClass = Class.forName("stratego.domain." + pieceName);
+            return (Piece) pieceClass.getDeclaredConstructor().newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            throw new IllegalArgumentException("Error creating piece for name: " + pieceName);
+        }
+    }
+
+
+    protected void playerOneIsReady() {
+        this.boardInitializedPlayerOne = true;
+    }
+
+    protected void playerTwoIsReady() {
+        this.boardInitializedPlayerTwo = true;
+    }
+
+    protected boolean isPlayerOneReady() {
+        return this.boardInitializedPlayerOne;
+    }
+
+    protected boolean isPlayerTwoReady() {
+        return this.boardInitializedPlayerTwo;
+    }
+
+
 
     protected Square getSquare(int xCoordinate, int yCoordinate) {
         return this.squares[xCoordinate-1][yCoordinate-1]; //because it starts at coordinate 1,1
@@ -328,6 +415,7 @@ public class Board {
             return this.previousTurnLostPieceOpponent;
         } else {return null;}
     }
+
 
 }
 

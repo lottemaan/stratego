@@ -15,6 +15,8 @@ export type Board = {
     previousTurnWonPiece: string;
     previousTurnLostPiecePlayer1: string;
     previousTurnLostPiecePlayer2: string;
+    playerOneReady: boolean;
+    playerTwoReady: boolean;
 }
 
 

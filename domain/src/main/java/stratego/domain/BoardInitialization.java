@@ -3,131 +3,224 @@ package stratego.domain;
 import java.util.Random;
 
 final class BoardInitialization {
-    
-    protected void initializeRandomly(Square[][] squares, Player player, Player opponent) {
-        // Random random = new Random();
-        // int choice = random.nextInt(2);
-        initializeScript1(squares, player, opponent);
-        // if (choice == 0) {
-        //     initializeScript1(squares, player, opponent);
-        // } else {
-        //     initializeScript2(squares, player, opponent);
-        // }
-    }
 
-    private void initializeScript1(Square[][] squares, Player player, Player opponent) {
-        squares[3][0].updatePiece(new Flag());
-        squares[0][9].updatePiece(new Flag());
-        squares[4][1].updatePiece(new Marshal());
-        squares[7][9].updatePiece(new Marshal());
-        squares[2][2].updatePiece(new Spy());
-        squares[7][8].updatePiece(new Spy());
-        squares[2][2].updatePiece(new General());
-        squares[7][7].updatePiece(new General());
+    Player player = new Player();
+    Player opponent = player.getOpponent();
+    Square[][] squares = new Square[10][10];
 
-        squares[0][2].updatePiece(new Colonel());
-        squares[5][1].updatePiece(new Colonel());
-        squares[1][8].updatePiece(new Colonel());
-        squares[5][8].updatePiece(new Colonel());
-
-        squares[2][1].updatePiece(new Major());
-        squares[4][0].updatePiece(new Major());
-        squares[6][1].updatePiece(new Major());
-        squares[0][8].updatePiece(new Major());
-        squares[2][8].updatePiece(new Major());
-        squares[6][8].updatePiece(new Major());
-
-        squares[7][1].updatePiece(new Captain());
-        squares[3][1].updatePiece(new Captain());
-        squares[8][1].updatePiece(new Captain());
-        squares[9][0].updatePiece(new Captain());
-        squares[3][8].updatePiece(new Captain());
-        squares[9][7].updatePiece(new Captain());
-        squares[6][7].updatePiece(new Captain());
-        squares[4][7].updatePiece(new Captain());
-
-        squares[1][2].updatePiece(new Lieutenant());
-        squares[4][2].updatePiece(new Lieutenant());
-        squares[6][2].updatePiece(new Lieutenant());
-        squares[8][2].updatePiece(new Lieutenant());
-        squares[2][7].updatePiece(new Lieutenant());
-        squares[5][7].updatePiece(new Lieutenant());
-        squares[8][7].updatePiece(new Lieutenant());
-        squares[0][7].updatePiece(new Lieutenant());
-
-        squares[3][2].updatePiece(new Sergeant());
-        squares[5][2].updatePiece(new Sergeant());
-        squares[7][2].updatePiece(new Sergeant());
-        squares[9][1].updatePiece(new Sergeant());
-        squares[3][7].updatePiece(new Sergeant());
-        squares[3][6].updatePiece(new Sergeant());
-        squares[6][6].updatePiece(new Sergeant());
-        squares[7][6].updatePiece(new Sergeant());
-
-        squares[0][1].updatePiece(new Bomb());
-        squares[1][1].updatePiece(new Bomb());
-        squares[1][0].updatePiece(new Bomb());
-        squares[3][3].updatePiece(new Bomb());
-        squares[4][3].updatePiece(new Bomb());
-        squares[8][0].updatePiece(new Bomb());
-
-        squares[8][9].updatePiece(new Bomb());
-        squares[8][8].updatePiece(new Bomb());
-        squares[9][8].updatePiece(new Bomb());
-        squares[4][9].updatePiece(new Bomb());
-        squares[4][8].updatePiece(new Bomb());
-        squares[2][9].updatePiece(new Bomb());
-
-        squares[6][0].updatePiece(new Miner());
-        squares[7][0].updatePiece(new Miner());
-        squares[0][3].updatePiece(new Miner());
-        squares[2][0].updatePiece(new Miner());
-        squares[5][0].updatePiece(new Miner());
-
-        squares[1][7].updatePiece(new Miner());
-        squares[1][9].updatePiece(new Miner());
-        squares[3][9].updatePiece(new Miner());
-        squares[5][9].updatePiece(new Miner());
-        squares[6][9].updatePiece(new Miner());
+    protected Board initializeEmptyBoard() {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (j < 4 || j > 5){
-                    if (squares[i][j].getPieceFromSquare() == null) {
-                        squares[i][j].updatePiece(new Scout());
+                squares[i][j] = new Square(i + 1, j + 1);
+    
+                if ((i == 2 || i == 3 || i == 6 || i == 7) && (j == 4 || j == 5)) {
+                    squares[i][j].turnInWater();
+                }
+            }
+        }
+
+        return new Board(squares, player, opponent);
+    }
+
+    
+    protected void initializePiecesRandomly(Board emptyBoard) {
+        Random random = new Random();
+        int choice = random.nextInt(2);
+        
+        if (choice == 0) {
+        initializeScript1(emptyBoard);
+        } else {
+            initializeScript2(emptyBoard);
+        }
+        emptyBoard.checkIfInitialized();
+    }
+
+    private void initializeScript1(Board emptyBoard) {
+        emptyBoard.getSquare(4, 1).updatePiece(new Flag());
+        emptyBoard.getSquare(1, 10).updatePiece(new Flag());
+        emptyBoard.getSquare(5, 2).updatePiece(new Marshal());
+        emptyBoard.getSquare(8, 10).updatePiece(new Marshal());
+        emptyBoard.getSquare(3, 3).updatePiece(new Spy());
+        emptyBoard.getSquare(8, 9).updatePiece(new Spy());
+        emptyBoard.getSquare(3, 3).updatePiece(new General());
+        emptyBoard.getSquare(8, 8).updatePiece(new General());
+
+        emptyBoard.getSquare(1, 3).updatePiece(new Colonel());
+        emptyBoard.getSquare(6, 2).updatePiece(new Colonel());
+        emptyBoard.getSquare(2, 9).updatePiece(new Colonel());
+        emptyBoard.getSquare(6, 9).updatePiece(new Colonel());
+
+        emptyBoard.getSquare(3, 2).updatePiece(new Major());
+        emptyBoard.getSquare(5, 1).updatePiece(new Major());
+        emptyBoard.getSquare(7, 2).updatePiece(new Major());
+        emptyBoard.getSquare(1, 9).updatePiece(new Major());
+        emptyBoard.getSquare(3, 9).updatePiece(new Major());
+        emptyBoard.getSquare(7, 9).updatePiece(new Major());
+
+        emptyBoard.getSquare(8, 2).updatePiece(new Captain());
+        emptyBoard.getSquare(4, 2).updatePiece(new Captain());
+        emptyBoard.getSquare(9, 2).updatePiece(new Captain());
+        emptyBoard.getSquare(10, 1).updatePiece(new Captain());
+        emptyBoard.getSquare(4, 8).updatePiece(new Captain());
+        emptyBoard.getSquare(10, 8).updatePiece(new Captain());
+        emptyBoard.getSquare(7, 8).updatePiece(new Captain());
+        emptyBoard.getSquare(5, 8).updatePiece(new Captain());
+
+        emptyBoard.getSquare(2, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(5, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(7, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(9, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(3, 8).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(6, 8).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(9, 8).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(1, 8).updatePiece(new Lieutenant());
+
+        emptyBoard.getSquare(4, 3).updatePiece(new Sergeant());
+        emptyBoard.getSquare(6, 3).updatePiece(new Sergeant());
+        emptyBoard.getSquare(8, 3).updatePiece(new Sergeant());
+        emptyBoard.getSquare(10, 2).updatePiece(new Sergeant());
+        emptyBoard.getSquare(4, 8).updatePiece(new Sergeant());
+        emptyBoard.getSquare(4, 7).updatePiece(new Sergeant());
+        emptyBoard.getSquare(7, 7).updatePiece(new Sergeant());
+        emptyBoard.getSquare(8, 7).updatePiece(new Sergeant());
+
+        emptyBoard.getSquare(1, 2).updatePiece(new Bomb());
+        emptyBoard.getSquare(2, 2).updatePiece(new Bomb());
+        emptyBoard.getSquare(2, 1).updatePiece(new Bomb());
+        emptyBoard.getSquare(4, 4).updatePiece(new Bomb());
+        emptyBoard.getSquare(5, 4).updatePiece(new Bomb());
+        emptyBoard.getSquare(9, 1).updatePiece(new Bomb());
+
+        emptyBoard.getSquare(9, 10).updatePiece(new Bomb());
+        emptyBoard.getSquare(9, 9).updatePiece(new Bomb());
+        emptyBoard.getSquare(10, 9).updatePiece(new Bomb());
+        emptyBoard.getSquare(5, 10).updatePiece(new Bomb());
+        emptyBoard.getSquare(5, 9).updatePiece(new Bomb());
+        emptyBoard.getSquare(3, 10).updatePiece(new Bomb());
+
+        emptyBoard.getSquare(7, 1).updatePiece(new Miner());
+        emptyBoard.getSquare(8, 1).updatePiece(new Miner());
+        emptyBoard.getSquare(1, 4).updatePiece(new Miner());
+        emptyBoard.getSquare(3, 1).updatePiece(new Miner());
+        emptyBoard.getSquare(6, 1).updatePiece(new Miner());
+
+        emptyBoard.getSquare(2, 8).updatePiece(new Miner());
+        emptyBoard.getSquare(2, 10).updatePiece(new Miner());
+        emptyBoard.getSquare(4, 10).updatePiece(new Miner());
+        emptyBoard.getSquare(6, 10).updatePiece(new Miner());
+        emptyBoard.getSquare(7, 10).updatePiece(new Miner());
+
+
+
+
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+                if (j < 5 || j > 6){
+                    if (emptyBoard.getSquare(i, j).getPieceFromSquare() == null) {
+                        emptyBoard.getSquare(i, j).updatePiece(new Scout());
                     } 
-                    if (j < 4) {
-                        squares[i][j].getPieceFromSquare().assignPlayer(opponent);
-                    } else if (j > 5) {
-                        squares[i][j].getPieceFromSquare().assignPlayer(player);
+                    if (j < 5) {
+                        emptyBoard.getSquare(i, j).getPieceFromSquare().assignPlayer(opponent);
+                    } else if (j > 6) {
+                        emptyBoard.getSquare(i, j).getPieceFromSquare().assignPlayer(player);
                     } 
                 } 
-                else if ((i == 2 || i == 3 || i == 6 || i == 7) && (j == 4 || j == 5)) {
-                    squares[i][j].turnInWater();
             }
         }
     }
-    } 
     
-    private void initializeScript2(Square[][] squares, Player player, Player opponent) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if ((i == 2 && j == 2) || (i == 8 && j == 8)) {
-                    squares[i][j].updatePiece(new Flag()); 
-                } else if ((i == 3 && j == 3) || (i == 7 && j == 7)) {
-                    squares[i][j].updatePiece(new Spy());
-                } else if ((i == 1 && j == 3) || (i == 9 && j == 8)) {
-                    squares[i][j].updatePiece(new Marshal());
-                } else if (j > 3 && j < 6) {
-                    squares[i][j].updatePiece(null);
-                } else {squares[i][j].updatePiece(new Scout());}
-                
-                if (j < 4) {
-                    squares[i][j].getPieceFromSquare().assignPlayer(opponent);
-                } else if (j > 5) {
-                    squares[i][j].getPieceFromSquare().assignPlayer(player);
-                }
-            } 
+    
+    private void initializeScript2(Board emptyBoard) {
+        emptyBoard.getSquare(4, 1).updatePiece(new Flag());
+        emptyBoard.getSquare(1, 10).updatePiece(new Flag());
+        emptyBoard.getSquare(5, 2).updatePiece(new Marshal());
+        emptyBoard.getSquare(8, 10).updatePiece(new Marshal());
+        emptyBoard.getSquare(3, 3).updatePiece(new Spy());
+        emptyBoard.getSquare(8, 9).updatePiece(new Spy());
+        emptyBoard.getSquare(3, 3).updatePiece(new General());
+        emptyBoard.getSquare(8, 8).updatePiece(new General());
+
+        emptyBoard.getSquare(1, 3).updatePiece(new Colonel());
+        emptyBoard.getSquare(6, 2).updatePiece(new Colonel());
+        emptyBoard.getSquare(2, 9).updatePiece(new Colonel());
+        emptyBoard.getSquare(6, 9).updatePiece(new Colonel());
+
+        emptyBoard.getSquare(3, 2).updatePiece(new Major());
+        emptyBoard.getSquare(5, 1).updatePiece(new Major());
+        emptyBoard.getSquare(7, 2).updatePiece(new Major());
+        emptyBoard.getSquare(1, 9).updatePiece(new Major());
+        emptyBoard.getSquare(3, 9).updatePiece(new Major());
+        emptyBoard.getSquare(7, 9).updatePiece(new Major());
+
+        emptyBoard.getSquare(8, 2).updatePiece(new Captain());
+        emptyBoard.getSquare(4, 2).updatePiece(new Captain());
+        emptyBoard.getSquare(9, 2).updatePiece(new Captain());
+        emptyBoard.getSquare(10, 1).updatePiece(new Captain());
+        emptyBoard.getSquare(4, 8).updatePiece(new Captain());
+        emptyBoard.getSquare(10, 8).updatePiece(new Captain());
+        emptyBoard.getSquare(7, 8).updatePiece(new Captain());
+        emptyBoard.getSquare(5, 8).updatePiece(new Captain());
+
+        emptyBoard.getSquare(2, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(5, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(7, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(9, 3).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(3, 8).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(6, 8).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(9, 8).updatePiece(new Lieutenant());
+        emptyBoard.getSquare(1, 8).updatePiece(new Lieutenant());
+
+        emptyBoard.getSquare(4, 3).updatePiece(new Sergeant());
+        emptyBoard.getSquare(6, 3).updatePiece(new Sergeant());
+        emptyBoard.getSquare(8, 3).updatePiece(new Sergeant());
+        emptyBoard.getSquare(10, 2).updatePiece(new Sergeant());
+        emptyBoard.getSquare(4, 8).updatePiece(new Sergeant());
+        emptyBoard.getSquare(4, 7).updatePiece(new Sergeant());
+        emptyBoard.getSquare(7, 7).updatePiece(new Sergeant());
+        emptyBoard.getSquare(8, 7).updatePiece(new Sergeant());
+
+        emptyBoard.getSquare(1, 2).updatePiece(new Bomb());
+        emptyBoard.getSquare(2, 2).updatePiece(new Bomb());
+        emptyBoard.getSquare(2, 1).updatePiece(new Bomb());
+        emptyBoard.getSquare(4, 4).updatePiece(new Bomb());
+        emptyBoard.getSquare(5, 4).updatePiece(new Bomb());
+        emptyBoard.getSquare(9, 1).updatePiece(new Bomb());
+
+        emptyBoard.getSquare(9, 10).updatePiece(new Bomb());
+        emptyBoard.getSquare(9, 9).updatePiece(new Bomb());
+        emptyBoard.getSquare(10, 9).updatePiece(new Bomb());
+        emptyBoard.getSquare(5, 10).updatePiece(new Bomb());
+        emptyBoard.getSquare(5, 9).updatePiece(new Bomb());
+        emptyBoard.getSquare(3, 10).updatePiece(new Bomb());
+
+        emptyBoard.getSquare(7, 1).updatePiece(new Miner());
+        emptyBoard.getSquare(8, 1).updatePiece(new Miner());
+        emptyBoard.getSquare(1, 4).updatePiece(new Miner());
+        emptyBoard.getSquare(3, 1).updatePiece(new Miner());
+        emptyBoard.getSquare(6, 1).updatePiece(new Miner());
+
+        emptyBoard.getSquare(2, 8).updatePiece(new Miner());
+        emptyBoard.getSquare(2, 10).updatePiece(new Miner());
+        emptyBoard.getSquare(4, 10).updatePiece(new Miner());
+        emptyBoard.getSquare(6, 10).updatePiece(new Miner());
+        emptyBoard.getSquare(7, 10).updatePiece(new Miner());
+
+
+
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+                if (j < 5 || j > 6){
+                    if (emptyBoard.getSquare(i, j).getPieceFromSquare() == null) {
+                        emptyBoard.getSquare(i, j).updatePiece(new Scout());
+                    } 
+                    if (j < 5) {
+                        emptyBoard.getSquare(i, j).getPieceFromSquare().assignPlayer(opponent);
+                    } else if (j > 6) {
+                        emptyBoard.getSquare(i, j).getPieceFromSquare().assignPlayer(player);
+                    } 
+                } 
+            }
         }
     }
 }

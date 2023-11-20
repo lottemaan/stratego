@@ -65,13 +65,15 @@ public class BoardAndSquaresTest {
 
     @Test
     public void aBoardThatIsCreatedShouldNotBeNull() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         assertNotNull(board);
     }
 
     @Test
     public void aBoardShouldBeAbleToReturnTheSquareWithCoordinates3By3() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square squareWithCoordinates3by3 = board.getSquare(3, 3);
         assertNotSame(squareWithCoordinates3by3, board.getSquare(2, 2));
@@ -81,7 +83,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void aBoardShouldBeAbleToReturnTheFirstSquareWithCoordinates1By1() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square squareWithCoordinates1by1 = board.getSquare(1, 1);
         assertNotSame(squareWithCoordinates1by1, board.getSquare(2, 2));
@@ -91,7 +94,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void aBoardShouldBeAbleToReturnTheFirstSquareWithCoordinates10By10() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square squareWithCoordinates10by10 = board.getSquare(10, 10);
         assertNotSame(squareWithCoordinates10by10, board.getSquare(2, 2));
@@ -101,7 +105,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void aSquareShouldBeAbleToReturnAPieceWithNameMarshal() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square squareWithCoordinates9by9 = board.getSquare(9, 9);
         assertEquals(squareWithCoordinates9by9.getPieceFromSquare().getNamePiece(), "marshal");
@@ -109,7 +114,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void aSquareShouldBeAbleToReturnNoPiece() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square squareWithCoordinates5by5 = board.getSquare(5, 5);
         assertNull(squareWithCoordinates5by5.getPieceFromSquare());
@@ -117,7 +123,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void aSquareShouldBeAbleToUpdateASquareWithPieceNameMarshal() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square squareWithCoordinates5by5 = board.getSquare(5, 5);
         squareWithCoordinates5by5.updatePiece(new Marshal());
@@ -126,15 +133,18 @@ public class BoardAndSquaresTest {
 
     @Test
     public void aSquareShouldBeAbleToReturnAPieceWithNameFlag() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
+        assignPlayersToPieces(board);
         Square squareWithCoordinates10by10 = board.getSquare(10, 10);
         assertEquals(squareWithCoordinates10by10.getPieceFromSquare().getNamePiece(), "flag");
     }
 
     @Test
     public void TestIfMarshalCanDo1Step() throws InvalidMoveException {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
 
@@ -151,7 +161,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void AnotherTestToCheckWhatPieceIsOnSquare1by1() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square square1By1 = board.getSquare(1, 1);
         assertEquals("flag", square1By1.getPieceFromSquare().getNamePiece());
@@ -159,7 +170,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void AnotherTestToCheckWhatPieceIsOnSquare5by1() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square square5By1 = board.getSquare(5, 1);
         assertEquals("marshal", square5By1.getPieceFromSquare().getNamePiece());
@@ -167,7 +179,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void AnotherTestToCheckWhatPieceIsOnSquare1by5() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         Square square1By5 = board.getSquare(1, 5);
         assertNull(square1By5.getPieceFromSquare());
@@ -175,7 +188,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfBoardIsClearedAferFall() throws InvalidMoveException {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
         initializeForTesting(board);
         assignPlayersToPieces(board);
@@ -192,7 +206,8 @@ public class BoardAndSquaresTest {
     public void testIfMarshalCannotBePlayedIfDistanceIsNotCorrect() {
 
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             initializeForTesting(board);
             board.doMove(board.getSquare(1, 3), board.getSquare(1, 5));
         });
@@ -203,7 +218,8 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfMarshalCannotBePlayedIfDistanceIsDiagonal() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             initializeForTesting(board);
             board.doMove(board.getSquare(4, 4), board.getSquare(5, 5));
         });
@@ -214,7 +230,8 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfMarshalCannotBePlayedIfSquareIsChosenTwoTimes() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             initializeForTesting(board);
             board.doMove(board.getSquare(4, 4), board.getSquare(4, 4));
         });
@@ -225,7 +242,8 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfAnEmptySquareIsNotAllowedToPlay() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             initializeForTesting(board);
             board.doMove(board.getSquare(5, 5), board.getSquare(5, 6));
         });
@@ -236,7 +254,8 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfFlagCannotBePlayed() {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             initializeForTesting(board);
             board.doMove(board.getSquare(1, 1), board.getSquare(1, 2));
         });
@@ -246,7 +265,10 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfPieceIsAssignedByRightPlayerDuringInitialization() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
+        initializeForTesting(board);
+        assignPlayersToPieces(board);
         Player otherPlayer = board.getSquare(7, 7).getPieceFromSquare().getPlayer();
         Player player = board.getSquare(1, 1).getPieceFromSquare().getPlayer();
         assertEquals(player.getNamePlayer(), "two");
@@ -255,7 +277,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfPlayersSwitchTurnAfterAMove() throws InvalidMoveException {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         Square fromSquare = board.getSquare(2, 7);
@@ -270,7 +293,10 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfMoveCannotBeDoneIfPlayerHasNotTurn() throws InvalidMoveException {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
+            initializeForTesting(board);
+            assignPlayersToPieces(board);
             Square fromSquare = board.getSquare(1, 4); // square that contains a piece from opponent
             Square toSquare = board.getSquare(1, 5);
 
@@ -284,7 +310,10 @@ public class BoardAndSquaresTest {
     @Test
     public void testIfPieceCannotAttackPieceFromSamePlayer() throws InvalidMoveException {
         InvalidMoveException thrown = Assertions.assertThrows(InvalidMoveException.class, () -> {
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
+            initializeForTesting(board);
+            assignPlayersToPieces(board);
             Square fromSquare = board.getSquare(1, 8);
             Square toSquare = board.getSquare(1, 7);
 
@@ -296,7 +325,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfSquareReturnsTrueForDynamicPieceIfItHasMarshal() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         Square squareThatHasMarshal = board.getSquare(3, 3);
@@ -305,7 +335,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfSquareReturnsFalseForDynamicPieceIfItHasFlag() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         Square squareThatHasFlag = board.getSquare(1, 1);
@@ -314,7 +345,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfSquareReturnsFalseForCapturedFlagIfFlagIsStillInGame() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         Square squareThatHasFlag = board.getSquare(1, 1);
@@ -323,7 +355,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfSquareReturnsTrueForCapturedFlagIfFlagIsStolen() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         Square squareThatHasFlag = board.getSquare(1, 1);
@@ -333,7 +366,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfBoardReturnsFalseForGameHasEndedIfFlagHasNotBeenStolenYet() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         assertEquals(false, board.hasGameEnded());
@@ -341,7 +375,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfBoardReturnsTrueForGameHasEndedIfFlagHasBeenCaptured() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         Square squareThatHasFlag = board.getSquare(1, 1);
@@ -351,7 +386,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfBoardReturnsTrueForGameHasEndedIfOtherPlayerDoesNotHaveDynamicPiecesAnymore() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
 
@@ -368,7 +404,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfGameHasBegunAfterFirstMove() throws InvalidMoveException {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         assertEquals(false, board.hasGameBegun());
@@ -378,7 +415,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfBoardCanReturnTheFlagOfFirstPlayer() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         assertInstanceOf(Flag.class, board.getSquareWithFlag(board.getPlayer()).getPieceFromSquare());
@@ -386,7 +424,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfBoardCanReturnNullIfInputPlayerIsNotCorrect() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
         assertNull(board.getSquareWithFlag(new Player()));
@@ -396,7 +435,8 @@ public class BoardAndSquaresTest {
     public void testIfGameEndsWhenSpyEncountersFlag() throws InvalidMoveException {
         Spy spy = new Spy();
         Flag flag = new Flag();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
         initializeForTesting(board);
         assignPlayersToPieces(board);
@@ -414,7 +454,8 @@ public class BoardAndSquaresTest {
     public void testIfSpyWinsWhenItEncountersMarshal() throws InvalidMoveException {
         Spy spy = new Spy();
         Marshal marshal = new Marshal();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
         initializeForTesting(board);
         assignPlayersToPieces(board);
@@ -434,7 +475,8 @@ public class BoardAndSquaresTest {
     public void testIfSpyWinsWhenMarshalEncountersSpy() throws InvalidMoveException {
         Spy spy = new Spy();
         Marshal marshal = new Marshal();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
         initializeForTesting(board);
         assignPlayersToPieces(board);
@@ -454,7 +496,8 @@ public class BoardAndSquaresTest {
     public void testIfScoutWinsWhenScoutEncountersSpy() throws InvalidMoveException {
         Spy spy = new Spy();
         Scout scout = new Scout();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
         initializeForTesting(board);
         assignPlayersToPieces(board);
@@ -474,7 +517,8 @@ public class BoardAndSquaresTest {
     public void testIfMarshalWinsWhenMarshalEncountersScout() throws InvalidMoveException {
         Scout scout = new Scout();
         Marshal marshal = new Marshal();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
         initializeForTesting(board);
         assignPlayersToPieces(board);
@@ -494,7 +538,8 @@ public class BoardAndSquaresTest {
     public void TestIfMarshalCanAttackOtherMarshalAndIfTheyBothGetInactiveAfter() throws InvalidMoveException {
         Marshal marshal2 = new Marshal();
         Marshal marshal = new Marshal();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
         initializeForTesting(board);
         assignPlayersToPieces(board);
@@ -516,7 +561,8 @@ public class BoardAndSquaresTest {
         Scout scout = new Scout();
         Flag flag = new Flag();
         Flag flag2 = new Flag();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         Player player = new Player();
 
         initializeForTestingEmptyBoard(board);
@@ -542,7 +588,8 @@ public class BoardAndSquaresTest {
             Scout scout = new Scout();
             Flag flag = new Flag();
             Flag flag2 = new Flag();
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             Player player = new Player();
 
             initializeForTestingEmptyBoard(board);
@@ -570,7 +617,8 @@ public class BoardAndSquaresTest {
             Scout scout2 = new Scout();
             Flag flag = new Flag();
             Flag flag2 = new Flag();
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
 
             initializeForTestingEmptyBoard(board);
             board.getSquare(1, 1).updatePiece(scout);
@@ -615,7 +663,8 @@ public class BoardAndSquaresTest {
             Scout scout2 = new Scout();
             Flag flag = new Flag();
             Flag flag2 = new Flag();
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
 
             initializeForTestingEmptyBoard(board);
             board.getSquare(1, 1).updatePiece(scout);
@@ -660,7 +709,8 @@ public class BoardAndSquaresTest {
         Scout scout2 = new Scout();
         Flag flag = new Flag();
         Flag flag2 = new Flag();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
 
         initializeForTestingEmptyBoard(board);
         board.getSquare(1, 1).updatePiece(scout);
@@ -699,7 +749,8 @@ public class BoardAndSquaresTest {
         Scout scout2 = new Scout();
         Flag flag = new Flag();
         Flag flag2 = new Flag();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
 
         initializeForTestingEmptyBoard(board);
         board.getSquare(1, 1).updatePiece(scout);
@@ -733,13 +784,15 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfInTheBeginningPlayerOneCanBeReturnedAsThePlayerThatHasTurn() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         assertEquals(board.getPlayer(), board.getPlayerThatHasTurn());
     }
 
     @Test
     public void testIfOpponentCanBeReturnedAsThePlayerThatHasTurnAfterMove() throws InvalidMoveException {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTesting(board);
         assignPlayersToPieces(board);
 
@@ -760,7 +813,8 @@ public class BoardAndSquaresTest {
         Marshal marshal = new Marshal();
         Flag flag = new Flag();
         Flag flag2 = new Flag();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
 
         initializeForTestingEmptyBoard(board);
         board.getSquare(1, 7).updatePiece(marshal);
@@ -784,7 +838,8 @@ public class BoardAndSquaresTest {
         Bomb bomb = new Bomb();
         Flag flag = new Flag();
         Flag flag2 = new Flag();
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
 
         initializeForTestingEmptyBoard(board);
         board.getSquare(1, 7).updatePiece(miner);
@@ -804,7 +859,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfASquareCanBecomeWater() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         assertEquals(false, board.getSquare(6, 6).isWater());
         board.getSquare(6, 6).turnInWater();
         assertEquals(true, board.getSquare(6, 6).isWater());
@@ -812,7 +868,8 @@ public class BoardAndSquaresTest {
 
     @Test
     public void testIfBoardCanBeInitializedWithWater() {
-        Board board = new Board();
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
         initializeForTestingBoardWithWater(board);
         assertEquals(true, board.getSquare(3, 5).isWater());
         assertEquals(true, board.getSquare(3, 6).isWater());
@@ -832,7 +889,8 @@ public class BoardAndSquaresTest {
             Scout scout = new Scout();
             Flag flag = new Flag();
             Flag flag2 = new Flag();
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             Player player = new Player();
 
             initializeForTestingBoardWithWater(board);
@@ -859,7 +917,8 @@ public class BoardAndSquaresTest {
             Scout scout = new Scout();
             Flag flag = new Flag();
             Flag flag2 = new Flag();
-            Board board = new Board();
+            BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
             Player player = new Player();
 
             initializeForTestingBoardWithWater(board);
@@ -880,6 +939,15 @@ public class BoardAndSquaresTest {
         Assertions.assertEquals("the piece is not allowed to go in water", thrown.getMessage());
     }
 
+    @Test
+    public void testIfAPieceCanBePlaced() throws InvalidPlacementException {
+        BoardInitialization boardInitialization = new BoardInitialization();
+        Board board = boardInitialization.initializeEmptyBoard();
+        board.placePiece("Scout", 1, 1, 2);
+        assertEquals(board.getSquare(1,1).getPieceFromSquare().getNamePiece(), "scout");
+        assertEquals(board.getSquare(1,1).getPieceFromSquare().getPlayer().getId(), 2);
+    }
+
     // @Test
     // public void testIfPieceReturnsBattleWonWhenItHasWon() throws InvalidMoveException {
     //     Bomb bomb = new Bomb();
@@ -888,7 +956,8 @@ public class BoardAndSquaresTest {
     //     Flag flag = new Flag();
     //     Flag flag2 = new Flag();
     //     Scout scout2 = new Scout();
-    //     Board board = new Board();
+    //     BoardInitialization boardInitialization = new BoardInitialization();
+        // Board board = boardInitialization.initializeEmptyBoard();
 
     //     initializeForTestingEmptyBoard(board);
     //     board.getSquare(1, 7).updatePiece(marshal);
