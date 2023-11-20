@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class Board {
     private Square[][] squares;
-    private Player player = new Player();
-    private Player opponent = player.getOpponent();
+    private Player player;
+    private Player opponent;
     private boolean gameEnded = false;
     private boolean gameBegun = false;
     private BoardInitialization boardInitialization = new BoardInitialization();
@@ -18,23 +18,10 @@ public class Board {
     private PieceCounts pieceCounts = new PieceCounts();
 
 
-    protected Board() {
-        this.squares = new Square[10][10];
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                this.squares[i][j] = new Square(i + 1, j + 1);
-    
-                if ((i == 2 || i == 3 || i == 6 || i == 7) && (j == 4 || j == 5)) {
-                    squares[i][j].turnInWater();
-                }
-            }
-        }
-    }
-
-    protected void initializeRandomly() {
-        this.boardInitialization.initializeRandomly(this.squares, this.player, this.opponent);
-        checkIfInitialized();
+    protected Board(Square[][] squares, Player player, Player opponent) {
+        this.squares = squares;
+        this.player = player;
+        this.opponent = opponent;
     }
 
     protected void placePiece(String piece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
@@ -50,7 +37,7 @@ public class Board {
         checkIfInitialized();
     }
 
-    private boolean checkIfInitialized() {
+    protected boolean checkIfInitialized() {
         if (isBoardFullyFilledPlayerOne() && !isBoardFullyFilledPlayerTwo()) {
             this.playerOneIsReady();
             return false;

@@ -1,12 +1,13 @@
 package stratego.domain;
 
 public class StrategoGame implements Playable{
+    private BoardInitialization boardInitialization = new BoardInitialization();
     private Board board;
     public String playerOne;
     public String playerTwo;
 
     public StrategoGame(String playerOne, String playerTwo) {
-        this.board = new Board();
+        this.board = boardInitialization.initializeEmptyBoard();
 
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
@@ -221,7 +222,8 @@ public class StrategoGame implements Playable{
 
     @Override
     public void initializeRandomly() {
-        this.board.initializeRandomly();
+        this.board = boardInitialization.initializeEmptyBoard();
+        boardInitialization.initializePiecesRandomly(this.board);
     }
 
 
