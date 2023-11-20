@@ -38,4 +38,7 @@ public class InitializeStratego {
         // Send DTO back in response.
         return Response.status(200).entity(output).build();
     }
+
+
+
 }

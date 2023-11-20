@@ -25,7 +25,7 @@ export const Mancala = () => {
     const { gameState } = useMancalaGame();
 
     if (gameState) {
-        if (gameState.board.playerOneReady && gameState.board.playerTwoReady) {
+        if (gameState.board.playerTwoReady) {
             return <Play />;
         } else {
             return <Initialize />;

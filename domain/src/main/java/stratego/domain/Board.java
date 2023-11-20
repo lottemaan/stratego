@@ -32,6 +32,11 @@ public class Board {
         }
     }
 
+    protected void initializeRandomly() {
+        this.boardInitialization.initializeRandomly(this.squares, this.player, this.opponent);
+        checkIfInitialized();
+    }
+
     protected void placePiece(String piece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
         isValidPlacement(piece, xCoordinate, yCoordinate, playerId);
         

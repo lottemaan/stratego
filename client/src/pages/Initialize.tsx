@@ -62,6 +62,10 @@ export const Initialize = () => {
         </ul>
     );
 
+    const handleRandomInitializeClick = () => {
+        initializeGameRandomly();
+    };
+
     const handleLegendItemClick = (namePiece: string) => {
         setSelectedPiece(namePiece);
     };
@@ -74,6 +78,28 @@ export const Initialize = () => {
             initializeGame(selectedPiece, x + 1, y + 1, currentPlayer);
         }
     };
+
+    async function initializeGameRandomly() {
+        const response = await fetch("stratego/api/initializeRandomly", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                
+            }),
+        });
+    
+        if (response.ok) {
+            const updatedGameState = await response.json();
+            setGameState(updatedGameState);
+        } else {
+            console.error("Error in network request:", response.statusText);
+        }
+    };
+
+
 
     async function initializeGame(pieceName: string, xFromSquare: number, yFromSquare: number, playerId: number) {
         const response = await fetch("stratego/api/initialize", {
@@ -100,8 +126,6 @@ export const Initialize = () => {
             
         } else {
             console.error("Error in network request:", response.statusText);
-            console.log(gameState?.board.playerTwoReady);
-            console.log(gameState?.board.playerOneReady);
         }
     }
 
@@ -122,22 +146,35 @@ export const Initialize = () => {
                 </div>
                 <div style={{ flex: 2 }}>
 
-                    <div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
-                        <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto', border: '5px solid black', marginTop: '30px' }}>
-                            <InitializationGrid gameState={gameState} imageMapping={imageMapping} onImageClick={handleImageClick} />
-                        </div>
-                        <div className="centered-text">
-                            het is jouw beurt {gameState!.players[0]!.hasTurn ? gameState!.players[0]!.name : gameState!.players[1]!.name}!
-                        </div>
-                    </div>
-                </div>
+<div style={{ maxWidth: '100%', padding: '0 16px', margin: '0 auto' }}>
+    <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto', border: '5px solid black', marginTop: '30px' }}>
+        <InitializationGrid gameState={gameState} imageMapping={imageMapping} onImageClick={handleImageClick} />
+    </div>
+    <div className="centered-text">
+    het is jouw beurt om een stuk te plaatsen {gameState!.board.playerOneReady ? gameState!.players[1]!.name : gameState!.players[0]!.name}!
+</div>
+
+</div>
+</div>
+
+
+                                   
                 <div style={{ flex: 1, maxWidth: '25%', display: 'flex', flexDirection: 'column', backgroundColor: "rgba(0, 128, 0, 0.5)", borderLeft: '3px solid black' }}>
                     <div style={{ backgroundColor: 'darkgreen', padding: '5px', textAlign: 'center', borderBottom: '3px solid black', fontSize: '2em', fontWeight: 'bold' }}>
                         <h1 style={{ color: 'white' }}>stukken nog te plaatsen</h1>
                     </div>
+                    <button
+                                        className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover-bg-blue-700"
+                                        onClick={() => handleRandomInitializeClick()}
+                                    >
+                                        Initialiseer met een willekeurige opstelling
+                                    </button>
 
                 </div>
+
+                
             </div>
+            
         </>
     );
 };

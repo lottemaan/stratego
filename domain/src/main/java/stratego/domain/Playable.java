@@ -68,6 +68,8 @@ public interface Playable {
 
     boolean isPlayerOneReady();
 
+    void initializeRandomly();
+
 
 }
   

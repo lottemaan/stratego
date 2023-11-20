@@ -219,5 +219,10 @@ public class StrategoGame implements Playable{
         return this.board.isPlayerTwoReady();
     }
 
+    @Override
+    public void initializeRandomly() {
+        this.board.initializeRandomly();
+    }
+
 
 }
