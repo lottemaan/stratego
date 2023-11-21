@@ -49,13 +49,11 @@ public class Board {
 
     private void isValidPlacement(String newPiece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
         
-        if (this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare() != null) {
-            throw new InvalidPlacementException("on this square there is already a piece");
-        } else if (yCoordinate < 7 && playerId == 1) {
+        if (yCoordinate < 7 && playerId == 1) {
             throw new InvalidPlacementException("you are not allowed to place a piece on this square");
         } else if (yCoordinate > 4 && playerId == 2) {
             throw new InvalidPlacementException("You are not allowed to place a piece on this square");
-        } else if (!pieceCounts.isValidPieceCount(newPiece, playerId)) {
+        } else if (!pieceCounts.isValidPieceCount(newPiece, playerId, this)) {
             throw new InvalidPlacementException("Exceeded maximum allowed count for " + newPiece);
         }
     }
