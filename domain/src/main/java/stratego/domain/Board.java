@@ -25,16 +25,20 @@ public class Board {
     }
 
     protected void placePiece(String piece, int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
-        isValidPlacement(piece, xCoordinate, yCoordinate, playerId);
-        
-        this.getSquare(xCoordinate, yCoordinate).updatePiece(createPieceByName(piece));  
-        if (playerId == 1) {
-            this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getPlayer());
-        } else if (playerId == 2) {
-            this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getOpponent());
-        }
+        if (piece.equals("NoPiece")) {
+            isValidDeletion(xCoordinate, yCoordinate, playerId);
+            this.getSquare(xCoordinate, yCoordinate).deletePiece();
+        } else {
+            isValidPlacement(piece, xCoordinate, yCoordinate, playerId);
+            this.getSquare(xCoordinate, yCoordinate).updatePiece(createPieceByName(piece));  
+            if (playerId == 1) {
+                this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getPlayer());
+            } else if (playerId == 2) {
+                this.getSquare(xCoordinate, yCoordinate).getPieceFromSquare().assignPlayer(getOpponent());
+            }
 
-        checkIfInitialized();
+            checkIfInitialized();
+        }
     }
 
     protected boolean checkIfInitialized() {
@@ -55,6 +59,15 @@ public class Board {
             throw new InvalidPlacementException("You are not allowed to place a piece on this square");
         } else if (!pieceCounts.isValidPieceCount(newPiece, playerId, this)) {
             throw new InvalidPlacementException("Exceeded maximum allowed count for " + newPiece);
+        }
+    }
+
+    private void isValidDeletion(int xCoordinate, int yCoordinate, int playerId) throws InvalidPlacementException {
+        
+        if (yCoordinate < 7 && playerId == 1) {
+            throw new InvalidPlacementException("you are not allowed to delete a piece on this square");
+        } else if (yCoordinate > 4 && playerId == 2) {
+            throw new InvalidPlacementException("You are not allowed to delete a piece on this square");
         }
     }
 
