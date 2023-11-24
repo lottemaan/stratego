@@ -1,35 +1,22 @@
-// import { useMancalaGame } from "../contexts/StrategoGameContext";
-// import { Play } from "./Play";
-// import { Start } from "./Start";
-
-// const Mancala = () => {
-//   const { gameState } = useMancalaGame();
-
-//   return (
-//     <>
-//       {!gameState && <Start />}
-//       {gameState && !gameState.board.initialized && <Initialize />}
-//       {gameState && gameState.board.initialized && <Play />}
-//     </>
-//   );
-// };
-
-// export default Mancala;
-
 import { useMancalaGame } from "../contexts/StrategoGameContext";
+import { useConfigurationContext } from  "../contexts/ConfigurationContext";
 import { Initialize } from "./Initialize";
 import { Play } from "./Play";
 import { Start } from "./Start";
 
 export const Mancala = () => {
     const { gameState } = useMancalaGame();
+    const { playerTwoPiecesSaved } = useConfigurationContext();
 
     if (gameState) {
-        if (gameState.board.playerTwoReady) {
+        if (playerTwoPiecesSaved == true) {
+            console.log("playerTwoPiecesSaved in stratego.tsx: ", playerTwoPiecesSaved)
             return <Play />;
         } else {
+            console.log("playerTwoPiecesSaved in stratego.tsx: ", playerTwoPiecesSaved)
             return <Initialize />;
         }
+       
     } else {
         return <Start />;
     }

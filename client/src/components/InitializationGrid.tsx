@@ -5,25 +5,26 @@ interface InitializationGridProps {
   gameState?: GameState;
   imageMapping: Record<string, string>;
   onImageClick: (x: number, y: number) => void;
+  playerOnePiecesSaved: boolean;
 }
 
-const InitializationGrid: React.FC<InitializationGridProps> = ({ gameState, imageMapping, onImageClick }) => {
+const InitializationGrid: React.FC<InitializationGridProps> = ({ gameState, imageMapping, onImageClick, playerOnePiecesSaved}) => {
   const gridRows = gameState?.board.squares;
   const [firstClick, setFirstClick] = useState<{ x: number; y: number } | null>(null);
   const [flipBoard, setFlipBoard] = useState(false);
 
+
   const handleImageClick = (x: number, y: number) => {
     if (!gridRows) {
-      // Handle the case when gridRows is undefined
       return;
     }
 
-    if (gameState && gameState.board.playerOneReady) {
+    if (gameState && gameState.board.playerOneReady && playerOnePiecesSaved) {
   
         x = gridRows.length - x - 1;
         y = gridRows[0].length - y - 1;
       
-    } else if (gameState && !gameState.board.playerOneReady) {
+    } else if (gameState && !gameState.board.playerOneReady && !playerOnePiecesSaved) {
 
         x = x;
         y = y;
@@ -35,12 +36,14 @@ const InitializationGrid: React.FC<InitializationGridProps> = ({ gameState, imag
 
   useEffect(() => {
     // Set flipBoard to true when playerOneIsReady
-    if (gameState && gameState.board.playerOneReady) {
+    if (gameState && gameState.board.playerOneReady && playerOnePiecesSaved) {
       setFlipBoard(true);
     }
-  }, [gameState]);
+  }, [gameState, playerOnePiecesSaved]);
 
-
+  useEffect(() => {
+    console.log('playerOnePiecesSaved in InitializationGrid:', playerOnePiecesSaved);
+  }, [playerOnePiecesSaved]);
 
 
   if (gridRows) {
@@ -66,9 +69,9 @@ const InitializationGrid: React.FC<InitializationGridProps> = ({ gameState, imag
         if (isWater) {
           imageUrl = imageMapping['water'];
         } else {
-          const hasTurn = cell.piece.hasTurn; // Declare hasTurn here
+          const hasTurn = cell.piece.hasTurn; 
         
-          if (gameState?.board.playerOneReady) {
+          if (gameState?.board.playerOneReady && playerOnePiecesSaved) {
         
             if (pieceName === "marshal" && !hasTurn) {
               imageUrl = imageMapping["marshalThatHasTurn"];
@@ -138,10 +141,9 @@ const InitializationGrid: React.FC<InitializationGridProps> = ({ gameState, imag
         
         const tdStyle = {
           backgroundColor: firstClick && firstClick.x === x && firstClick.y === y ? 'black' : 'transparent',
-          border: '1px solid black', // Default border for all cells
+          border: '1px solid black', 
         };
 
-        // Your existing border and imgStyle logic goes here...
         
         if (cell.piece.playerId === 1) {
           tdStyle.border = '2px solid red';
@@ -150,7 +152,8 @@ const InitializationGrid: React.FC<InitializationGridProps> = ({ gameState, imag
         }
 
         const imgStyle = {
-          backgroundColor: cell.piece.playerId === 1 ? 'red' : 'lightblue', // Set the background color based on the player's ID
+          backgroundColor: cell.piece.playerId === 1 ? 'red' : 'lightblue', 
+          
         };
         colImages.push(
           <td key={x} onClick={() => handleImageClick(x, y)} style={tdStyle}>

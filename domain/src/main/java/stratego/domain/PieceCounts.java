@@ -5,8 +5,7 @@ import java.util.Map;
 
 final class PieceCounts {
     private Map<String, Integer> maxAllowedCounts = new HashMap<>();
-    private Map<String, Integer> playerPieceCounts1 = new HashMap<>();
-    private Map<String, Integer> playerPieceCounts2 = new HashMap<>();
+
 
     public PieceCounts() {
         maxAllowedCounts.put("Flag", 1);
@@ -23,22 +22,33 @@ final class PieceCounts {
         maxAllowedCounts.put("Bomb", 6);
     }
 
-    protected boolean isValidPieceCount(String newPieceName, int playerId) {
-        Map<String, Integer> playerPieceCounts = (playerId == 1) ? playerPieceCounts1 : playerPieceCounts2;
-    
-        if (playerPieceCounts.containsKey(newPieceName)) {
-            int currentCount = playerPieceCounts.get(newPieceName);
-            int maxAllowedCount = maxAllowedCounts.get(newPieceName);
+    protected boolean isValidPieceCount(String newPieceName, int playerId, Board board) {
+        int countPlayer = countPiecesOfType(board, newPieceName, playerId);
+        int maxAllowedCount = maxAllowedCounts.get(newPieceName);
             
-            if (currentCount < maxAllowedCount) {
-                playerPieceCounts.put(newPieceName, currentCount + 1);
+            if (countPlayer < maxAllowedCount) {
                 return true;
             } else {
                 return false;
             }
-        } else {
-            playerPieceCounts.put(newPieceName, 1);
-            return true;
+    }
+
+protected int countPiecesOfType(Board board, String pieceType, int playerId) {
+    int count = 0;
+
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            Piece piece = board.getSquare(i + 1, j + 1).getPieceFromSquare();
+
+            if (piece != null && piece.getNamePiece().equalsIgnoreCase(pieceType)) {
+                if ((playerId == 1 && j + 1 > 6) || (playerId == 2 && j + 1 < 5)) {
+                    count++;
+                }
+            }
         }
     }
+
+    return count;
 }
+}
+

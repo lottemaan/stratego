@@ -46,6 +46,14 @@ export type RankingItem = {
     nrOfGamesWon: number;
 };
 
+export type ArmyConfiguration = {
+    initializationDone: boolean;
+    playerOnePiecesSaved: boolean;
+    playerTwoPiecesSaved: boolean;
+};
+
+
 export function isGameState(gameState: unknown): gameState is GameState {
     return (gameState as GameState).players !== undefined;
 }
+
